@@ -71,10 +71,12 @@
       expected to be paired with each other, the compositor must be able to
       handle consecutive series of the same request.
 
-      State is sent by the state requests (set_surrounding_text,
-      set_content_type and set_cursor_rectangle) and a commit request. After an
-      enter event or disable request all state information is invalidated and
-      needs to be resent by the client.
+      State is updated by the client using the state change requests
+      (set_surrounding_text, set_content_type, set_cursor_rectangle,
+      enable, and disable), followed by a commit request.
+      After an enter event or a committed disable request,
+      all state information is invalidated and needs to be resent
+      by the client.
     </description>
 
     <request name="destroy" type="destructor">
@@ -90,9 +92,10 @@
         event.
 
         This request must be issued every time the active text input changes
-        to a new one, including within the current surface. Use
-        zwp_text_input_v3.disable when there is no longer any input focus on
-        the current surface.
+        to a new one, including within the current surface,
+        as long as an input method is desired.
+        Use zwp_text_input_v3.disable when there is no longer any input focus
+        on the current surface.
 
         This request resets all state associated with previous enable, disable,
         set_surrounding_text, set_text_change_cause, set_content_type, and
