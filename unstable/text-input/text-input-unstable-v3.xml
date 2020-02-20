@@ -47,7 +47,7 @@
     interface version number is reset.
   </description>
 
-  <interface name="zwp_text_input_v3" version="1">
+  <interface name="zwp_text_input_v3" version="2">
     <description summary="text input">
       The zwp_text_input_v3 interface represents text input and input methods
       associated with a seat. It provides enter/leave events to follow the
@@ -135,8 +135,12 @@
         If the client is unaware of the text around the cursor, it should not
         issue this request, to signify lack of support to the compositor.
 
-        Text is UTF-8 encoded, and should include the cursor position, the
-        complete selection and additional characters before and after them.
+        Text is UTF-8 encoded, and must include the cursor position,
+        the complete selection, and at least one additional character
+        on both sides of the cursor or selection.
+        "Character" is defined by the client, and should correspond to
+        the smallest text unit possible to render and delete alone.
+
         There is a maximum length of wayland messages, so text can not be
         longer than 4000 bytes.
 
@@ -374,8 +378,30 @@
         Notify when the text around the current cursor position should be
         deleted.
 
-        Before_length and after_length are the number of bytes before and after
-        the current cursor index (excluding the selection) to delete.
+        Before_length and after_length indicate the length of text to delete
+        before and after the current cursor index (excluding the selection).
+
+        Before_length and after_length are measured in Unicode codepoints,
+        if the client supports reporting surrounding text.
+        If the client does not support reporting surrounding text,
+        they are measured in "characters", defined by the client
+        to be the most appropriate unit of text for deleting.
+
+        This request is meant to be informed
+        by set_surrounding_text when available.
+        The compositor does not know about the contents outside of
+        what it received in the current set_surrounding_text request,
+        and should not attempt to delete it.
+        When asked, the client must comply and delete
+        the part of the requested range that the compositor knows about,
+        but it must not delete what the compositor doesn't know about,
+        i.e. what exceeds the text from the current
+        set_surrounding_text request.
+        The only exception is when the client does not support
+        set_surrounding_text. In this case, the client must delete
+        the entire range of text the compositor requested, or,
+        if there is not enough deletable text in a given direction,
+        as much as possible.
 
         If a preedit text is present, in effect before_length is counted from
         the beginning of it, and after_length from its end (see done event
@@ -419,7 +445,7 @@
     </event>
   </interface>
 
-  <interface name="zwp_text_input_manager_v3" version="1">
+  <interface name="zwp_text_input_manager_v3" version="2">
     <description summary="text input manager">
       A factory for text-input objects. This object is a global singleton.
     </description>
