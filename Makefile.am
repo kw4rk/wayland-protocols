@@ -32,6 +32,7 @@ stable_protocols =								\
 	$(NULL)
 
 staging_protocols =								\
+	staging/transactions/transactions-v1.xml				\
 	staging/xdg-activation/xdg-activation-v1.xml				\
 	$(NULL)
 

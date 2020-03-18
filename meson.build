@@ -38,6 +38,7 @@ unstable_protocols = {
 }
 
 staging_protocols = {
+	'transactions': ['v1'],
 	'xdg-activation': ['v1'],
 }
 
