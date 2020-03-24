@@ -303,6 +303,20 @@
       </description>
     </request>
 
+    <request name="reset">
+      <description summary="reset state">
+        Reset the input method state of previous user input.
+
+        Some input method will remember some state of previous user input.
+        When user switch the focus widget, input method module needs to
+        use this request to tell input method to forget the state.
+
+        For example, the state of the '"' symbol.
+        If input '"' first time, "“" will be inputted; if input '"' again,
+        "”" will be inputted.
+      </description>
+    </request>
+
     <event name="enter">
       <description summary="enter event">
         Notification that this seat's text-input focus is on a certain surface.
