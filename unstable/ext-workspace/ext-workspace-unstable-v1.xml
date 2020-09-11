@@ -227,6 +227,14 @@
       </description>
 
       <entry name="active" value="0" summary="the workspace is active"/>
+      <entry name="urgent" value="1" summary="the workspace requests attention"/>
+      <entry name="hidden" value="2">
+        <description summary="the workspace is not visible">
+          The workspace is not visible in its workspace group, and clients
+          attempting to visualize the compositor workspace state should not
+          display such workspaces.
+        </description>
+      </entry>
     </enum>
 
     <event name="remove">
