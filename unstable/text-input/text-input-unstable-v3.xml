@@ -217,6 +217,9 @@
       <entry
         name="no_emoji" value="0x800" since="2"
         summary="prefer not offering emoji support"/>
+      <entry
+        name="preedit_shown" value="0x1000" since="2"
+        summary="the text input will display preedit text in place"/>
     </enum>
 
     <enum name="content_purpose">
