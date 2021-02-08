@@ -116,6 +116,11 @@
       The set of outputs assigned to the workspace group is conveyed to the client via
       output_enter and output_leave events, and its workspaces are conveyed with
       workspace events.
+
+      For example, a compositor which has a set of workspaces for each output may
+      advertise a workspace group (and its workspaces) per output, whereas a compositor
+      where a workspace spans all outputs may advertise a single workspace group for all
+      outputs.
     </description>
 
     <event name="output_enter">
