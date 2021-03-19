@@ -283,6 +283,16 @@
         the text input does not support describing the cursor area. If the
         empty values get applied, subsequent attempts to change them may have
         no effect.
+
+        As of version 2, the values sent with this request are not used
+        immediately after they are applied to the text-input state.
+
+        After the pending state is applied with the zwp_text_input_v3.commit
+        request, the following wl_surface.commit request on the surface with
+        text-input focus will cause the values to become active.
+
+        If the surface with text-input focus changes before a wl_surface.commit
+        request is sent, the values are discarded.
       </description>
       <arg name="x" type="int"/>
       <arg name="y" type="int"/>
