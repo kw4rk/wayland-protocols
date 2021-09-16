@@ -33,6 +33,7 @@ stable_protocols =								\
 
 staging_protocols =								\
 	staging/drm-lease/drm-lease-v1.xml					\
+	staging/input-method/input-method-v3.xml			\
 	staging/xdg-activation/xdg-activation-v1.xml				\
 	$(NULL)
 
