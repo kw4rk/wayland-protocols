@@ -203,9 +203,9 @@
       </description>
     </event>
 
-    <request name="commit_string">
-      <description summary="commit string">
-        Send the commit string text for insertion to the application.
+    <request name="set_string">
+      <description summary="set string to be committed">
+        Send the string text for insertion to the application.
 
         Inserts a string at current cursor position (see commit event
         sequence). The string to commit could be either just a single character
