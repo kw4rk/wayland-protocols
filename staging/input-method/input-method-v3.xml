@@ -435,7 +435,7 @@
       <arg name="group" type="uint" summary="keyboard layout"/>
     </event>
 
-    <request name="release" type="destructor">
+    <request name="destroy" type="destructor">
       <description summary="release the grab object"/>
     </request>
 
