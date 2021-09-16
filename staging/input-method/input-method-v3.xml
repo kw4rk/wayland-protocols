@@ -399,6 +399,10 @@
       grab of the wl_keyboard interface associated with the seat.
     </description>
 
+    <enum name="error" summary="protocol errors">
+      <entry name="invalid_serial" value="1" summary="invalid serial passed to pass_through"/>
+    </enum>
+
     <event name="keymap">
       <description summary="keyboard mapping">
         This event provides a file descriptor to the client which can be
@@ -459,6 +463,22 @@
       <arg name="delay" type="int"
 	   summary="delay in milliseconds since key down until repeating starts"/>
     </event>
+
+    <request name="pass_through">
+      <description summary="notify that an input event hasn't been used">
+        Notifies the compositor that an input event hasn't been used by the
+        input method.
+
+        The compositor should forward the event as if the input method didn't
+        exist.
+
+        The client must always send pass_through requests in the order the
+        events were received. It's a protocol error to send a pass_through
+        request referencing an event older than the last passed-through one,
+        the compositor will send the invalid_serial error.
+      </description>
+      <arg name="serial" type="uint" sumamry="serial number of the event"/>
+    </request>
   </interface>
 
   <interface name="wp_input_method_manager_v3" version="1">
