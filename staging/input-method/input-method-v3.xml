@@ -181,6 +181,18 @@
       <arg name="purpose" type="uint" enum="zwp_text_input_v3.content_purpose"/>
     </event>
 
+    <event name="available_actions">
+      <description summary="notification of available actions">
+        This event indicates which actions are supported by the text input.
+
+        Values set with this event are double-buffered. They will get applied
+        on the next wp_input_method_v3.done event.
+
+        Initially, no actions are available.
+      </description>
+      <arg name="available_actions" type="array" summary="available actions"/>
+    </event>
+
     <event name="done">
       <description summary="apply state">
         Atomically applies state changes recently sent to the client.
@@ -274,6 +286,16 @@
       </description>
       <arg name="before_length" type="uint"/>
       <arg name="after_length" type="uint"/>
+    </request>
+
+    <request name="set_action">
+      <description summary="perform an action">
+        Set the action to be performed on commit.
+
+        Values set with this event are double-buffered. They must be applied
+        and reset to initial on the next wp_input_method_v3.commit request.
+      </description>
+      <arg name="action" type="uint" enum="zwp_text_input_v4.action" summary="action performed"/>
     </request>
 
     <request name="commit">
