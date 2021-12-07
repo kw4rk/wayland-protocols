@@ -66,15 +66,20 @@
       Focus moving throughout surfaces will result in the emission of
       zwp_text_input_v3.enter and zwp_text_input_v3.leave events. The focused
       surface must commit zwp_text_input_v3.enable and
-      zwp_text_input_v3.disable requests as the keyboard focus moves across
+      zwp_text_input_v3.disable requests as the text input focus moves across
       editable and non-editable elements of the UI. Those two requests are not
       expected to be paired with each other, the compositor must be able to
       handle consecutive series of the same request.
 
-      State is sent by the state requests (set_surrounding_text,
-      set_content_type and set_cursor_rectangle) and a commit request. After an
-      enter event or disable request all state information is invalidated and
-      needs to be resent by the client.
+      State changes are communicated by the client using the
+      set_surrounding_text, set_content_type, set_cursor_rectangle,
+      enable, and disable requests, followed by a commit request.
+      After an enter event or a committed disable request,
+      all state information tracked by the compositor is invalidated
+      and needs to be resent by the client.
+
+      The client must track track whether it already sent any enable requests
+      relating to the most recent enter event.
     </description>
 
     <request name="destroy" type="destructor">
@@ -90,12 +95,16 @@
         event.
 
         This request must be issued every time the active text input changes
-        to a new one, including within the current surface. Use
-        zwp_text_input_v3.disable when there is no longer any input focus on
-        the current surface.
+        to a new one, including within the current surface,
+        as long as an input method is desired.
+        Use zwp_text_input_v3.disable when there is no longer any input focus
+        on the current surface.
 
-        This request resets all state associated with previous enable, disable,
-        set_surrounding_text, set_text_change_cause, set_content_type, and
+        After committing the enable request, the client must remember the fact.
+
+        This request resets all state tracked by the compositor,
+        associated with previous enable, disable, set_surrounding_text,
+        set_text_change_cause, set_content_type, and
         set_cursor_rectangle requests, as well as the state associated with
         preedit_string, commit_string, and delete_surrounding_text events.
 
@@ -313,6 +322,9 @@
         When the seat has the keyboard capability the text-input focus follows
         the keyboard focus. This event sets the current surface for the
         text-input object.
+
+        Upon receiving this event, the client must note
+        that it did not send any enable requests yet.
       </description>
       <arg name="surface" type="object" interface="wl_surface"/>
     </event>
@@ -413,10 +425,14 @@
 
         The serial number reflects the last state of the zwp_text_input_v3
         object known to the compositor. The value of the serial argument must
-        be equal to the number of commit requests already issued on that object.
-        When the client receives a done event with a serial different than the
-        number of past commit requests, it must proceed as normal, except it
-        should not change the current state of the zwp_text_input_v3 object.
+        be equal to the number of commit requests already issued on
+        the surface of the last enter event.
+        When the client either receives a done event
+        - with a serial different than the number of past commit requests, or
+        - while it hadn't sent any enable events yet,
+        it must proceed as normal, except it should not apply the changes
+        to its text input, nor change the current state
+        of the zwp_text_input_v3 object.
       </description>
       <arg name="serial" type="uint"/>
     </event>
