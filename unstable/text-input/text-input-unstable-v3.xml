@@ -214,6 +214,9 @@
       <entry
         name="on_screen_input_provided" value="0x400" since="2"
         summary="an on-screen way to fill in the input is already provided by the client"/>
+      <entry
+        name="no_emoji" value="0x800" since="2"
+        summary="prefer not offering emoji support"/>
     </enum>
 
     <enum name="content_purpose">
