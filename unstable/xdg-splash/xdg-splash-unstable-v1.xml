@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="xdg_splash_unstable_v1">
+  <copyright>
+    Copyright © 2022 Mark Bolhuis
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice (including the next
+    paragraph) shall be included in all copies or substantial portions of the
+    Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+  </copyright>
+
+  <description summary="protocol for creating splash surfaces">
+    This protocol provides a mechanism for creating splash surfaces.
+    A splash surface is typically shown in the center of an output on
+    application startup whilst the application is loading.
+    A client may use a splash surface to display a simple graphic and/or to
+    show application startup progress.
+
+    In order to create a splash surface the user binds to the
+    zxdg_wm_splash_v1 interface, which, if the compositor supports splash
+    surfaces, must be exposed in the global registry. See zxdg_wm_splash_v1
+    for details on how to create a splash surface.
+    If the compositor does not support splash surfaces the client must not use
+    xdg_toplevel as a fallback, and instead not show anything.
+
+    This document adheres to RFC 2119.
+
+    Warning! The protocol described in this file is experimental and backward
+    incompatible changes may be made. Backward compatible changes may be added
+    together with the corresponding interface version bump. Backward
+    incompatible changes are done by bumping the version number in the protocol
+    and interface names and resetting the interface version. Once the protocol
+    is to be declared stable, the 'z' prefix and the version number in the
+    protocol and interface names are removed and the interface version number is
+    reset.
+  </description>
+
+  <interface name="zxdg_wm_splash_v1" version="1">
+    <description summary="create splash surfaces">
+      The global interface exposing splash surface functionality.
+
+      This interface provides the get_splash request that a client must use to
+      create a splash surface.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the xdg_wm_splash_v1">
+        Destroy the zxdg_wm_splash_v1 object. This doesn't destroy any splash
+        objects.
+      </description>
+    </request>
+
+    <request name="get_splash">
+      <description summary="create a new splash surface">
+        This creates a splash object for the given xdg_surface and gives the
+        associated wl_surface the splash role.
+
+        Creating a splash role for a wl_surface that is already assigned another
+        role, or has an attached buffer, is illegal and a protocol error is
+        raised.
+
+        See zxdg_splash_v1 documentation for further details.
+      </description>
+      <arg name="id" type="new_id" interface="zxdg_splash_v1"/>
+      <arg name="surface" type="object" interface="xdg_surface"/>
+    </request>
+  </interface>
+
+  <interface name="zxdg_splash_v1" version="1">
+    <description summary="splash surface role object">
+      This interface defines a xdg_surface role which allows the surface to
+      behave like a typical application splash screen.
+
+      The client must commit the associated wl_surface without a buffer attached
+      for the splash role to take effect. The compositor must then emit a
+      xdg_surface.configure event which the client must respond to using
+      xdg_surface.ack_configure. See the xdg_surface documentation for further
+      details.
+
+      Once a buffer is attached and committed the compositor should then show
+      the user the splash surface in whatever way it sees fit.
+      The client must not make any assumptions about how the surface was shown
+      to the user.
+
+      A splash role object must be destroyed before its associated xdg_surface.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the splash object">
+        This request destroys the role and unmaps the surface.
+      </description>
+    </request>
+
+    <event name="configure">
+      <description summary="configure the splash surface">
+        The configure event may be sent prior to a xdg_surface.configure event
+        to communicate the bounds a window geometry size is recommended
+        to constrain to.
+
+        The passed max_width and max_height are in surface coordinate space. If
+        max_width and max_height are 0, it means bounds is unknown and
+        equivalent to as if no configure event was ever sent for this surface.
+      </description>
+      <arg name="max_width" type="int"/>
+      <arg name="max_height" type="int"/>
+    </event>
+
+    <event name="close">
+      <description summary="close the splash surface">
+        A typical splash surface will be closed automatically once the
+        application has finished loading, however the compositor may decide
+        to close the splash earlier.
+
+        Once the client receives a close event it should close the splash
+        surface in a reasonable amount of time.
+      </description>
+    </event>
+
+  </interface>
+
+</protocol>

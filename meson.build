@@ -32,6 +32,7 @@ unstable_protocols = {
 	'xdg-foreign': ['v1', 'v2'],
 	'xdg-output': ['v1'],
 	'xdg-shell': ['v5', 'v6'],
+	'xdg-splash': ['v1'],
 	'xwayland-keyboard-grab': ['v1'],
 }
 
