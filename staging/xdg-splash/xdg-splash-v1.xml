@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<protocol name="xdg_splash_unstable_v1">
+<protocol name="xdg_splash_v1">
   <copyright>
     Copyright © 2022 Mark Bolhuis
 
@@ -31,25 +31,21 @@
     show application startup progress.
 
     In order to create a splash surface the user binds to the
-    zxdg_wm_splash_v1 interface, which, if the compositor supports splash
-    surfaces, must be exposed in the global registry. See zxdg_wm_splash_v1
+    xdg_wm_splash_v1 interface, which, if the compositor supports splash
+    surfaces, must be exposed in the global registry. See xdg_wm_splash_v1
     for details on how to create a splash surface.
     If the compositor does not support splash surfaces the client must not use
     xdg_toplevel as a fallback, and instead not show anything.
 
     This document adheres to RFC 2119.
 
-    Warning! The protocol described in this file is experimental and backward
-    incompatible changes may be made. Backward compatible changes may be added
-    together with the corresponding interface version bump. Backward
-    incompatible changes are done by bumping the version number in the protocol
-    and interface names and resetting the interface version. Once the protocol
-    is to be declared stable, the 'z' prefix and the version number in the
-    protocol and interface names are removed and the interface version number is
-    reset.
+    Warning! The protocol described in this file is currently in the testing
+    phase. Backward compatible changes may be added together with the
+    corresponding interface version bump. Backward incompatible changes can
+    only be done by creating a new major version of the extension.
   </description>
 
-  <interface name="zxdg_wm_splash_v1" version="1">
+  <interface name="xdg_wm_splash_v1" version="1">
     <description summary="create splash surfaces">
       The global interface exposing splash surface functionality.
 
@@ -59,7 +55,7 @@
 
     <request name="destroy" type="destructor">
       <description summary="destroy the xdg_wm_splash_v1">
-        Destroy the zxdg_wm_splash_v1 object. This doesn't destroy any splash
+        Destroy the xdg_wm_splash_v1 object. This doesn't destroy any splash
         objects.
       </description>
     </request>
@@ -73,14 +69,14 @@
         role, or has an attached buffer, is illegal and a protocol error is
         raised.
 
-        See zxdg_splash_v1 documentation for further details.
+        See xdg_splash_v1 documentation for further details.
       </description>
-      <arg name="id" type="new_id" interface="zxdg_splash_v1"/>
+      <arg name="id" type="new_id" interface="xdg_splash_v1"/>
       <arg name="surface" type="object" interface="xdg_surface"/>
     </request>
   </interface>
 
-  <interface name="zxdg_splash_v1" version="1">
+  <interface name="xdg_splash_v1" version="1">
     <description summary="splash surface role object">
       This interface defines a xdg_surface role which allows the surface to
       behave like a typical application splash screen.

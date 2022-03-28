@@ -32,7 +32,6 @@ unstable_protocols = {
 	'xdg-foreign': ['v1', 'v2'],
 	'xdg-output': ['v1'],
 	'xdg-shell': ['v5', 'v6'],
-	'xdg-splash': ['v1'],
 	'xwayland-keyboard-grab': ['v1'],
 }
 
@@ -40,6 +39,7 @@ staging_protocols = {
 	'xdg-activation': ['v1'],
 	'drm-lease': ['v1'],
 	'ext-session-lock': ['v1'],
+	'xdg-splash': ['v1'],
 }
 
 protocol_files = []
