@@ -121,10 +121,11 @@
       <description summary="close the splash surface">
         A typical splash surface will be closed automatically once the
         application has finished loading, however the compositor may decide
-        to close the splash earlier.
+        to close the splash earlier by emitting this event.
+        When emitted the client should close the splash surface.
 
-        Once the client receives a close event it should close the splash
-        surface in a reasonable amount of time.
+        This event should not be used as an indication to abort application
+        startup.
       </description>
     </event>
 
