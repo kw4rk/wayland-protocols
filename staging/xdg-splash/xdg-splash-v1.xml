@@ -34,8 +34,10 @@
     xdg_wm_splash_v1 interface, which, if the compositor supports splash
     surfaces, must be exposed in the global registry. See xdg_wm_splash_v1
     for details on how to create a splash surface.
-    If the compositor does not support splash surfaces the client must not use
-    xdg_toplevel as a fallback, and instead not show anything.
+
+    If the compositor does not advertise support for splash surfaces the client
+    should not use xdg_toplevel as a fallback. A client that does cannot expect
+    the compositor to handle the surface appropriately.
 
     This document adheres to RFC 2119.
 
