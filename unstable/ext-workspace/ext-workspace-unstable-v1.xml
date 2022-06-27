@@ -124,6 +124,32 @@
       outputs.
     </description>
 
+    <enum name="zext_workspace_group_capabilities_v1">
+      <entry name="create_workspace" value="1" summary="create_workspace request is available"/>
+    </enum>
+
+    <event name="capabilities">
+      <description summary="compositor capabilities">
+        This event advertises the capabilities supported by the compositor. If
+        a capability isn't supported, clients should hide or disable the UI
+        elements that expose this functionality. For instance, if the
+        compositor doesn't advertise support for creating workspaces, a button
+        triggering the create_workspace request should not be displayed.
+
+        The compositor will ignore requests it doesn't support. For instance,
+        a compositor which doesn't advertise support for creating workspaces will ignore
+        create_workspace requests.
+
+        Compositors must send this event once after creation of an
+        zext_workspace_group_handle_v1 . When the capabilities change, compositors
+        must send this event again.
+
+        The capabilities are sent as an array of 32-bit unsigned integers in
+        native endianness.
+      </description>
+      <arg name="capabilities" type="array" summary="array of 32-bit capabilities"/>
+    </event>
+
     <event name="output_enter">
       <description summary="output assigned to workspace group">
         This event is emitted whenever an output is assigned to the workspace
@@ -259,6 +285,34 @@
         </description>
       </entry>
     </enum>
+
+   <enum name="zext_workspace_capabilities_v1">
+      <entry name="activate" value="1" summary="activate request is available"/>
+      <entry name="deactivate" value="2" summary="deactivate request is available"/>
+      <entry name="remove" value="3" summary="remove request is available"/>
+    </enum>
+
+    <event name="capabilities">
+      <description summary="compositor capabilities">
+        This event advertises the capabilities supported by the compositor. If
+        a capability isn't supported, clients should hide or disable the UI
+        elements that expose this functionality. For instance, if the
+        compositor doesn't advertise support for removing workspaces, a button
+        triggering the remove request should not be displayed.
+
+        The compositor will ignore requests it doesn't support. For instance,
+        a compositor which doesn't advertise support for remove will ignore
+        remove requests.
+
+        Compositors must send this event once after creation of an
+        zext_workspace_handle_v1 . When the capabilities change, compositors
+        must send this event again.
+
+        The capabilities are sent as an array of 32-bit unsigned integers in
+        native endianness.
+      </description>
+      <arg name="capabilities" type="array" summary="array of 32-bit capabilities"/>
+    </event>
 
     <event name="remove">
       <description summary="this workspace has been destroyed">
