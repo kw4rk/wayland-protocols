@@ -142,6 +142,8 @@
     <event name="workspace">
       <description summary="workspace added to workspace group">
         This event is emitted whenever a new workspace has been created.
+        A workspace can only be a member of a single workspace group and cannot
+        be re-assigned.
 
         All initial details of the workspace (name, coordinates, state) will
         be sent immediately after this event via the corresponding events in
