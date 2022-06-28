@@ -180,7 +180,7 @@
       <arg name="workspace" type="new_id" interface="ext_workspace_handle_v1"/>
     </event>
 
-    <event name="remove">
+    <event name="removed">
       <description summary="this workspace group has been destroyed">
         This event means the ext_workspace_group_handle_v1 has been destroyed.
         It is guaranteed there won't be any more events for this
@@ -315,7 +315,7 @@
       <arg name="capabilities" type="array" summary="array of 32-bit capabilities"/>
     </event>
 
-    <event name="remove">
+    <event name="removed">
       <description summary="this workspace has been destroyed">
         This event means the ext_workspace_handle_v1 has been destroyed. It is
         guaranteed there won't be any more events for this
