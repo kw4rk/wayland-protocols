@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="ext_sensitive_context_v1">
+  <copyright>
+    Copyright 2022 Leon Henrik Plickat
+
+    Permission to use, copy, modify, and/or distribute this software for any
+    purpose with or without fee is hereby granted, provided that the above
+    copyright notice and this permission notice appear in all copies.
+
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  </copyright>
+
+  <description summary="display surfaces while session is in sensitive context">
+    This protocol defines a way for clients to request surfaces to be shown
+    while the session is in a sensitive context, such as during a session lock,
+    when they would otherwise be hidden.
+
+    Clients will be informed if their request is granted, so that they can
+    update the surfaces content accordingly.
+
+    Warning! The protocol described in this file is currently in the
+    testing phase. Backward compatible changes may be added together with
+    the corresponding interface version bump. Backward incompatible changes
+    can only be done by creating a new major version of the extension.
+  </description>
+
+  <interface name="ext_sensitive_context_manager_v1" version="1">
+    <description summary="Request surfaces to be shown in sensitive contexts">
+      This interface is used to request surfaces to be shown in sensitive
+      contexts.
+    </description>
+
+    <enum name="error">
+      <entry name="wrong_surface" value="0"
+        summary="attempted to get ext_sensitive_surface_v1 for non-toplevel wl_surface"/>
+    </enum>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the sensitive context manager object">
+        This informs the compositor that the sensitive context manager object
+        will no longer be used. Existing objects created through this interface
+        remain valid.
+      </description>
+    </request>
+
+    <request name="get_sensitive_surface">
+      <description summary="requests a surface to be shown in sensitive contexts">
+        This request creates a sensitive surface object for a surface. This
+        implicitly requests that the compositor shall show that surface even in
+        sensitive contexts when it would otherwise be hidden. The client will
+        not be informed whether the request was granted.
+
+
+        This request should only be used for toplevel widget surfaces. Calling
+        this request for subsurfaces or popups is fatal protocol error.
+
+        Surface z-ordering and placement is compositor policy.
+
+        Note that this is not a surface role, only an extension to wl_surface.
+      </description>
+      <arg name="id" type="new_id" interface="ext_sensitive_surface_v1"/>
+      <arg name="surface" type="object" interface="wl_surface"/>
+    </request>
+  </interface>
+
+  <interface name="ext_sensitive_surface_v1" version="1">
+    <description summary="Sensitive context interface for a wl_surface">
+      This objects acts as the interface of a surface for sensitive contexts.
+
+      If the session enters a sensitive context and the clients request to show
+      this surface during that time is granted, the client will receive the
+      enter_sensitive_context event through this object, followed by a configure
+      event for the surfaces role object. The client must call
+      ack_sensitive_context followed by ack_configure with the respective
+      serials for the surface to be shown. The compositor may pause rendering
+      until the client does so but is not required to. This gives the client a
+      chance to render a new buffer, potentially hiding private content, before
+      it is shown in a sensitive context to avoid showing unwanted content.
+
+      Whether a clients surface is allowed to be shown during sensitive contexts
+      is compositor policy. If the request has been granted once it is not
+      guaranteed that it will be granted again. If the request is denied, the
+      client will not be informed.
+
+      When the sensitive context is over, the client will receive the
+      exit_sensitive_context event of the same serial as the enter event via
+      this object as well as another configure event for the role object of the
+      wl_surface. The client must ack both events. Submitting a new buffer
+      before acking the exit_sensitive_context event is a fatal protocol error.
+
+      If this object is destroyed while the surface is shown during a sensitive
+      context, it will be hidden. If this object is created while the session is
+      in a sensitive context, the enter_sensitive_context and configure events
+      as described above will be send immediately.
+    </description>
+
+    <enum name="error">
+      <entry name="exit_not_acked" value="0"
+        summary="attempted to submit buffer without acking exit_sensitive_context event"/>
+    </enum>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the sensitive surface">
+        This informs the compositor that the sensitive surface object will no
+        longer be used.
+      </description>
+    </request>
+
+    <event name="enter_sensitive_context">
+      <description summary="the session entered a sensitive context">
+        The session is now in a sensitive context and the surface has been
+        given the option to be displayed in it. This event is always followed by
+        a configure event for the role object of the wl_surface.
+      </description>
+      <arg name="serial" type="uint" summary="serial from the event"/>
+    </event>
+
+    <event name="exit_sensitive_context">
+      <description summary="the session left the sensitive context">
+        The session left the sensitive context. This event is always followed by
+        a configure event for the role object of the wl_surface.
+      </description>
+      <arg name="serial" type="uint" summary="serial from the enter event"/>
+    </event>
+
+    <request name="ack_sensitive_context">
+      <description summary="ack the entering or leaving of a sensitive context">
+        The request lets the compositor know that the client acknowledges the
+        entering or leaving of a sensitive context.
+      </description>
+      <arg name="serial" type="uint" summary="serial from the enter or leave event"/>
+    </request>
+  </interface>
+</protocol>
+
