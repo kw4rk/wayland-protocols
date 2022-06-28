@@ -267,6 +267,9 @@
         This event is emitted immediately after the ext_workspace_handle_v1 is
         created and each time the workspace state changes, either because of a
         compositor action or because of a request in this protocol.
+
+        Missing states convey the opposite meaning, e.g. a missing active entry
+        in the array means the workspace is currently inactive.
       </description>
       <arg name="state" type="array"/>
     </event>
