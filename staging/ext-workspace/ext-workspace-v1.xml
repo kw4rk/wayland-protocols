@@ -203,11 +203,11 @@
     </request>
 
     <request name="destroy" type="destructor">
-      <description summary="destroy the ext_workspace_handle_v1 object">
-        Destroys the ext_workspace_handle_v1 object.
+      <description summary="destroy the ext_workspace_group_handle_v1 object">
+        Destroys the ext_workspace_group_handle_v1 object.
 
         This request should be called either when the client does not want to
-        use the workspace object any more or after the remove event to finalize
+        use the workspace group object any more or after the remove event to finalize
         the destruction of the object.
       </description>
     </request>
