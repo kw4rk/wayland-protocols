@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<protocol name="ext_workspace_unstable_v1">
+<protocol name="ext_workspace_v1">
   <copyright>
     Copyright © 2019 Christopher Billington
     Copyright © 2020 Ilia Bozhinov
+    Copyright © 2022 Victoria Brekenfeld
 
     Permission to use, copy, modify, distribute, and sell this
     software and its documentation for any purpose is hereby granted
@@ -26,7 +27,7 @@
     THIS SOFTWARE.
   </copyright>
 
-  <interface name="zext_workspace_manager_v1" version="1">
+  <interface name="ext_workspace_manager_v1" version="1">
     <description summary="list and control workspaces">
       Workspaces, also called virtual desktops, are groups of surfaces. A
       compositor with a concept of workspaces may only show some such groups of
@@ -45,7 +46,7 @@
       docks by providing them with a list of workspaces and their properties,
       and allowing them to activate and deactivate workspaces.
 
-      After a client binds the zext_workspace_manager_v1, each workspace will be
+      After a client binds the ext_workspace_manager_v1, each workspace will be
       sent via the workspace event.
     </description>
 
@@ -55,9 +56,9 @@
 
         All initial details of the workspace group (workspaces, outputs) will be
         sent immediately after this event via the corresponding events in
-        zext_workspace_group_handle_v1.
+        ext_workspace_group_handle_v1.
       </description>
-      <arg name="workspace_group" type="new_id" interface="zext_workspace_group_handle_v1"/>
+      <arg name="workspace_group" type="new_id" interface="ext_workspace_group_handle_v1"/>
     </event>
 
     <request name="commit">
@@ -68,7 +69,7 @@
 
         This allows changes to the workspace properties to be seen as atomic,
         even if they happen via multiple events, and even if they involve
-        multiple zext_workspace_handle_v1 objects, for example, deactivating one
+        multiple ext_workspace_handle_v1 objects, for example, deactivating one
         workspace and activating another.
       </description>
     </request>
@@ -78,12 +79,12 @@
         This event is sent after all changes in all workspace groups have been
         sent.
 
-        This allows changes to one or more zext_workspace_group_handle_v1
-        properties and their assigned zext_workspace_handle_v1 properties
+        This allows changes to one or more ext_workspace_group_handle_v1
+        properties and their assigned ext_workspace_handle_v1 properties
         to be seen as atomic, even if they happen via multiple events.
         In particular, an output moving from one workspace group to
         another sends an output_enter event and an output_leave event to the two
-        zext_workspace_group_handle_v1 objects in question. The compositor sends
+        ext_workspace_group_handle_v1 objects in question. The compositor sends
         the done event only after updating the output information in both
         workspace groups.
       </description>
@@ -92,7 +93,7 @@
     <event name="finished">
       <description summary="the compositor has finished with the workspace_manager">
         This event indicates that the compositor is done sending events to the
-        zext_workspace_manager_v1. The server will destroy the object
+        ext_workspace_manager_v1. The server will destroy the object
         immediately after sending this request, so it will become invalid and
         the client should free any resources associated with it.
       </description>
@@ -109,9 +110,9 @@
     </request>
   </interface>
 
-  <interface name="zext_workspace_group_handle_v1" version="1">
+  <interface name="ext_workspace_group_handle_v1" version="1">
     <description summary="a workspace group assigned to a set of outputs">
-      A zext_workspace_group_handle_v1 object represents a a workspace group
+      A ext_workspace_group_handle_v1 object represents a a workspace group
       that is assigned a set of outputs and contains a number of workspaces.
 
       The set of outputs assigned to the workspace group is conveyed to the client via
@@ -124,7 +125,7 @@
       outputs.
     </description>
 
-    <enum name="zext_workspace_group_capabilities_v1">
+    <enum name="ext_workspace_group_capabilities_v1">
       <entry name="create_workspace" value="1" summary="create_workspace request is available"/>
     </enum>
 
@@ -141,7 +142,7 @@
         create_workspace requests.
 
         Compositors must send this event once after creation of an
-        zext_workspace_group_handle_v1 . When the capabilities change, compositors
+        ext_workspace_group_handle_v1 . When the capabilities change, compositors
         must send this event again.
 
         The capabilities are sent as an array of 32-bit unsigned integers in
@@ -174,16 +175,16 @@
 
         All initial details of the workspace (name, coordinates, state) will
         be sent immediately after this event via the corresponding events in
-        zext_workspace_handle_v1.
+        ext_workspace_handle_v1.
       </description>
-      <arg name="workspace" type="new_id" interface="zext_workspace_handle_v1"/>
+      <arg name="workspace" type="new_id" interface="ext_workspace_handle_v1"/>
     </event>
 
     <event name="remove">
       <description summary="this workspace group has been destroyed">
-        This event means the zext_workspace_group_handle_v1 has been destroyed.
+        This event means the ext_workspace_group_handle_v1 has been destroyed.
         It is guaranteed there won't be any more events for this
-        zext_workspace_group_handle_v1. The zext_workspace_group_handle_v1 becomes
+        ext_workspace_group_handle_v1. The ext_workspace_group_handle_v1 becomes
         inert so any requests will be ignored except the destroy request.
 
         The compositor must remove all workspaces belonging to a workspace group
@@ -202,8 +203,8 @@
     </request>
 
     <request name="destroy" type="destructor">
-      <description summary="destroy the zext_workspace_handle_v1 object">
-        Destroys the zext_workspace_handle_v1 object.
+      <description summary="destroy the ext_workspace_handle_v1 object">
+        Destroys the ext_workspace_handle_v1 object.
 
         This request should be called either when the client does not want to
         use the workspace object any more or after the remove event to finalize
@@ -212,9 +213,9 @@
     </request>
   </interface>
 
-  <interface name="zext_workspace_handle_v1" version="1">
+  <interface name="ext_workspace_handle_v1" version="1">
     <description summary="a workspace handing a group of surfaces">
-      A zext_workspace_handle_v1 object represents a a workspace that handles a
+      A ext_workspace_handle_v1 object represents a a workspace that handles a
       group of surfaces.
 
       Each workspace has a name, conveyed to the client with the name event; a
@@ -231,7 +232,7 @@
 
     <event name="name">
       <description summary="workspace name changed">
-        This event is emitted immediately after the zext_workspace_handle_v1 is
+        This event is emitted immediately after the ext_workspace_handle_v1 is
         created and whenever the name of the workspace changes.
       </description>
       <arg name="name" type="string"/>
@@ -241,7 +242,7 @@
       <description summary="workspace coordinates changed">
         This event is used to organize workspaces into an N-dimensional grid
         within a workspace group, and if supported, is emitted immediately after
-        the zext_workspace_handle_v1 is created and whenever the coordinates of
+        the ext_workspace_handle_v1 is created and whenever the coordinates of
         the workspace change. Compositors may not send this event if they do not
         conceptually arrange workspaces in this way. If compositors simply
         number workspaces, without any geometric interpretation, they may send
@@ -263,7 +264,7 @@
 
     <event name="state">
       <description summary="the state of the workspace changed">
-        This event is emitted immediately after the zext_workspace_handle_v1 is
+        This event is emitted immediately after the ext_workspace_handle_v1 is
         created and each time the workspace state changes, either because of a
         compositor action or because of a request in this protocol.
       </description>
@@ -286,7 +287,7 @@
       </entry>
     </enum>
 
-   <enum name="zext_workspace_capabilities_v1">
+   <enum name="ext_workspace_capabilities_v1">
       <entry name="activate" value="1" summary="activate request is available"/>
       <entry name="deactivate" value="2" summary="deactivate request is available"/>
       <entry name="remove" value="3" summary="remove request is available"/>
@@ -305,7 +306,7 @@
         remove requests.
 
         Compositors must send this event once after creation of an
-        zext_workspace_handle_v1 . When the capabilities change, compositors
+        ext_workspace_handle_v1 . When the capabilities change, compositors
         must send this event again.
 
         The capabilities are sent as an array of 32-bit unsigned integers in
@@ -316,16 +317,16 @@
 
     <event name="remove">
       <description summary="this workspace has been destroyed">
-        This event means the zext_workspace_handle_v1 has been destroyed. It is
+        This event means the ext_workspace_handle_v1 has been destroyed. It is
         guaranteed there won't be any more events for this
-        zext_workspace_handle_v1. The zext_workspace_handle_v1 becomes inert so
+        ext_workspace_handle_v1. The ext_workspace_handle_v1 becomes inert so
         any requests will be ignored except the destroy request.
       </description>
     </event>
 
     <request name="destroy" type="destructor">
-      <description summary="destroy the zext_workspace_handle_v1 object">
-        Destroys the zext_workspace_handle_v1 object.
+      <description summary="destroy the ext_workspace_handle_v1 object">
+        Destroys the ext_workspace_handle_v1 object.
 
         This request should be called either when the client does not want to
         use the workspace object any more or after the remove event to finalize
