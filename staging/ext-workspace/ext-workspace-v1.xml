@@ -103,7 +103,8 @@
       <description summary="stop sending events">
         Indicates the client no longer wishes to receive events for new
         workspace groups. However the compositor may emit further workspace
-        events, until the finished event is emitted.
+        events, until the finished event is emitted. The compositor is expected
+        to send the finished event eventually once the stop request has been processed.
 
         The client must not send any more requests after this one.
       </description>
