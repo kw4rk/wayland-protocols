@@ -125,7 +125,7 @@
       outputs.
     </description>
 
-    <enum name="ext_workspace_group_capabilities_v1">
+    <enum name="ext_workspace_group_capabilities_v1" bitfield="true">
       <entry name="create_workspace" value="1" summary="create_workspace request is available"/>
     </enum>
 
@@ -144,11 +144,8 @@
         Compositors must send this event once after creation of an
         ext_workspace_group_handle_v1 . When the capabilities change, compositors
         must send this event again.
-
-        The capabilities are sent as an array of 32-bit unsigned integers in
-        native endianness.
       </description>
-      <arg name="capabilities" type="array" summary="array of 32-bit capabilities"/>
+      <arg name="capabilities" type="uint" summary="capabilities" enum="ext_workspace_group_capabilities_v1"/>
     </event>
 
     <event name="output_enter">
@@ -268,20 +265,20 @@
         created and each time the workspace state changes, either because of a
         compositor action or because of a request in this protocol.
 
-        Missing states convey the opposite meaning, e.g. a missing active entry
-        in the array means the workspace is currently inactive.
+        Missing states convey the opposite meaning, e.g. an unset active bit
+        the workspace is currently inactive.
       </description>
-      <arg name="state" type="array"/>
+      <arg name="state" type="uint" enum="state"/>
     </event>
 
-    <enum name="state">
+    <enum name="state" bitfield="true">
       <description summary="types of states on the workspace">
         The different states that a workspace can have.
       </description>
 
-      <entry name="active" value="0" summary="the workspace is active"/>
-      <entry name="urgent" value="1" summary="the workspace requests attention"/>
-      <entry name="hidden" value="2">
+      <entry name="active" value="1" summary="the workspace is active"/>
+      <entry name="urgent" value="2" summary="the workspace requests attention"/>
+      <entry name="hidden" value="4">
         <description summary="the workspace is not visible">
           The workspace is not visible in its workspace group, and clients
           attempting to visualize the compositor workspace state should not
@@ -290,10 +287,10 @@
       </entry>
     </enum>
 
-   <enum name="ext_workspace_capabilities_v1">
+   <enum name="ext_workspace_capabilities_v1" bitfield="true">
       <entry name="activate" value="1" summary="activate request is available"/>
       <entry name="deactivate" value="2" summary="deactivate request is available"/>
-      <entry name="remove" value="3" summary="remove request is available"/>
+      <entry name="remove" value="4" summary="remove request is available"/>
     </enum>
 
     <event name="capabilities">
@@ -311,11 +308,8 @@
         Compositors must send this event once after creation of an
         ext_workspace_handle_v1 . When the capabilities change, compositors
         must send this event again.
-
-        The capabilities are sent as an array of 32-bit unsigned integers in
-        native endianness.
       </description>
-      <arg name="capabilities" type="array" summary="array of 32-bit capabilities"/>
+      <arg name="capabilities" type="uint" summary="capabilities" enum="ext_workspace_capabilities_v1"/>
     </event>
 
     <event name="removed">
