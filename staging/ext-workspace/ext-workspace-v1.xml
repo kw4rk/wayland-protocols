@@ -113,7 +113,7 @@
 
   <interface name="ext_workspace_group_handle_v1" version="1">
     <description summary="a workspace group assigned to a set of outputs">
-      A ext_workspace_group_handle_v1 object represents a a workspace group
+      A ext_workspace_group_handle_v1 object represents a workspace group
       that is assigned a set of outputs and contains a number of workspaces.
 
       The set of outputs assigned to the workspace group is conveyed to the client via
@@ -213,7 +213,7 @@
 
   <interface name="ext_workspace_handle_v1" version="1">
     <description summary="a workspace handing a group of surfaces">
-      A ext_workspace_handle_v1 object represents a a workspace that handles a
+      A ext_workspace_handle_v1 object represents a workspace that handles a
       group of surfaces.
 
       Each workspace has a name, conveyed to the client with the name event; a
