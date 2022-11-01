@@ -29,7 +29,7 @@
     DEALINGS IN THE SOFTWARE.
   </copyright>
 
-  <interface name="xdg_wm_base" version="5">
+  <interface name="xdg_wm_base" version="6">
     <description summary="create desktop-style surfaces">
       The xdg_wm_base interface is exposed as a global object enabling clients
       to turn their wl_surfaces into windows in a desktop environment. It
@@ -117,7 +117,7 @@
     </event>
   </interface>
 
-  <interface name="xdg_positioner" version="5">
+  <interface name="xdg_positioner" version="6">
     <description summary="child surface positioner">
       The xdg_positioner provides a collection of rules for the placement of a
       child surface relative to a parent surface. Rules can be defined to ensure
@@ -401,7 +401,7 @@
     </request>
   </interface>
 
-  <interface name="xdg_surface" version="5">
+  <interface name="xdg_surface" version="6">
     <description summary="desktop user interface surface base interface">
       An interface that may be implemented by a wl_surface, for
       implementations that provide a desktop-style user interface.
@@ -482,6 +482,11 @@
 
 	If null is passed as a parent, a parent surface must be specified using
 	some other protocol, before committing the initial state.
+
+	When the bound xdg_surface version is 6 or higher, passing any non-null
+	parent surface is treated as a protocol vilation, and will result in an
+	invalid_popup_parent protocol error. To achieve equivalent semantics,
+	use "xdg_popup.set_parent" request.
 
 	See the documentation of xdg_popup for more details about what an
 	xdg_popup is and how it is used.
@@ -589,7 +594,7 @@
 
   </interface>
 
-  <interface name="xdg_toplevel" version="5">
+  <interface name="xdg_toplevel" version="6">
     <description summary="toplevel surface">
       This interface defines an xdg_surface role which allows a surface to,
       among other things, set window-like properties such as maximize,
@@ -1155,7 +1160,7 @@
     </event>
   </interface>
 
-  <interface name="xdg_popup" version="5">
+  <interface name="xdg_popup" version="6">
     <description summary="short-lived, popup surfaces for menus">
       A popup surface is a short-lived, temporary surface. It can be used to
       implement for example menus, popovers, tooltips and other similar user
@@ -1326,6 +1331,26 @@
       </description>
       <arg name="token" type="uint" summary="reposition request token"/>
     </event>
+
+    <!-- Version 6 additions -->
+
+    <request name="set_parent" since="6">
+      <description summary="set popup parent request">
+	Set the visual parent of this surface. This surface should be
+	stacked above the parent surface and all other ancestor surfaces.
+
+	The parent surface must not be one of the child surface's
+	descendants, and the parent must be different from this surface,
+	otherwise the invalid_popup_parent protocol error is raised.
+
+	The parent of an xdg_popup must be mapped before the xdg_popup
+	itself, otherwise invalid_popup_parent protocol error is raised.
+
+	The parent must be set before the first wl_surface.commit request,
+	otherwise invalid_popup_parent protocol error is raised.
+      </description>
+      <arg name="parent" type="object" interface="wl_surface"/>
+    </request>
 
   </interface>
 </protocol>
