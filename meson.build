@@ -42,6 +42,7 @@ staging_protocols = {
 	'ext-session-lock': ['v1'],
 	'fractional-scale': ['v1'],
 	'single-pixel-buffer': ['v1'],
+	'surface-invalidation': ['v1'],
 	'tearing-control': ['v1'],
 	'xdg-activation': ['v1'],
 	'xwayland-shell': ['v1'],
