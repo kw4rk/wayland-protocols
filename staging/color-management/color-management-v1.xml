@@ -438,15 +438,19 @@
   <interface name="wp_image_description_creator_params_v1" version="1">
     <description summary="holder of image description parameters">
       This type of object is used for collecting all the parameters required
-      to create a wp_image_description_v1 object. A complete set of
+      to create a wp_image_description_v1 object. A complete set of required
       parameters consists of these properties:
       - transfer characteristic function (tf)
       - chromaticities of primaries and white point
 
-      Each property must be set exactly once if the client is to create an
-      image description. The set requests verify that a property was not
-      already set. The create request verifies that they are all set.
-      There may be several alternative requests for setting each property,
+      The following properties are optional and have a well-defined default
+      if not explicitly set:
+      - mastering display primaries and white point
+
+      Each required property must be set exactly once if the client is to create
+      an image description. The set requests verify that a property was not
+      already set. The create request verifies that all required properties are
+      set. There may be several alternative requests for setting each property,
       and in that case the client must choose one of them.
 
       Once all properties have been set, the create request can be used to
@@ -526,6 +530,49 @@
 
         If primaries have already been set on this object, the protocol error
         already_set is raised.
+      </description>
+
+      <arg name="r_x" type="uint" summary="Red x * 10000"/>
+      <arg name="r_y" type="uint" summary="Red y * 10000"/>
+      <arg name="g_x" type="uint" summary="Green x * 10000"/>
+      <arg name="g_y" type="uint" summary="Green y * 10000"/>
+      <arg name="b_x" type="uint" summary="Blue x * 10000"/>
+      <arg name="b_y" type="uint" summary="Blue y * 10000"/>
+      <arg name="w_x" type="uint" summary="White x * 10000"/>
+      <arg name="w_y" type="uint" summary="White y * 10000"/>
+    </request>
+
+    <request name="set_mastering_display_primaries">
+      <description summary="mastering display primaries as chromaticity coordinates">
+        Provides the color primaries and white point of the mastering display
+        using CIE 1931 xy chromaticity coordinates. This is compatible with the
+        SMPTE ST 2086 definition of HDR static metadata.
+
+        The primaries and transfer characteristics define how an encoded pixel
+        value is converted to CIE 1931 XYZ but they do not define what
+        sub-volume of the container color volume in XYZ is meaningful for the
+        content. The mastering display primaries help defining this target color
+        volume. Compositors may use the target color volume to improve gamut
+        mapping when applicable for the chosen rendering intent.
+
+        If mastering display primaries are not explicitly set, the target
+        color volume is assumed to be equal to the primary color volume.
+
+        The target color volume can exceed the primay color volume to allow for
+        a greater color volume with an existing color space definition (for
+        example scRGB). It can be smaller than the primary color volume to
+        minimize gamut and tone mapping distances for big color spaces (HDR
+        metadata).
+
+        To make use of the entire target color volume a suitable pixel format
+        has to be chosen (e.g. floating point to exceed the primary color
+        volume, or abusing limited quantization range as with xvYCC).
+
+        Each coordinate value is multiplied by 10000 to get the argument
+        value to carry precision of 4 decimals.
+
+        If mastering display primaries have already been set on this object,
+        the protocol error already_set is raised.
       </description>
 
       <arg name="r_x" type="uint" summary="Red x * 10000"/>
