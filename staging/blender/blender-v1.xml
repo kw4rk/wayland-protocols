@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="blender_v1">
+  <copyright>
+    Copyright 2016 The Chromium Authors
+    Copyright 2017-2018 Collabora Ltd
+    Copyright 2018 NXP
+    Copyright 2023 Simon Ser
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+  </copyright>
+
+  <description summary="surface blending">
+    This protocol allows clients to have more control over alpha compositing
+    and blending of surface contents.
+
+    Warning! The protocol described in this file is currently in the
+    testing phase. Backward compatible changes may be added together with
+    the corresponding interface version bump. Backward incompatible changes
+    can only be done by creating a new major version of the extension.
+  </description>
+
+  <interface name="wp_blender_v1" version="1">
+    <description summary="surface blending">
+      This global allows clients to create wp_blend_v1 objects.
+    </description>
+
+    <enum name="error">
+      <entry name="blend_exists" value="1"
+        summary="blend object already exists for this surface"/>
+    </enum>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the blender">
+        Destroy the blender object.
+
+        This does not affect child wp_blend_v1 objects.
+      </description>
+    </request>
+
+    <request name="get_blend">
+      <description summary="create a blend object for a surface">
+        Create a blend object for a surface.
+
+        If the wl_surface already has a blend object associated, the
+        blend_exists protocol error is raised.
+      </description>
+      <arg name="id" type="new_id" interface="wp_blend_v1"
+        summary="the new blend object"/>
+      <arg name="surface" type="object" interface="wl_surface"
+        summary="the surface to associate the blend object to"/>
+    </request>
+  </interface>
+
+  <interface name="wp_blend_v1" version="1">
+    <description summary="advanced surface blending">
+      A surface extension interface for setting a blending equation and a
+      global alpha value applied to the whole surface.
+
+      When the blend object is created its blending equation is "premultiplied"
+      and its alpha value is UINT32_MAX (ie, opaque).
+
+      Use of this interface has no effect on the surface's opaque region
+      as set by wl_surface.set_opaque_region. Clients must make sure to set
+      their opaque region correctly to prevent repaint artifacts.
+
+      The blend object must be destroyed before the wl_surface, otherwise the
+      defunct protocol error is raised.
+    </description>
+
+    <enum name="error">
+      <entry name="defunct" value="1" summary="surface destroyed before blend"/>
+      <entry name="invalid_equation" value="2" summary="invalid blending equation"/>
+    </enum>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the blend object">
+        Destroy the blend object.
+
+        On the next wl_surface.commit, the blend object state is withdrawn.
+      </description>
+    </request>
+
+    <enum name="equation">
+      <description summary="blending equations">
+        Blending equations that can be used when compositing a surface.
+
+        By default, "premultiplied" is used.
+      </description>
+      <entry name="premultiplied" value="0" summary="(one, one_minus_src_alpha)"/>
+      <entry name="none" value="1" summary="(one, zero)"/>
+      <entry name="coverage" value="2" summary="(src_alpha, one_minus_src_alpha)"/>
+    </enum>
+
+    <request name="set_equation">
+      <description summary="set the blending equation">
+        Set the blending equation for compositing the surface.
+
+        If the blending equation is invalid, the invalid_equation protocol
+        error is raised.
+
+        The blending equation is double-buffered state, and will be applied on
+        the next wl_surface.commit.
+      </description>
+      <arg name="equation" type="uint" enum="equation" summary="blending equation"/>
+    </request>
+
+    <request name="set_alpha">
+      <description summary="set the alpha value">
+        Set the alpha value applied to the whole surface for compositing. This
+        alpha value is applied as an additional step after the processing of
+        per-pixel alpha values for the wl_surface.
+
+        Zero means completely transparent, UINT32_MAX means completely opaque.
+
+        The alpha value is double-buffered state, and will be applied on the
+        next wl_surface.commit.
+      </description>
+      <arg name="value" type="uint" summary="alpha value"/>
+    </request>
+  </interface>
+</protocol>

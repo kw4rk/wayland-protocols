@@ -36,6 +36,7 @@ unstable_protocols = {
 }
 
 staging_protocols = {
+	'blender': ['v1'],
 	'content-type': ['v1'],
 	'drm-lease': ['v1'],
 	'ext-idle-notify': ['v1'],
