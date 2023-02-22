@@ -773,18 +773,22 @@
     </event>
 
     <event name="primaries">
-      <description summary="primaries set for the image description">
-        This event provides the primaries that were used for the image description
+      <description summary="primaries as chromaticity coordinates">
+        Delivers the color primaries and white point using CIE 1931 xy
+        chromaticity coordinates.
+
+        Each coordinate value is multiplied by 10000 to get the argument
+        value to carry precision of 4 decimals.
       </description>
 
-      <arg name="r_x" type="uint" summary="Red x"/>
-      <arg name="r_y" type="uint" summary="Red y"/>
-      <arg name="g_x" type="uint" summary="Green x"/>
-      <arg name="g_y" type="uint" summary="Green y"/>
-      <arg name="b_x" type="uint" summary="Blue x"/>
-      <arg name="b_y" type="uint" summary="Blue y"/>
-      <arg name="w_x" type="uint" summary="White x"/>
-      <arg name="w_y" type="uint" summary="White y"/>
+      <arg name="r_x" type="uint" summary="Red x * 10000"/>
+      <arg name="r_y" type="uint" summary="Red y * 10000"/>
+      <arg name="g_x" type="uint" summary="Green x * 10000"/>
+      <arg name="g_y" type="uint" summary="Green y * 10000"/>
+      <arg name="b_x" type="uint" summary="Blue x * 10000"/>
+      <arg name="b_y" type="uint" summary="Blue y * 10000"/>
+      <arg name="w_x" type="uint" summary="White x * 10000"/>
+      <arg name="w_y" type="uint" summary="White y * 10000"/>
     </event>
 
     <event name="primaries_cicp">
