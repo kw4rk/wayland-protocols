@@ -617,18 +617,19 @@
   </interface>
 
   <interface name="wp_image_description_v1" version="1">
-    <description summary="image description">
-      image description that can be attached to a surface
-      (wp_color_management_surface_v1.set_image_description) and provide
-      information regarding the type of ICC profile, color primaries,
-      cicp primaries, and gamma that are being associated with the surface.
+    <description summary="Colorimetric image description">
+      An image description carries information about the color encoding used
+      on a surface when attached to a wl_surface via
+      wp_color_management_surface_v1.set_image_description. A compositor can
+      use this information to decode pixel values into colorimetrically
+      meaningful quantities.
 
-      Once created and regardless of how it was created, a wp_image_description_v1
-      object always refers to one fixed image description.
-
-      The client can create a wp_image_description_v1 object with
-      wp_color_manager_v1 requests or from an output by calling
-      wp_color_management_output_v1.get_image_description.
+      A client can create a wp_image_description_v1 object with any of the
+      wp_image_description_factory_* global interfaces that the compositor
+      happens to support. It is also possible to get an image description
+      from a wp_color_management_output_v1 object for the output's current
+      color characteristics, and from a wp_color_management_surface_v1 for
+      the compositor's preferred color characteristics for that surface.
 
       Other extensions may define more wp_image_description_v1 factory interfaces.
       Those interfaces must explicitly specify the interface version for the
@@ -646,7 +647,11 @@
       image description object is usable, a client should issue a
       wl_display.sync. If no 'failed' event comes before the sync reply,
       the object is usable and cannot become "failed".
-  </description>
+
+      Once created and regardless of how it was created, a wp_image_description_v1
+      object always refers to one fixed image description. It cannot change
+      after creation.
+    </description>
 
     <enum name="error">
       <description summary="protocol errors"/>
