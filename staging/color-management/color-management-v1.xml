@@ -485,14 +485,14 @@
       <arg name="tf_code" type="uint" summary="TransferCharacteristics code point"/>
     </request>
 
-    <request name="set_tf_gamma">
+    <request name="set_tf_power">
       <description summary="transfer characteristic as a power curve">
-        Sets the transfer characteristic to a power curve with the given
-        exponent. This curve represents the conversion from electrical to
-        optical pixel or color values.
+        Sets the color component transfer characteristic to a power curve
+        with the given exponent. This curve represents the conversion from
+        electrical to optical pixel or color values.
 
         The curve exponent shall be multiplied by 10000 to get the argument
-        eexp value to carry precision of 4 decimals.
+        eexp value to carry the precision of 4 decimals.
 
         The curve exponent must be at least 1.0 and at most 10.0. Otherwise
         the protocol error invalid_tf is raised.
@@ -802,14 +802,20 @@
       <arg name="tf_code" type="uint" summary="H.273 TransferCharacteristics code"/>
     </event>
 
-    <event name="gamma">
-      <description summary="return gamma set for the image description">
+    <event name="tf_power">
+      <description summary="transfer characteristic as a power curve">
         This is an information event, see get_information.
 
-        This event provides the gamma type that was set
+        The color component transfer characteristic of this image description
+        is a pure power curve. This event provides the exponent of the power
+        function. This curve represents the conversion from electrical to
+        optical pixel or color values.
+
+        The curve exponent has been multiplied by 10000 to get the argument
+        eexp value to carry the precision of 4 decimals.
       </description>
 
-      <arg name="gamma" type="uint" summary="The gamma type (2.2, 2.4 etc)"/>
+      <arg name="eexp" type="uint" summary="the exponent * 10000"/>
     </event>
 
     <request name="destroy" type="destructor">
