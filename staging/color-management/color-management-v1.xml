@@ -781,23 +781,25 @@
     </event>
 
     <event name="primaries_cicp">
-      <description summary="return CICP ID set for the image description">
+      <description summary="H.273 ColourPrimaries code">
         This is an information event, see get_information.
 
-        This event provides the CICP ID that was used for the primaries.
+        This event provides the H.273 ColourPrimaries code matching the
+        primaries and white point of this image description.
       </description>
 
-      <arg name="cicp_color_primaries" type="uint" summary="CICP ID"/>
+      <arg name="primaries_code" type="uint" summary="H.273 ColourPrimaries code"/>
     </event>
 
     <event name="tf_cicp">
-      <description summary="return cicp tf set for the image description">
+      <description summary="H.273 TransferCharacteristics code">
         This is an information event, see get_information.
 
-        This event provides the cicp TF that was set
+        This event provides the H.273 TransferCharacteristics code matching
+        the transfer characteristics of this image description.
       </description>
 
-      <arg name="tf_cicp" type="uint" summary="cicp transfer function"/>
+      <arg name="tf_code" type="uint" summary="H.273 TransferCharacteristics code"/>
     </event>
 
     <event name="gamma">
