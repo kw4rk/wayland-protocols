@@ -738,18 +738,20 @@
     </request>
 
     <event name="icc_file">
-      <description summary="ICC profile describing the color space">
-        The icc argument provides a file descriptor to the client which can be
-        memory-mapped to provide the ICC profile describing the color space.
-        The fd must be mapped with MAP_PRIVATE and read-only by the client.
+      <description summary="ICC profile matching the image description">
+        The icc argument provides a file descriptor to the client which may be
+        memory-mapped to provide the ICC profile matching the image description.
+        The fd is read-only, and if mapped then it must be mapped with
+        MAP_PRIVATE by the client.
 
-        Compositors should send this event always when information is requested.
-        ICC profiles provide the common foundation which all color managed
-        clients may rely on.
+        The ICC profile version and other details are determined by the
+        compositor. There is no provision for a client to ask for a specific
+        kind of a profile.
       </description>
 
       <arg name="icc" type="fd" summary="ICC profile file descriptor"/>
       <arg name="icc_size" type="uint" summary="ICC profile size, in bytes"/>
+      <!-- Offset always 0, compositor must not expose unnecessary data. -->
     </event>
 
     <event name="primaries">
