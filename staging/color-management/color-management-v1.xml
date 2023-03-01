@@ -660,6 +660,16 @@
       after creation.
     </description>
 
+    <request name="destroy" type="destructor">
+      <description summary="destroy the image description">
+        Destroy this object. It is safe to destroy a 'failed' object.
+
+        Destroying a wp_image_description_v1 object has no side-effects, not
+        even if a wp_color_management_surface_v1.set_image_description has
+        not yet been followed by a wl_surface.commit.
+      </description>
+    </request>
+
     <enum name="error">
       <description summary="protocol errors"/>
 
@@ -817,13 +827,5 @@
 
       <arg name="eexp" type="uint" summary="the exponent * 10000"/>
     </event>
-
-    <request name="destroy" type="destructor">
-      <description summary="destroy the image description">
-        Destroy the wp_image_description_v1 object.
-        Destroying the wp_image_description_v1 which is active on a surface or an
-        output does not change the image description of those objects.
-      </description>
-    </request>
   </interface>
 </protocol>
