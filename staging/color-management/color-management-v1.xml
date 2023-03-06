@@ -229,6 +229,12 @@
         description and rendering intent are double-buffered state, see
         wl_surface.commit.
 
+        Image description objects can be created through the various global
+        factory interfaces, from outputs, or by compositor suggestion via the
+        get_preferred request. It is the client's responsibility to understand
+        the image description object it sets on a surface, and to provide
+        content that matches that image description.
+
         A rendering intent provides the client's preference on how content
         colors should be mapped to each output. The render_intent value must
         be one advertised by the compositor with
@@ -238,13 +244,6 @@
         By default, a surface does not have an associated image description
         nor a rendering intent. The handling of color on such surfaces is
         compositor implementation defined.
-
-        If the image description of the surface matches the image description of an output
-        it is shown on the performance and color accuracy might improve. To find
-        those image descriptions the client can listen to the preferred_image_description or
-        the wl_surface.enter/leave events. This improvement may require using
-        the image description object created by
-        wp_color_management_output_v1.get_image_description.
       </description>
 
       <arg name="image_description" type="object" interface="wp_image_description_v1"/>
