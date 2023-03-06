@@ -382,8 +382,8 @@
         will immediately send the wp_image_description_v1.failed event with
         the 'unsupported' cause.
 
-        See the specification from International Color Consortium for more
-        details about ICC profiles, also known as ISO 15076-1:2010.
+        See the International Color Consortium specification ICC.1:2022 for more
+        details about ICC profiles.
       </description>
 
       <arg name="icc_profile" type="fd" summary="ICC profile"/>
