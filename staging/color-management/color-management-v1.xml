@@ -235,8 +235,9 @@
         wp_color_manager_v1.render_intent event, otherwise the protocol error
         render_intent is raised.
 
-        By default, a surface is assumed to have the sRGB color space and an
-        arbitrary render intent.
+        By default, a surface does not have an associated image description
+        nor a rendering intent. The handling of color on such surfaces is
+        compositor implementation defined.
 
         If the image description of the surface matches the image description of an output
         it is shown on the performance and color accuracy might improve. To find
