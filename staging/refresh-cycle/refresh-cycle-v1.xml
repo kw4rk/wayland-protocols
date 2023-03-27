@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="refresh_cycle_v1">
+  <copyright>
+    Copyright © 2023 Red Hat, Inc.
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice (including the next
+    paragraph) shall be included in all copies or substantial portions of the
+    Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+  </copyright>
+
+  <description summary="Protocol for requesting refresh cycle information">
+    <!-- TODO -->
+  </description>
+
+  <interface name="wp_refresh_cycle_manager_v1" version="1">
+    <description summary="refresh cycle factory">
+      This global is a wp_refresh_cycle_v1 factory.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the manager">
+        Destroy the manager object.
+
+        Existing objects created through this interface remain valid.
+      </description>
+    </request>
+
+    <request name="create">
+      <description summary="create a refresh cycle object for a surface">
+        Create a wp_refresh_cycle_v1 object tied to a wl_surface.
+      </description>
+      <arg name="refresh_cycle" type="new_id" interface="wp_refresh_cycle_v1"/>
+      <arg name="surface" type="object" interface="wl_surface"/>
+    </request>
+  </interface>
+
+  <interface name="wp_refresh_cycle_v1" version="1">
+    <description summary="">
+      <!-- TODO -->
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the refresh cycle object">
+        Destroy the refresh cycle object.
+      </description>
+    </request>
+
+    <enum name="refresh_state">
+      <description summary="">
+        Describes when and how to expect latching events.
+      </description>
+      <entry name="none" value="0">
+        <description summary="no refresh cycle">
+          Indicates that the output does not have a concept of vertical retrace
+          or a refresh cycle, or that the output device is self-refreshing
+          without a way to query the refresh count.
+
+          No latching events are send in this state.
+        </description>
+      </entry>
+      <entry name="active" value="1">
+        <description summary="active refresh cycle">
+          Indicates that latching events are send.
+        </description>
+      </entry>
+      <entry name="degraded" value="2">
+        <description summary="degraded refresh cycle">
+          Indicates that latching events are send but might be unreliable or
+          erratic.
+        </description>
+      </entry>
+      <entry name="suspended" value="3">
+        <description summary="refresh cycles are suspended">
+          Indicates that the surface is hidden or otherwise obstructed.
+
+          No latching events are send in this state.
+        </description>
+      </entry>
+    </enum>
+
+    <enum name="refresh_kind">
+      <description summary="">
+        Describes if the refresh rate is fixed or variable and if the variable
+        refresh rate is driven by this surface or not.
+      </description>
+      <entry name="frr" value="0">
+        <description summary="Fixed Refresh Rate">
+          The refresh rate is fixed and latching events occur in regular
+          intervals.
+        </description>
+      </entry>
+      <entry name="vrr_active" value="1">
+        <description summary="Active Variable Refresh Rate">
+          The refresh rate is variable and driven by this surface.
+        </description>
+      </entry>
+      <entry name="vrr_passive" value="2">
+        <description summary="Passive Variable Refresh Rate">
+          The refresh rate is variable and not driven by this surface. Latching
+          events can occur in erratic intervals.
+        </description>
+      </entry>
+    </enum>
+
+    <enum name="throttle_hint">
+      <description summary="">
+        <!-- TODO -->
+      </description>
+      <entry name="full" value="0">
+        <description summary="">
+          <!-- TODO -->
+        </description>
+      </entry>
+      <entry name="throttled" value="1">
+        <description summary="">
+          <!-- TODO -->
+        </description>
+      </entry>
+    </enum>
+
+    <event name="state">
+      <description summary="the refresh cycle state">
+        The refresh cycle state.
+
+        frr, vrr_min and vrr_max must be zero if the refresh_state is none.
+        vrr_min and vrr_max must be zero if refresh_kind is frr.
+      </description>
+      <arg name="refresh_state" type="uint" enum="refresh_state"
+           summary="the refresh state"/>
+      <arg name="refresh_kind" type="uint" enum="refresh_kind"
+           summary="the refresh kind"/>
+      <arg name="frr" type="uint"
+           summary="Fixed Refresh Rate cycle in nanoseconds"/>
+      <arg name="vrr_min" type="uint"
+           summary="minimum Variable Refresh Rate cycle in nanoseconds"/>
+      <arg name="vrr_max" type="uint"
+           summary="maximum Variable Refresh Rate cycle in nanoseconds"/>
+      <arg name="throttle" type="uint" enum="throttle_hint"
+           summary="the throttle hint"/>
+    </event>
+
+    <event name="sync_output">
+      <description summary="latching synchronized to this output">
+        As latching can be synchronized to only one output at a
+        time, this event tells which output it was. This event is only
+        sent prior to the latching event.
+
+        As clients may bind to the same global wl_output multiple
+        times, this event is sent for each bound instance that matches
+        the synchronized output. If a client has not bound to the
+        right wl_output global at all, this event is not sent.
+      </description>
+      <arg name="output" type="object" interface="wl_output"
+           summary="latching output"/>
+    </event>
+
+    <event name="latching">
+      <description summary="">
+        The latching event is sent no earlier than the compositor deciding which
+        commits will be chosen for the next presentation, but as close to it as
+        possible.
+
+        The exact time of this event is recorded in the timestamp (tv_sec_hi/lo,
+        tv_nsec).
+
+        The 64-bit value combined from seq_hi and seq_lo is the value of the
+        output's vertical retrace counter of the following presentation. This
+        value must be compatible with the seq_hi and seq_lo of the
+        presentation-time protocol.
+
+        vrr_min and vrr_max describe the possible range in which the latching
+        event could have happened. For FRR those values are zero.
+      </description>
+      <arg name="tv_sec_hi" type="uint"
+           summary="high 32 bits of the seconds part of the latching timestamp"/>
+      <arg name="tv_sec_lo" type="uint"
+           summary="low 32 bits of the seconds part of the latching timestamp"/>
+      <arg name="tv_nsec" type="uint"
+           summary="nanoseconds part of the latching timestamp"/>
+      <arg name="seq_hi" type="uint"
+           summary="high 32 bits of refresh counter"/>
+      <arg name="seq_lo" type="uint"
+           summary="low 32 bits of refresh counter"/>
+      <arg name="vrr_min" type="uint"
+           summary="how many nanoseconds the event could have happened earlier"/>
+      <arg name="vrr_max" type="uint"
+           summary="how many nanoseconds the event could have happened later"/>
+    </event>
+
+  </interface>
+</protocol>
