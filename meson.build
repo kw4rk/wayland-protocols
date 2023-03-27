@@ -45,6 +45,7 @@ staging_protocols = {
 	'tearing-control': ['v1'],
 	'xdg-activation': ['v1'],
 	'xwayland-shell': ['v1'],
+	'secure-display':['v1'],
 }
 
 protocol_files = []
