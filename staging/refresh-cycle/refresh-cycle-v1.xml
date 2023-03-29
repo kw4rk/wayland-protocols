@@ -187,19 +187,15 @@
            summary="the throttle hint"/>
     </event>
 
-    <event name="sync_output">
-      <description summary="latching synchronized to this output">
-        As latching can be synchronized to only one output at a
-        time, this event tells which output it was. This event is only
-        sent prior to the latching event.
+    <event name="invalidate">
+      <description summary="invalidate previous latching events">
+        The latching events sent prior to this event should not be used to
+        predict any future events.
 
-        As clients may bind to the same global wl_output multiple
-        times, this event is sent for each bound instance that matches
-        the synchronized output. If a client has not bound to the
-        right wl_output global at all, this event is not sent.
+        This is typically sent when the surface changes the output or the mode
+        of the current output changes, making the previous latching events
+        invalid.
       </description>
-      <arg name="output" type="object" interface="wl_output"
-           summary="latching output"/>
     </event>
 
     <event name="latching">
