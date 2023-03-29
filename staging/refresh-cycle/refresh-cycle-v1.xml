@@ -70,17 +70,17 @@
           or a refresh cycle, or that the output device is self-refreshing
           without a way to query the refresh count.
 
-          No latching events are send in this state.
+          No latching events are sent in this state.
         </description>
       </entry>
       <entry name="active" value="1">
         <description summary="active refresh cycle">
-          Indicates that latching events are send.
+          Indicates that latching events are sent.
         </description>
       </entry>
       <entry name="degraded" value="2">
         <description summary="degraded refresh cycle">
-          Indicates that latching events are send but might be unreliable or
+          Indicates that latching events are sent but might be unreliable or
           erratic.
         </description>
       </entry>
@@ -88,7 +88,7 @@
         <description summary="refresh cycles are suspended">
           Indicates that the surface is hidden or otherwise obstructed.
 
-          No latching events are send in this state.
+          No latching events are sent in this state.
         </description>
       </entry>
     </enum>
@@ -183,8 +183,8 @@
         value must be compatible with the seq_hi and seq_lo of the
         presentation-time protocol.
 
-        vrr_min and vrr_max describe the possible range in which the latching
-        event could have happened. For FRR those values are zero.
+        The vrr_min and vrr_max arguments describe the possible range in which
+        the latching event could have happened. For FRR those values are zero.
       </description>
       <arg name="tv_sec_hi" type="uint"
            summary="high 32 bits of the seconds part of the latching timestamp"/>
