@@ -204,8 +204,15 @@
         commits will be chosen for the next presentation, but as close to it as
         possible.
 
-        The exact time of this event is recorded in the timestamp (tv_sec_hi/lo,
-        tv_nsec). For the interpretation of the timestamp, see
+        The exact time of this event is recorded in the commit latching
+        timestamp (commit_tv_sec_hi/lo, commit_tv_nsec).
+
+        The buffer latching timestamp (buffer_tv_sec_hi/lo, buffer_tv_nsec)
+        describes when all the fences of buffers attached to surfaces of a
+        commit must be signaled in order to get presented on the refresh cycle
+        of this latching event.
+
+        For the interpretation of the timestamps, see
         wp_refresh_cycle_manager.clock_id event.
 
         The 64-bit value combined from seq_hi and seq_lo is the value of the
@@ -216,12 +223,18 @@
         The vrr_min and vrr_max arguments describe the possible range in which
         the latching event could have happened. For FRR those values are zero.
       </description>
-      <arg name="tv_sec_hi" type="uint"
-           summary="high 32 bits of the seconds part of the latching timestamp"/>
-      <arg name="tv_sec_lo" type="uint"
-           summary="low 32 bits of the seconds part of the latching timestamp"/>
-      <arg name="tv_nsec" type="uint"
-           summary="nanoseconds part of the latching timestamp"/>
+      <arg name="commit_tv_sec_hi" type="uint"
+           summary="high 32 bits of the seconds part of the commit latching timestamp"/>
+      <arg name="commit_tv_sec_lo" type="uint"
+           summary="low 32 bits of the seconds part of the commit latching timestamp"/>
+      <arg name="commit_tv_nsec" type="uint"
+           summary="nanoseconds part of the commit latching timestamp"/>
+      <arg name="buffer_tv_sec_hi" type="uint"
+           summary="high 32 bits of the seconds part of the buffer latching timestamp"/>
+      <arg name="buffer_tv_sec_lo" type="uint"
+           summary="low 32 bits of the seconds part of the buffer latching timestamp"/>
+      <arg name="buffer_tv_nsec" type="uint"
+           summary="nanoseconds part of the buffer latching timestamp"/>
       <arg name="seq_hi" type="uint"
            summary="high 32 bits of refresh counter"/>
       <arg name="seq_lo" type="uint"
