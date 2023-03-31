@@ -135,9 +135,9 @@
         refresh_cycle interface.
       </description>
       <arg name="surface" type="object" interface="wl_surface"
-           summary="target surface"/>"
+           summary="target surface"/>
       <arg name="refresh_cycle" type="new_id" interface="wp_refresh_cycle_v1"
-           summary="new refresh cycle object"/>"
+           summary="new refresh cycle object"/>
     </request>
 
   </interface>
