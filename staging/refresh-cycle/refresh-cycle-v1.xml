@@ -126,26 +126,23 @@
       </entry>
     </enum>
 
-    <enum name="refresh_kind">
+    <enum name="latching_kind">
       <description summary="">
-        Describes if the refresh rate is fixed or variable and if the variable
-        refresh rate is driven by this surface or not.
+        Describes how to interpret latching events.
       </description>
-      <entry name="frr" value="0">
-        <description summary="Fixed Refresh Rate">
-          The refresh rate is fixed and latching events occur in regular
-          intervals.
+      <entry name="regular" value="0">
+        <description summary="">
+          The latching events occur in relatively regular intervals. If the
+          frequency or phase changes suddenly an invalidate event will be sent.
+          The next predicted latching event will not deviate from the actual
+          next latching event by a lot.
         </description>
       </entry>
-      <entry name="vrr_active" value="1">
-        <description summary="Active Variable Refresh Rate">
-          The refresh rate is variable and driven by this surface.
-        </description>
-      </entry>
-      <entry name="vrr_passive" value="2">
-        <description summary="Passive Variable Refresh Rate">
-          The refresh rate is variable and not driven by this surface. Latching
-          events can occur in erratic intervals.
+      <entry name="erratic" value="1">
+        <description summary="">
+          The latching events occur in erratic intervals. The next predicted
+          latching event is set to zero. It is not advisable to try and predict
+          the next latching event.
         </description>
       </entry>
     </enum>
@@ -153,20 +150,11 @@
     <event name="state">
       <description summary="the refresh cycle state">
         The refresh cycle state.
-
-        frr, vrr_min and vrr_max must be zero if the refresh_state is none.
-        vrr_min and vrr_max must be zero if refresh_kind is frr.
       </description>
       <arg name="refresh_state" type="uint" enum="refresh_state"
            summary="the refresh state"/>
-      <arg name="refresh_kind" type="uint" enum="refresh_kind"
-           summary="the refresh kind"/>
-      <arg name="frr" type="uint"
-           summary="Fixed Refresh Rate cycle in nanoseconds"/>
-      <arg name="vrr_min" type="uint"
-           summary="minimum Variable Refresh Rate cycle in nanoseconds"/>
-      <arg name="vrr_max" type="uint"
-           summary="maximum Variable Refresh Rate cycle in nanoseconds"/>
+      <arg name="latching_kind" type="uint" enum="latching_kind"
+           summary="the latching kind"/>
     </event>
 
     <event name="invalidate">
@@ -201,9 +189,6 @@
         output's vertical retrace counter of the following presentation. This
         value must be compatible with the seq_hi and seq_lo of the
         presentation-time protocol.
-
-        The vrr_min and vrr_max arguments describe the possible range in which
-        the latching event could have happened. For FRR those values are zero.
       </description>
       <arg name="commit_tv_sec_hi" type="uint"
            summary="high 32 bits of the seconds part of the commit latching timestamp"/>
@@ -221,10 +206,6 @@
            summary="high 32 bits of refresh counter"/>
       <arg name="seq_lo" type="uint"
            summary="low 32 bits of refresh counter"/>
-      <arg name="vrr_min" type="uint"
-           summary="how many nanoseconds the event could have happened earlier"/>
-      <arg name="vrr_max" type="uint"
-           summary="how many nanoseconds the event could have happened later"/>
     </event>
 
   </interface>
