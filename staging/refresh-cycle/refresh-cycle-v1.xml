@@ -150,22 +150,6 @@
       </entry>
     </enum>
 
-    <enum name="throttle_hint">
-      <description summary="">
-        <!-- TODO -->
-      </description>
-      <entry name="full" value="0">
-        <description summary="">
-          <!-- TODO -->
-        </description>
-      </entry>
-      <entry name="throttled" value="1">
-        <description summary="">
-          <!-- TODO -->
-        </description>
-      </entry>
-    </enum>
-
     <event name="state">
       <description summary="the refresh cycle state">
         The refresh cycle state.
@@ -183,8 +167,6 @@
            summary="minimum Variable Refresh Rate cycle in nanoseconds"/>
       <arg name="vrr_max" type="uint"
            summary="maximum Variable Refresh Rate cycle in nanoseconds"/>
-      <arg name="throttle" type="uint" enum="throttle_hint"
-           summary="the throttle hint"/>
     </event>
 
     <event name="invalidate">
