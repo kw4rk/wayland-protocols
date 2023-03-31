@@ -4,6 +4,7 @@
 
   <copyright>
     Copyright © 2013-2014 Collabora, Ltd.
+    Copyright © 2023 Red Hat, Inc.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -25,7 +26,7 @@
     DEALINGS IN THE SOFTWARE.
   </copyright>
 
-  <interface name="wp_presentation" version="1">
+  <interface name="wp_presentation" version="2">
     <description summary="timed presentation related wl_surface requests">
 
 <!-- Introduction -->
@@ -121,6 +122,23 @@
       </description>
       <arg name="clk_id" type="uint" summary="platform clock identifier"/>
     </event>
+
+    <request name="refresh_cycle" since="2">
+      <description summary="request refresh cycle information">
+        Request refresh cycle information for the given surface. This
+        creates a new refresh_cycle object, which will deliver the
+        refresh cycle information continuously. If multiple refresh
+        cycle objects are created for the same surface, they will all
+        deliver the same information.
+
+        For details on what information is returned, see the
+        refresh_cycle interface.
+      </description>
+      <arg name="surface" type="object" interface="wl_surface"
+           summary="target surface"/>"
+      <arg name="refresh_cycle" type="new_id" interface="wp_refresh_cycle_v1"
+           summary="new refresh cycle object"/>"
+    </request>
 
   </interface>
 
@@ -260,6 +278,134 @@
       <description summary="the content update was not displayed">
         The content update was never displayed to the user.
       </description>
+    </event>
+  </interface>
+
+  <interface name="wp_refresh_cycle_v1" version="2">
+    <description summary="">
+      <!-- TODO -->
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the refresh cycle object">
+        Destroy the refresh cycle object.
+      </description>
+    </request>
+
+    <enum name="refresh_state">
+      <description summary="">
+        Describes when and how to expect latching events.
+      </description>
+      <entry name="none" value="0">
+        <description summary="no refresh cycle">
+          Indicates that the output does not have a concept of vertical
+          retrace or a refresh cycle, or that the output device is
+          self-refreshing without a way to query the refresh count.
+
+          No latching events are sent in this state.
+        </description>
+      </entry>
+      <entry name="active" value="1">
+        <description summary="active refresh cycle">
+          Indicates that latching events are sent.
+        </description>
+      </entry>
+      <entry name="degraded" value="2">
+        <description summary="degraded refresh cycle">
+          Indicates that latching events are sent but might be
+          unreliable or erratic.
+        </description>
+      </entry>
+      <entry name="suspended" value="3">
+        <description summary="refresh cycles are suspended">
+          Indicates that the surface is hidden or otherwise obstructed.
+
+          No latching events are sent in this state.
+        </description>
+      </entry>
+    </enum>
+
+    <enum name="latching_kind">
+      <description summary="">
+        Describes how to interpret latching events.
+      </description>
+      <entry name="regular" value="0">
+        <description summary="">
+          The latching events occur in relatively regular intervals.
+          If the frequency or phase changes suddenly an invalidate
+          event will be sent. The next predicted latching event will
+          not deviate from the actual next latching event by a lot.
+        </description>
+      </entry>
+      <entry name="erratic" value="1">
+        <description summary="">
+          The latching events occur in erratic intervals. The next
+          predicted latching event is set to zero. It is not advisable
+          to try and predict the next latching event.
+        </description>
+      </entry>
+    </enum>
+
+    <event name="state">
+      <description summary="the refresh cycle state">
+        The refresh cycle state.
+      </description>
+      <arg name="refresh_state" type="uint" enum="refresh_state"
+           summary="the refresh state"/>
+      <arg name="latching_kind" type="uint" enum="latching_kind"
+           summary="the latching kind"/>
+    </event>
+
+    <event name="invalidate">
+      <description summary="invalidate previous latching events">
+        The latching events sent prior to this event should not be used
+        to predict any future events. The last compositor prediction of
+        the next latching event is likely going to be wrong.
+
+        This is typically sent when the surface changes the output or
+        the mode of the current output changes, making the previous
+        latching events invalid.
+      </description>
+    </event>
+
+    <event name="latching">
+      <description summary="">
+        The latching event is sent no earlier than the compositor
+        deciding which commits will be chosen for the next
+        presentation, but as close to it as possible.
+
+        The exact time of this event is recorded in the commit latching
+        timestamp (commit_tv_sec_hi/lo, commit_tv_nsec).
+
+        The buffer latching timestamp (buffer_tv_sec_hi/lo,
+        buffer_tv_nsec) describes when all the fences of buffers
+        attached to surfaces of a commit must be signaled in order to
+        get presented on the refresh cycle of this latching event.
+
+        For the interpretation of the timestamps, see
+        presentation.clock_id.
+
+        The 64-bit value combined from seq_hi and seq_lo is the value
+        of the output's vertical retrace counter of the following
+        presentation. This value is compatible with seq_hi and seq_lo
+        from presentation_feedback.presented.
+      </description>
+      <arg name="commit_tv_sec_hi" type="uint"
+           summary="high 32 bits of the seconds part of the commit latching timestamp"/>
+      <arg name="commit_tv_sec_lo" type="uint"
+           summary="low 32 bits of the seconds part of the commit latching timestamp"/>
+      <arg name="commit_tv_nsec" type="uint"
+           summary="nanoseconds part of the commit latching timestamp"/>
+      <arg name="buffer_tv_sec_hi" type="uint"
+           summary="high 32 bits of the seconds part of the buffer latching timestamp"/>
+      <arg name="buffer_tv_sec_lo" type="uint"
+           summary="low 32 bits of the seconds part of the buffer latching timestamp"/>
+      <arg name="buffer_tv_nsec" type="uint"
+           summary="nanoseconds part of the buffer latching timestamp"/>
+      <arg name="seq_hi" type="uint"
+           summary="high 32 bits of refresh counter"/>
+      <arg name="seq_lo" type="uint"
+           summary="low 32 bits of refresh counter"/>
     </event>
   </interface>
 
