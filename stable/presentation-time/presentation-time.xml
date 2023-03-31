@@ -136,7 +136,7 @@
       </description>
       <arg name="surface" type="object" interface="wl_surface"
            summary="target surface"/>
-      <arg name="refresh_cycle" type="new_id" interface="wp_refresh_cycle_v1"
+      <arg name="refresh_cycle" type="new_id" interface="wp_refresh_cycle"
            summary="new refresh cycle object"/>
     </request>
 
@@ -281,7 +281,7 @@
     </event>
   </interface>
 
-  <interface name="wp_refresh_cycle_v1" version="2">
+  <interface name="wp_refresh_cycle" version="2">
     <description summary="">
       <!-- TODO -->
     </description>
