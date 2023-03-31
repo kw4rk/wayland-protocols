@@ -406,6 +406,10 @@
            summary="high 32 bits of refresh counter"/>
       <arg name="seq_lo" type="uint"
            summary="low 32 bits of refresh counter"/>
+      <arg name="next_commit" type="uint"
+           summary="prediction of the next commit latching in nanoseconds"/>
+      <arg name="next_buffer" type="uint"
+           summary="prediction of the next buffer latching in nanoseconds"/>
     </event>
   </interface>
 
