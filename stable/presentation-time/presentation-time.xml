@@ -370,6 +370,13 @@
         about the refresh cycle duration. See the enum description for
         details of each kind.
 
+        The ramp_up and ramp_down arguments describe how much the
+        duration of the refresh cycle can increase and decrease per
+        refresh cycle. The argument is zero if there is no restriction
+        on the increase or decrease per cycle. The refresh cycle can
+        never be decreased below duration_min and can never be
+        increased beyond duration_max.
+
         This event indicates a discontinuity. See
         refresh_cycle.latching_flags for more information.
 
@@ -381,9 +388,13 @@
       <arg name="refresh_kind" type="uint" enum="refresh_kind"
            summary="the refresh kind"/>
       <arg name="duration_min" type="uint"
-           summary="the minimum duration of a refresh cycle"/>
+           summary="the minimum duration of a refresh cycle in nanoseconds"/>
       <arg name="duration_max" type="uint"
-           summary="the maximum duration of a refresh cycle"/>
+           summary="the maximum duration of a refresh cycle in nanoseconds"/>
+      <arg name="ramp_up" type="uint"
+           summary="the maximum increase of the duration per refresh cycle in nanoseconds"/>
+      <arg name="ramp_down" type="uint"
+           summary="the maximum decrease of the duration per refresh cycle in nanoseconds"/>
     </event>
 
     <enum name="latching_flags" bitfield="true">
