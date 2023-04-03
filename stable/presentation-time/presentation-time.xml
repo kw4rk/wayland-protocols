@@ -332,20 +332,19 @@
       <entry name="regular" value="0">
         <description summary="regular refresh cycle">
           The refresh cycle has a relatively constant duration. The
-          duration_min and duration_max arguments are equal and
-          describe refresh cycle duration and can be used to predict
-          future latching events.
+          duration_min and duration_max arguments are equal and can be
+          used to predict future latching events. ramp_up and ramp_down
+          are zero.
         </description>
       </entry>
       <entry name="erratic" value="1">
         <description summary="erratic refresh cycle">
-          The refresh cycle duration is erratic. The duration_min and
-          duration_max arguments are set to zero and can not be used to
-          predict future latching events.
+          The refresh cycle duration is erratic. duration_min,
+          duration_max, ramp_up and down are set to zero and can not be
+          used to predict future latching events.
 
           The refresh cycle is always discontinuous and the
-          discontinuity flag in refresh_cycle.latching is always set in
-          latching events.
+          discontinuity flag in the latching event is always set.
         </description>
       </entry>
     </enum>
@@ -377,8 +376,8 @@
         never be decreased below duration_min and can never be
         increased beyond duration_max.
 
-        This event indicates a discontinuity. See
-        refresh_cycle.latching_flags for more information.
+        This event indicates a discontinuity and the discontinuity flag
+        in the latching event is set.
 
         The compositor sends this event when the client binds to the
         refresh_cycle interface.
