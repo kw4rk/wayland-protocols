@@ -293,7 +293,7 @@
     </request>
 
     <enum name="refresh_state">
-      <description summary="">
+      <description summary="refresh state">
         Describes if the surface has a refresh cycle, sends latching
         events and processes content updates.
       </description>
@@ -326,11 +326,11 @@
     </enum>
 
     <enum name="refresh_kind">
-      <description summary="">
+      <description summary="refresh kind">
         Describes the refresh cycle kind of a surface.
       </description>
       <entry name="regular" value="0">
-        <description summary="">
+        <description summary="regular refresh cycle">
           The refresh cycle has a relatively constant duration. The
           duration_min and duration_max arguments are equal and
           describe refresh cycle duration and can be used to predict
@@ -338,7 +338,7 @@
         </description>
       </entry>
       <entry name="erratic" value="1">
-        <description summary="">
+        <description summary="erratic refresh cycle">
           The refresh cycle duration is erratic. The duration_min and
           duration_max arguments are set to zero and can not be used to
           predict future latching events.
@@ -415,7 +415,7 @@
     </enum>
 
     <event name="latching">
-      <description summary="">
+      <description summary="latching event">
         The latching event is sent no earlier than the compositor
         deciding which commits will be chosen for the next
         presentation, but as close to it as possible.
