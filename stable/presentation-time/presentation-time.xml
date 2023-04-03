@@ -383,7 +383,7 @@
         The compositor sends this event when the client binds to the
         refresh_cycle interface.
       </description>
-      <arg name="refresh_shtate" type="uint" enum="refresh_state"
+      <arg name="refresh_state" type="uint" enum="refresh_state"
            summary="the refresh state"/>
       <arg name="refresh_kind" type="uint" enum="refresh_kind"
            summary="the refresh kind"/>
