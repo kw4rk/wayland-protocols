@@ -19,8 +19,8 @@ variables:
 .debian:
   variables:
     FDO_DISTRIBUTION_VERSION: bullseye
-    FDO_DISTRIBUTION_PACKAGES: 'build-essential pkg-config meson git ca-certificates libffi-dev libexpat1-dev libxml2-dev'
-    FDO_DISTRIBUTION_TAG: '2022-01-19.0'
+    FDO_DISTRIBUTION_PACKAGES: 'build-essential pkg-config git ca-certificates libffi-dev libexpat1-dev libxml2-dev'
+    FDO_DISTRIBUTION_TAG: '2023-03-30.0'
     FDO_DISTRIBUTION_EXEC: 'env FDO_CI_CONCURRENT=${FDO_CI_CONCURRENT} ./.gitlab-ci/debian-install.sh'
 
 check-commit:
