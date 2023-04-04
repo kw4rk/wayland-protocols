@@ -376,8 +376,16 @@
         never be decreased below duration_min and can never be
         increased beyond duration_max.
 
+        The buffer_latching argument describes when the buffer latching
+        of a refresh cycle happens relative to the commit latching. See
+        the latching event for more information.
+
+        The presentation argument describes when the presentation of a
+        refresh cycle happens relative to the commit latching. See the
+        latching event for more information.
+
         This event indicates a discontinuity and the discontinuity flag
-        in the latching event is set.
+        of the next latching event is set.
 
         The compositor sends this event when the client binds to the
         refresh_cycle interface.
@@ -394,6 +402,10 @@
            summary="the maximum increase of the duration per refresh cycle in nanoseconds"/>
       <arg name="ramp_down" type="uint"
            summary="the maximum decrease of the duration per refresh cycle in nanoseconds"/>
+      <arg name="buffer_latching" type="uint"
+           summary="the time of the buffer latching in nanoseconds after the commit latching"/>
+      <arg name="presentation" type="uint"
+           summary="the time of the presentation in nanoseconds after the commit latching"/>
     </event>
 
     <enum name="latching_flags" bitfield="true">
@@ -415,42 +427,55 @@
 
     <event name="latching">
       <description summary="latching event">
-        The latching event is sent no earlier than the compositor
-        deciding which commits will be chosen for the next
-        presentation, but as close to it as possible.
+        Each refresh cycle consists of a number of events in order: the
+        commit latching of the previous refresh cycle, the commit
+        latching of the current cycle, the buffer latching and the
+        presentation.
 
-        The exact time of this event is recorded in the commit latching
-        timestamp (commit_tv_sec_hi/lo, commit_tv_nsec).
+        The commit latching indicates the start of a new refresh cycle.
+        Two refresh cycles overlap between the commit latching and the
+        presentation. The buffer latching can be at the same time as
+        the commit latching.
 
-        The buffer latching timestamp (buffer_tv_sec_hi/lo,
-        buffer_tv_nsec) describes when all the fences of buffers
-        attached to surfaces of a commit must be signaled in order to
-        get presented on the refresh cycle of this latching event.
+        The time between two commit latching events is the duration of
+        the refresh cycle and describes the update frequency.
 
-        For the interpretation of the timestamps, see
-        presentation.clock_id.
+        If a content update is supposed to land on a certain refresh
+        cycle then the content update must be committed before the
+        commit latching and the buffers of the content update must be
+        ready before the buffer latching.
+
+        A buffer is considered ready if there are no fences attached to
+        it or if all the explicit and implicit fences attached to it
+        are signaled.
+
+        If a content update landed on a refresh cycle then it is
+        considered for presentation by the compositor on this or any
+        of the following refresh cycles.
+
+        This latching event is sent no earlier than the commit latching
+        but as close to it as possible.
+
+        The exact time of the commit latching is recorded in the
+        timestamp (commit_tv_sec_hi/lo, commit_tv_nsec). For the
+        interpretation of the timestamp, see presentation.clock_id.
 
         The 64-bit value combined from seq_hi and seq_lo is the value
-        of the output's vertical retrace counter of the following
+        of the output's vertical retrace counter of the refresh cycle's
         presentation. This value is compatible with seq_hi and seq_lo
         from presentation_feedback.presented.
+
+        The time of the buffer latching and presentation relative to the
+        commit latching is sent in the state event.
       </description>
-      <arg name="commit_tv_sec_hi" type="uint"
+      <arg name="tv_sec_hi" type="uint"
            summary="high 32 bits of the seconds part of the commit latching timestamp"/>
-      <arg name="commit_tv_sec_lo" type="uint"
+      <arg name="tv_sec_lo" type="uint"
            summary="low 32 bits of the seconds part of the commit latching timestamp"/>
-      <arg name="commit_tv_nsec" type="uint"
+      <arg name="tv_nsec" type="uint"
            summary="nanoseconds part of the commit latching timestamp"/>
-      <arg name="buffer_tv_sec_hi" type="uint"
-           summary="high 32 bits of the seconds part of the buffer latching timestamp"/>
-      <arg name="buffer_tv_sec_lo" type="uint"
-           summary="low 32 bits of the seconds part of the buffer latching timestamp"/>
-      <arg name="buffer_tv_nsec" type="uint"
-           summary="nanoseconds part of the buffer latching timestamp"/>
       <arg name="seq_hi" type="uint"
            summary="high 32 bits of refresh counter"/>
-      <arg name="seq_lo" type="uint"
-           summary="low 32 bits of refresh counter"/>
       <arg name="seq_lo" type="uint"
            summary="low 32 bits of refresh counter"/>
       <arg name="flags" type="uint" enum="latching_flags"
