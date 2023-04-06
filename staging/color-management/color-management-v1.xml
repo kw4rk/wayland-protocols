@@ -384,6 +384,9 @@
 
         See the International Color Consortium specification ICC.1:2022 for more
         details about ICC profiles.
+
+        The resulting image description object does not allow get_information
+        request.
       </description>
 
       <arg name="icc_profile" type="fd" summary="ICC profile"/>
@@ -627,6 +630,9 @@
         is raised.
 
         A client should destroy this object immediately after this request.
+
+        The resulting image description object does not allow get_information
+        request.
       </description>
 
       <arg name="image_description" type="new_id" summary="wp_image_description_v1"/>
@@ -690,6 +696,7 @@
       <description summary="protocol errors"/>
 
       <entry name="failed" value="0" summary="attempted to use failed object"/>
+      <entry name="no_information" value="1" summary="get_information not allowed"/>
     </enum>
 
     <enum name="cause">
@@ -763,6 +770,11 @@
 
         Every get_information request on the same object shall always return the
         exact same data.
+
+        Not all image description protocol objects allow get_information
+        request. Whether it is allowed or not is defined by the request that
+        created the object. If get_information is not allowed, the protocol
+        error no_information is raised.
       </description>
     </request>
 
