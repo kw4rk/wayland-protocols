@@ -778,6 +778,13 @@
       </description>
     </request>
 
+    <event name="done">
+      <description summary="end of information">
+        Signals the end of an information event sequence. This shall be sent
+        only and exactly once for each get_information request on this object.
+      </description>
+    </event>
+
     <event name="icc_file">
       <description summary="ICC profile matching the image description">
         This is an information event, see get_information.
