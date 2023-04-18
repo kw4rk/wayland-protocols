@@ -465,6 +465,7 @@
       The following properties are optional and have a well-defined default
       if not explicitly set:
       - mastering display primaries and white point (target color volume)
+      - mastering luminance range
 
       Each required property must be set exactly once if the client is to create
       an image description. The set requests verify that a property was not
@@ -492,6 +493,8 @@
       <entry name="invalid_tf" value="3" summary="invalid transfer characteristic"/>
       <entry name="invalid_primaries" value="4" summary="invalid primaries or white point"/>
       <entry name="already_set" value="5" summary="property already set"/>
+      <entry name="inconsistent_set" value="6" summary="invalid combination of parameters"/>
+      <entry name="invalid_luminance" value="7" summary="invalid luminance value or range"/>
     </enum>
 
     <request name="create">
@@ -644,6 +647,30 @@
       <arg name="b_y" type="uint" summary="Blue y * 10000"/>
       <arg name="w_x" type="uint" summary="White x * 10000"/>
       <arg name="w_y" type="uint" summary="White y * 10000"/>
+    </request>
+
+    <request name="set_mastering_luminance">
+      <description summary="display mastering luminance range">
+        Sets the luminance range that was used during the content mastering
+        process as the minimum and maximum absolute luminance L. This is
+        compatible with the SMPTE ST 2086 definition of HDR static metadata.
+
+        This can only be set when set_tf_cicp is used to set the transfer
+        characteristic to Rec. ITU-R BT.2100-2 perceptual quantization system.
+        Otherwise, 'create' request shall raise inconsistent_set protocol
+        error.
+
+        The mastering luminance range is undefined by default.
+
+        If max L is less than or equal to min L, the protocol error
+        invalid_luminance is raised.
+
+        Min L value is multiplied by 10000 to get the argument min_lum value
+        and carry precision of 4 decimals. Max L value is unscaled for max_lum.
+      </description>
+
+      <arg name="min_lum" type="uint" summary="min L (cd/m²) * 10000"/>
+      <arg name="max_lum" type="uint" summary="max L (cd/m²)"/>
     </request>
   </interface>
 
@@ -892,6 +919,25 @@
       <arg name="b_y" type="uint" summary="Blue y * 10000"/>
       <arg name="w_x" type="uint" summary="White x * 10000"/>
       <arg name="w_y" type="uint" summary="White y * 10000"/>
+    </event>
+
+    <event name="target_luminance">
+      <description summary="target luminance range">
+        This is an information event, see get_information.
+
+        Provides the luminance range that the image description is targeting
+        as the minimum and maximum absolute luminance L. This is compatible
+        with the SMPTE ST 2086 definition of HDR static metadata.
+
+        This luminance range is only theoretical and may not correspond to the
+        luminance of light emitted on an actual display.
+
+        Min L value is multiplied by 10000 to get the argument min_lum value
+        and carry precision of 4 decimals. Max L value is unscaled for max_lum.
+      </description>
+
+      <arg name="min_lum" type="uint" summary="min L (cd/m²) * 10000"/>
+      <arg name="max_lum" type="uint" summary="max L (cd/m²)"/>
     </event>
   </interface>
 </protocol>
