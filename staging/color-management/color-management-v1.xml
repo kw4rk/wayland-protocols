@@ -494,6 +494,40 @@
       <entry name="already_set" value="5" summary="property already set"/>
     </enum>
 
+    <request name="create">
+      <description summary="Create the image description object using params">
+        Create an image description object based on the parameters previously
+        set on this object.
+
+        The completeness of the parameter set is verified. If the set is not
+        complete, the protocol error incomplete_set is raised. For the
+        definition of a complete set, see the description of this interface.
+
+        If the particular combination of the parameter set is not supported
+        by the compositor, the resulting image description object shall
+        immediately deliver the wp_image_description.failed event with the
+        'unsupported' cause.
+
+        The argument image_description must have the interface
+        "wp_image_description_v1" and a version supported by the compositor.
+        Otherwise the protocol error bad_object is raised.
+        The compositor shall support all versions from 1 up to and including
+        the version number of wp_color_manager_v1 global interface.
+
+        This request can be issued at most once during the lifetime of the
+        wp_image_description_creator_params_v1 object, after which the only
+        legal request is destroy. Otherwise the protocol error already_used
+        is raised.
+
+        A client should destroy this object immediately after this request.
+
+        The resulting image description object does not allow get_information
+        request.
+      </description>
+
+      <arg name="image_description" type="new_id" summary="wp_image_description_v1"/>
+    </request>
+
     <request name="set_tf_cicp">
       <description summary="transfer characteristic in H.273 code points" >
         Sets the transfer characteristic using H.273 TransferCharacteristics
@@ -608,40 +642,6 @@
       <arg name="b_y" type="uint" summary="Blue y * 10000"/>
       <arg name="w_x" type="uint" summary="White x * 10000"/>
       <arg name="w_y" type="uint" summary="White y * 10000"/>
-    </request>
-
-    <request name="create">
-      <description summary="Create the image description object using params">
-        Create an image description object based on the parameters previously
-        set on this object.
-
-        The completeness of the parameter set is verified. If the set is not
-        complete, the protocol error incomplete_set is raised. For the
-        definition of a complete set, see the description of this interface.
-
-        If the particular combination of the parameter set is not supported
-        by the compositor, the resulting image description object shall
-        immediately deliver the wp_image_description.failed event with the
-        'unsupported' cause.
-
-        The argument image_description must have the interface
-        "wp_image_description_v1" and a version supported by the compositor.
-        Otherwise the protocol error bad_object is raised.
-        The compositor shall support all versions from 1 up to and including
-        the version number of wp_color_manager_v1 global interface.
-
-        This request can be issued at most once during the lifetime of the
-        wp_image_description_creator_params_v1 object, after which the only
-        legal request is destroy. Otherwise the protocol error already_used
-        is raised.
-
-        A client should destroy this object immediately after this request.
-
-        The resulting image description object does not allow get_information
-        request.
-      </description>
-
-      <arg name="image_description" type="new_id" summary="wp_image_description_v1"/>
     </request>
   </interface>
 
