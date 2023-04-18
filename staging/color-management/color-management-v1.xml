@@ -477,6 +477,12 @@
       be destroyed.
     </description>
 
+    <request name="destroy" type="destructor">
+      <description summary="destroy">
+        Destroys this object. No other object is affected.
+      </description>
+    </request>
+
     <enum name="error">
       <description summary="protocol errors"/>
 
@@ -636,12 +642,6 @@
       </description>
 
       <arg name="image_description" type="new_id" summary="wp_image_description_v1"/>
-    </request>
-
-    <request name="destroy" type="destructor">
-      <description summary="destroy">
-        Destroys this object. No other object is affected.
-      </description>
     </request>
   </interface>
 
