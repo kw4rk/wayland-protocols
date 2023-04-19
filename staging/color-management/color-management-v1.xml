@@ -460,11 +460,11 @@
       to create a wp_image_description_v1 object. A complete set of required
       parameters consists of these properties:
       - transfer characteristic function (tf)
-      - chromaticities of primaries and white point
+      - chromaticities of primaries and white point (primary color volume)
 
       The following properties are optional and have a well-defined default
       if not explicitly set:
-      - mastering display primaries and white point
+      - mastering display primaries and white point (target color volume)
 
       Each required property must be set exactly once if the client is to create
       an image description. The set requests verify that a property was not
@@ -566,7 +566,8 @@
     <request name="set_primaries_cicp">
       <description summary="primaries in H.273 code points">
         Sets the color primaries and white point using H.273 ColourPrimaries
-        code points.
+        code points. This describes the primary color volume which is the basis
+        for color value encoding.
 
         Only code points advertised with wp_image_description_factory_parametric_v1
         event supported_primaries_cicp are allowed. Other values shall raise the
@@ -582,7 +583,8 @@
     <request name="set_primaries">
       <description summary="primaries as chromaticity coordinates">
         Sets the color primaries and white point using CIE 1931 xy
-        chromaticity coordinates.
+        chromaticity coordinates. This describes the primary color volume
+        which is the basis for color value encoding.
 
         Each coordinate value is multiplied by 10000 to get the argument
         value to carry precision of 4 decimals.
@@ -804,11 +806,11 @@
       <!-- Offset always 0, compositor must not expose unnecessary data. -->
     </event>
 
-    <event name="container_primaries">
+    <event name="primaries">
       <description summary="primaries as chromaticity coordinates">
         This is an information event, see get_information.
 
-        Delivers the container color volume primaries and white point
+        Delivers the primary color volume primaries and white point
         using CIE 1931 xy chromaticity coordinates.
 
         Each coordinate value is multiplied by 10000 to get the argument
@@ -825,12 +827,12 @@
       <arg name="w_y" type="uint" summary="White y * 10000"/>
     </event>
 
-    <event name="container_primaries_cicp">
+    <event name="primaries_cicp">
       <description summary="H.273 ColourPrimaries code">
         This is an information event, see get_information.
 
         This event provides the H.273 ColourPrimaries code matching the
-        container color volume primaries and white point of this
+        primary color volume primaries and white point of this
         image description.
       </description>
 
@@ -873,9 +875,9 @@
         compatible with the SMPTE ST 2086 definition of HDR static metadata
         for mastering displays.
 
-        While container color volume is about how color is encoded, the
+        While primary color volume is about how color is encoded, the
         target color volume is the actually displayable color volume.
-        If target color volume is equal to the container color volume,
+        If target color volume is equal to the primary color volume,
         then this event is not sent.
 
         Each coordinate value is multiplied by 10000 to get the argument
