@@ -193,7 +193,8 @@
         description, meaning that the client does not support all the
         events needed to deliver all the information, the resulting image
         description object shall immediately deliver the
-        wp_image_description_v1.failed event with the low_version cause.
+        wp_image_description_v1.failed event with the low_version cause,
+        otherwise the object shall immediately deliver the ready event.
       </description>
 
       <arg name="image_description" type="new_id" summary="wp_image_description_v1"/>
@@ -306,7 +307,8 @@
         description, meaning that the client does not support all the
         events needed to deliver all the information, the resulting image
         description object shall immediately deliver the
-        wp_image_description_v1.failed event with the low_version cause.
+        wp_image_description_v1.failed event with the low_version cause,
+        otherwise the object shall immediately deliver the ready event.
       </description>
 
       <arg name="image_description" type="new_id" summary="wp_image_description_v1"/>
@@ -360,9 +362,10 @@
         The maximum size of the ICC profile is 4 MB. If length is greater
         than that or zero, the protocol error bad_size is raised.
 
-        A compositor shall read the data immediately when it processes this
-        request. Therefore a wl_display.sync after this request is enough to
-        ensure a client that the compositor has finished reading.
+        A compositor may parse the data in some undefined but finite amount of
+        time and shall eventually deliver either the
+        wp_image_description_v1.failed or wp_image_description_v1.ready events
+        on the created image description.
 
         A compositor shall not modify the contents of the file, and the fd may
         be sealed for writes and size changes. The client must ensure to its
@@ -379,8 +382,10 @@
         The ICC profile version must be 2 or 4, it must be a 3 channel profile
         and the class must be 'input', 'output', 'abstract' or 'display'.
         Violating these requirements will not result in a protocol error but
-        will immediately send the wp_image_description_v1.failed event with
-        the 'unsupported' cause.
+        will eventually send the wp_image_description_v1.failed event on the
+        created image description with the 'unsupported' cause. If a valid image
+        description was created from the ICC profile, the
+        wp_image_description_v1.ready event will eventually be send instead.
 
         See the International Color Consortium specification ICC.1:2022 for more
         details about ICC profiles.
@@ -509,7 +514,9 @@
         If the particular combination of the parameter set is not supported
         by the compositor, the resulting image description object shall
         immediately deliver the wp_image_description.failed event with the
-        'unsupported' cause.
+        'unsupported' cause. If a valid image description was created from the
+        parameter set, the wp_image_description_v1.ready event will eventually
+        be send instead.
 
         The argument image_description must have the interface
         "wp_image_description_v1" and a version supported by the compositor.
@@ -700,11 +707,15 @@
       versions are defined by the advertised wp_color_manager_v1 in
       wl_registry.
 
-      Note, that the wp_image_description_v1 object may deliver the 'failed'
-      event as specified in all requests creating it. To ensure that the new
-      image description object is usable, a client should issue a
-      wl_display.sync. If no 'failed' event comes before the sync reply,
-      the object is usable and cannot become "failed".
+      Note, that the wp_image_description_v1 object is not ready to be used
+      immediately after creation. The object eventually delivers either the
+      'ready' or the 'failed' event, specified in all requests creating it. The
+      object is deemed "ready" after receiving the 'ready' event.
+
+      An object which is not ready is illegal to use, it can only be destroyed.
+      Any other request in this interface shall result in the 'not_ready'
+      protocol error. Attempts to use an object which is not ready through other
+      interfaces shall raise protocol errors defined there.
 
       Once created and regardless of how it was created, a wp_image_description_v1
       object always refers to one fixed image description. It cannot change
@@ -713,7 +724,7 @@
 
     <request name="destroy" type="destructor">
       <description summary="destroy the image description">
-        Destroy this object. It is safe to destroy a 'failed' object.
+        Destroy this object. It is safe to destroy an object which is not ready.
 
         Destroying a wp_image_description_v1 object has no side-effects, not
         even if a wp_color_management_surface_v1.set_image_description has
@@ -724,7 +735,7 @@
     <enum name="error">
       <description summary="protocol errors"/>
 
-      <entry name="failed" value="0" summary="attempted to use failed object"/>
+      <entry name="not_ready" value="0" summary="attempted to use an object which is not ready"/>
       <entry name="no_information" value="1" summary="get_information not allowed"/>
     </enum>
 
@@ -744,26 +755,24 @@
         event. This event cannot be triggered after the image description was
         successfully formed.
 
-        Once this event has been sent, the wp_image_description_v1 object is
-        deemed "failed". A failed object is illegal to use, it can only be
-        destroyed. Any other request in this interface shall result in the
-        'failed' protocol error. Attempts to use a failed object through other
-        interfaces shall raise protocol errors defined there.
+        Once this event has been sent, the wp_image_description_v1 object will
+        never become ready and it can only be destroyed.
       </description>
 
       <arg name="cause" type="uint" enum="cause" summary="generic reason"/>
       <arg name="msg" type="string" summary="ad hoc human-readable explanation"/>
     </event>
 
-    <event name="identity">
-      <description summary="image description id for de-duplication">
-        This event is sent once when this wp_image_description_v1 protocol
-        object is created, or not at all if the failed event is sent.
+    <event name="ready">
+      <description summary="indication that the object is ready to be used">
+        Once this event has been sent, the wp_image_description_v1 object is
+        deemed "ready". Ready objects can be used to send requests and can be
+        used through other interfaces.
 
-        Every wp_image_description_v1 protocol object refers to an underlying
-        image description record in the compositor. Multiple protocol objects
-        may end up referring to the same record. Clients may identify these
-        "copies" by comparing their id numbers: if the numbers from two
+        Every ready wp_image_description_v1 protocol object refers to an
+        underlying image description record in the compositor. Multiple protocol
+        objects may end up referring to the same record. Clients may identify
+        these "copies" by comparing their id numbers: if the numbers from two
         protocol objects are identical, the protocol objects refer to the same
         image description. Two different image descriptions cannot have the
         same id number simultaneously. The id number does not change during the
@@ -779,7 +788,7 @@
         client to refer to an image description by its id number in protocol.
         The id numbers might not be portable between Wayland connections.
 
-        This event allows clients to de-duplicate image description records
+        This identity allows clients to de-duplicate image description records
         and avoid get_information request if they already have the image
         description information.
       </description>
