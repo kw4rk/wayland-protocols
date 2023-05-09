@@ -417,6 +417,29 @@
       points (CICP).
     </description>
 
+    <enum name="feature">
+      <description summary="compositor supported features"/>
+
+      <entry name="set_primaries" value="0" summary="set_primaries request"/>
+      <entry name="set_tf_power" value="1" summary="set_tf_power request"/>
+      <entry name="set_mastering_display_primaries" value="2">
+        <description summary="set_mastering_display_primaries request">
+          The compositor supports set_mastering_display_primaries request
+          with a target color volume fully contained inside the primary
+          color volume.
+        </description>
+      </entry>
+      <entry name="extended_target_volume" value="3">
+        <description summary="target exceeds primary color volume">
+          The compositor additionally supports target color volumes that
+          extend outside of the primary color volume.
+
+          This can only be advertised if feature set_mastering_display_primaries
+          is supported as well.
+        </description>
+      </entry>
+    </enum>
+
     <request name="destroy" type="destructor">
       <description summary="destroy factory">
         Destroys the factory interface object. Destroying does not affect any
@@ -456,6 +479,15 @@
       </description>
 
       <arg name="primaries_code" type="uint" summary="ColourPrimaries code point"/>
+    </event>
+
+    <event name="supported_feature">
+      <description summary="supported features">
+        When this object is created, it shall immediately send this event
+        once for each compositor supported feature listed in the enumeration.
+      </description>
+
+      <arg name="feature" type="uint" enum="feature" summary="supported feature"/>
     </event>
   </interface>
 
@@ -500,6 +532,7 @@
       <entry name="already_set" value="5" summary="property already set"/>
       <entry name="inconsistent_set" value="6" summary="invalid combination of parameters"/>
       <entry name="invalid_luminance" value="7" summary="invalid luminance value or range"/>
+      <entry name="invalid_mastering" value="8" summary="invalid mastering information"/>
     </enum>
 
     <request name="create">
@@ -568,6 +601,11 @@
 
         If transfer characteristic has already been set on this object, the
         protocol error already_set is raised.
+
+        A compositor supporting this request must advertise
+        wp_image_description_factory_parametric_v1.feature.set_tf_power
+        with the supported_feature event. If a client issues this request
+        without the advertisement, then the protocol error invalid_tf is raised.
       </description>
 
       <arg name="eexp" type="uint" summary="the exponent * 10000"/>
@@ -601,6 +639,12 @@
 
         If primaries have already been set on this object, the protocol error
         already_set is raised.
+
+        A compositor supporting this request must advertise
+        wp_image_description_factory_parametric_v1.feature.set_primaries
+        with the supported_feature event. If a client issues this request
+        without the advertisement, then the protocol error invalid_primaries
+        is raised.
       </description>
 
       <arg name="r_x" type="uint" summary="Red x * 10000"/>
@@ -644,6 +688,22 @@
 
         If mastering display primaries have already been set on this object,
         the protocol error already_set is raised.
+
+        A compositor supporting this request must advertise
+        wp_image_description_factory_parametric_v1.feature.set_mastering_display_primaries
+        with the supported_feature event. If a client issues this request
+        without the advertisement, then the protocol error invalid_mastering
+        is raised. The advertisement implies support only for target color
+        volumes fully contained within the primary color volume.
+
+        If a compositor additionally supports target color volume exceeding
+        the primary color volume, it must advertise
+        wp_image_description_factory_parametric_v1.feature.extended_target_volume.
+        If a client uses target color volume exceeding the primary color volume
+        and the compositor does not support it, the result is implementation
+        defined. Compositors are recommended to detect this case and fail the
+        image description gracefully, but it may as well result in color
+        artifacts.
       </description>
 
       <arg name="r_x" type="uint" summary="Red x * 10000"/>
