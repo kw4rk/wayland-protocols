@@ -806,14 +806,14 @@
         objects may end up referring to the same record. Clients may identify
         these "copies" by comparing their id numbers: if the numbers from two
         protocol objects are identical, the protocol objects refer to the same
-        image description. Two different image descriptions cannot have the
-        same id number simultaneously. The id number does not change during the
-        lifetime of the image description record.
+        image description record. Two different image description records
+        cannot have the same id number simultaneously. The id number does not
+        change during the lifetime of the image description record.
 
         The id number is valid only as long as the protocol object is alive.
-        If all protocol objects referring to the same image description are
-        destroyed, the id number may be recycled for a different image
-        description.
+        If all protocol objects referring to the same image description record
+        are destroyed, the id number may be recycled for a different image
+        description record.
 
         Image description id number is not a protocol object id. Zero is
         reserved as an invalid id number. It shall not be possible for a
