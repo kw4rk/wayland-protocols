@@ -268,7 +268,7 @@
 
         If the interface version is inadequate for the output's image
         description, meaning that the client does not support all the
-        events needed to deliver all the information, the resulting image
+        events needed to deliver the crucial information, the resulting image
         description object shall immediately deliver the
         wp_image_description_v1.failed event with the low_version cause,
         otherwise the object shall immediately deliver the ready event.
@@ -375,7 +375,7 @@
 
         If the interface version is inadequate for the preferred image
         description, meaning that the client does not support all the
-        events needed to deliver all the information, the resulting image
+        events needed to deliver the crucial information, the resulting image
         description object shall immediately deliver the
         wp_image_description_v1.failed event with the low_version cause,
         otherwise the object shall immediately deliver the ready event.
