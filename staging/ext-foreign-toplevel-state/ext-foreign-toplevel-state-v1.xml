@@ -53,6 +53,14 @@
       to the state of a toplevel.
     </description>
 
+    <enum name="error">
+      <description summary="ext_foreign_toplevel_state_v1 errors">
+        These errors are sent in response to ext_foreign_toplevel_state_v1 requests.
+      </description>
+      <entry name="already_constructed" value="0"
+        summary="the ext_foreign_toplevel_state_v1 was already constructed for the specified ext_foreign_toplevel_handle_v1 object"/>
+    </enum>
+
     <request name="destroy" type="destructor">
       <description summary="destroy the ext_foreign_toplevel_state_v1 object">
         Destroys the ext_foreign_toplevel_state_v1 object.
@@ -61,7 +69,7 @@
       </description>
     </request>
 
-    <request name="create_handle_state">
+    <request name="get_handle_state">
       <description summary="create the object for toplevel state updates">
         This request creates an extension object to receive state updates for the
         foreign toplevel.
@@ -89,8 +97,8 @@
     </description>
 
     <enum name="error">
-      <description summary="ext_foreign_toplevel_state_v1 errors">
-        These errors are sent in response to ext_foreign_toplevel_state_v1 requests.
+      <description summary="ext_foreign_toplevel_handle_state_v1 errors">
+        These errors are sent in response to ext_foreign_toplevel_handle_state_v1 requests.
       </description>
 
       <entry name="orphaned" value="0"
