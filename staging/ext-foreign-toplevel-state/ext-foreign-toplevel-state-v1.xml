@@ -63,7 +63,7 @@
 
     <request name="create_handle_state">
       <description summary="create the object for toplevel state updates">
-        This request creates an extension object to recieve state updates for the
+        This request creates an extension object to receive state updates for the
         foreign toplevel.
 
         It is illegal to destroy the ext_foreign_toplevel_handle_v1 before the
@@ -82,7 +82,7 @@
 
   <interface name="ext_foreign_toplevel_handle_state_v1" version="1">
     <description summary="toplevel state updates">
-      This object recieve events when the state of a toplevel has changed.
+      This object receive events when the state of a toplevel has changed.
 
       This object extends the ext_foreign_toplevel_handle_v1 interface and uses the
       ext_foreign_toplevel_handle_v1.done event to atomically apply pending state.
