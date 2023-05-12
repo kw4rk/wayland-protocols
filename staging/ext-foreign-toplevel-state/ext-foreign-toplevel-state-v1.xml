@@ -72,7 +72,7 @@
 
         It is also illegal to create more than one ext_foreign_toplevel_handle_state_v1
         object per toplevel handle instance and must result in a already_constructed
-        error. 
+        error.
       </description>
 
       <arg name="handle" type="object" interface="ext_foreign_toplevel_handle_v1"/>
@@ -82,22 +82,19 @@
 
   <interface name="ext_foreign_toplevel_handle_state_v1" version="1">
     <description summary="toplevel state updates">
-      This object receive events when the state of a toplevel has changed.
+      This object receives events when the state of a toplevel has changed.
 
       This object extends the ext_foreign_toplevel_handle_v1 interface and uses the
       ext_foreign_toplevel_handle_v1.done event to atomically apply pending state.
     </description>
 
     <enum name="error">
-      <description summary="ext_foreign_toplevel_info_v1 errors">
+      <description summary="ext_foreign_toplevel_state_v1 errors">
         These errors are sent in response to ext_foreign_toplevel_state_v1 requests.
       </description>
 
       <entry name="orphaned" value="0"
           summary="the ext_foreign_toplevel_handle_v1 was destroyed before this object"/>
-
-      <entry name="already_constructed" value="1"
-        summary="the ext_foreign_toplevel_handle_state_v1 was already constructed for the specified ext_foreign_toplevel_handle_v1 object"/>
     </enum>
 
     <enum name="state">
@@ -112,7 +109,7 @@
 
     <request name="destroy" type="destructor">
       <description summary="destroy the ext_foreign_toplevel_handle_state_v1 object">
-        This request should be used when the client will no longer wishes to recieve
+        This request should be used when the client no longer wishes to receive
         updates to the toplevel state or after the closed event has been received to
         allow destruction of the object.
 
