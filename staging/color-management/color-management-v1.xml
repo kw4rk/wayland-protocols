@@ -62,6 +62,13 @@
       description of surfaces.
     </description>
 
+    <request name="destroy" type="destructor">
+      <description summary="destroy the color manager">
+        Destroy the wp_color_manager_v1 object. This does not affect any other
+        objects in any way.
+      </description>
+    </request>
+
     <enum name="error">
       <entry name="unsupported_feature" value="0" summary="request not supported"/>
     </enum>
@@ -133,13 +140,6 @@
 
       <arg name="id" type="new_id" interface="wp_color_management_surface_v1"/>
       <arg name="surface" type="object" interface="wl_surface"/>
-    </request>
-
-    <request name="destroy" type="destructor">
-      <description summary="destroy the color manager">
-        Destroy the wp_color_manager_v1 object. This does not affect any other
-        objects in any way.
-      </description>
     </request>
 
     <request name="new_icc_creator">
@@ -231,6 +231,13 @@
       destroyed, the wp_color_management_output_v1 object becomes inert.
     </description>
 
+    <request name="destroy" type="destructor">
+      <description summary="destroy the color management output">
+        Destroy the color wp_color_management_output_v1 object. This does not
+        affect any remaining protocol objects.
+      </description>
+    </request>
+
     <event name="image_description_changed">
       <description summary="image description changed">
         This event is sent whenever the image description of the
@@ -269,13 +276,6 @@
 
       <arg name="image_description" type="new_id" interface="wp_image_description_v1"/>
     </request>
-
-    <request name="destroy" type="destructor">
-      <description summary="destroy the color management output">
-        Destroy the color wp_color_management_output_v1 object. This does not
-        affect any remaining protocol objects.
-      </description>
-    </request>
   </interface>
 
   <interface name="wp_color_management_surface_v1" version="1">
@@ -286,6 +286,15 @@
         If the wl_surface associated with the wp_color_management_surface_v1 is
         destroyed, the wp_color_management_surface_v1 object becomes inert.
     </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the color management interface for a surface">
+        Destroy the wp_color_management_surface_v1 object.
+
+        When the last wp_color_management_surface_v1 object for a wl_surface
+        is destroyed, it does the same as set_default_image_description.
+      </description>
+    </request>
 
     <enum name="error">
       <description summary="protocol errors"/>
@@ -373,15 +382,6 @@
       </description>
 
       <arg name="image_description" type="new_id" interface="wp_image_description_v1"/>
-    </request>
-
-    <request name="destroy" type="destructor">
-      <description summary="destroy the color management interface for a surface">
-        Destroy the wp_color_management_surface_v1 object.
-
-        When the last wp_color_management_surface_v1 object for a wl_surface
-        is destroyed, it does the same as set_default_image_description.
-      </description>
     </request>
   </interface>
 
