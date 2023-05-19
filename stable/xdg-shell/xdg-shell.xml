@@ -1221,9 +1221,6 @@
       <description summary="remove xdg_popup interface">
 	This destroys the popup. Explicitly destroying the xdg_popup
 	object will also dismiss the popup, and unmap the surface.
-
-	If this xdg_popup is not the "topmost" popup, a protocol error
-	will be sent.
       </description>
     </request>
 
