@@ -477,7 +477,7 @@
 
         The data must represent a valid ICC profile.
         The ICC profile version must be 2 or 4, it must be a 3 channel profile
-        and the class must be 'input', 'output', 'abstract' or 'display'.
+        and the class must be 'display'.
         Violating these requirements will not result in a protocol error but
         will eventually send the wp_image_description_v1.failed event on the
         created wp_image_description_v1 with the 'unsupported' cause.
