@@ -504,6 +504,8 @@
       if not explicitly set:
       - mastering display primaries and white point (target color volume)
       - mastering luminance range
+      - maxCLL
+      - maxFALL
 
       Each required property must be set exactly once if the client is to create
       an image description. The set requests verify that a property was not
@@ -728,6 +730,37 @@
 
       <arg name="min_lum" type="uint" summary="min L (cd/m²) * 10000"/>
       <arg name="max_lum" type="uint" summary="max L (cd/m²)"/>
+    </request>
+
+    <request name="set_maxCLL">
+      <description summary="maximum content light level">
+        Sets the maximum content light level (maxCLL) as defined by CTA-861-H.
+
+        This can only be set when set_tf_cicp is used to set the transfer
+        characteristic to Rec. ITU-R BT.2100-2 perceptual quantization system.
+        Otherwise, 'create' request shall raise inconsistent_set protocol
+        error.
+
+        MaxCLL is undefined by default.
+      </description>
+
+      <arg name="maxCLL" type="uint" summary="maxCLL (cd/m²)"/>
+    </request>
+
+    <request name="set_maxFALL">
+      <description summary="maximum frame-average light level">
+        Sets the maximum frame-average light level (maxFALL) as defined by
+        CTA-861-H.
+
+        This can only be set when set_tf_cicp is used to set the transfer
+        characteristic to Rec. ITU-R BT.2100-2 perceptual quantization system.
+        Otherwise, 'create' request shall raise inconsistent_set protocol
+        error.
+
+        MaxFALL is undefined by default.
+      </description>
+
+      <arg name="maxFALL" type="uint" summary="maxFALL (cd/m²)"/>
     </request>
   </interface>
 
@@ -978,6 +1011,34 @@
 
       <arg name="min_lum" type="uint" summary="min L (cd/m²) * 10000"/>
       <arg name="max_lum" type="uint" summary="max L (cd/m²)"/>
+    </event>
+
+    <event name="target_maxCLL">
+      <description summary="target maximum content light level">
+        This is an information event, see get_information.
+
+        Provides the targeted maxCLL of the image description. MaxCLL is
+        defined by CTA-861-H.
+
+        This luminance is only theoretical and may not correspond to the
+        luminance of light emitted on an actual display.
+      </description>
+
+      <arg name="maxCLL" type="uint" summary="maxCLL (cd/m²)"/>
+    </event>
+
+    <event name="target_maxFALL">
+      <description summary="target maximum frame-average light level">
+        This is an information event, see get_information.
+
+        Provides the targeted maxFALL of the image description. MaxFALL is
+        defined by CTA-861-H.
+
+        This luminance is only theoretical and may not correspond to the
+        luminance of light emitted on an actual display.
+      </description>
+
+      <arg name="maxFALL" type="uint" summary="maxFALL (cd/m²)"/>
     </event>
   </interface>
 </protocol>
