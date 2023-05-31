@@ -122,13 +122,15 @@
              summary="parametric set_primaries request"/>
       <entry name="set_tf_power" value="3"
              summary="parametric set_tf_power request"/>
-      <entry name="set_mastering_display_primaries" value="4">
+      <entry name="set_luminances" value="4"
+             summary="parametric set_luminances request"/>
+      <entry name="set_mastering_display_primaries" value="5">
         <description summary="parametric set_mastering_display_primaries request">
           The compositor supports set_mastering_display_primaries request with a
           target color volume fully contained inside the primary color volume.
         </description>
       </entry>
-      <entry name="extended_target_volume" value="5">
+      <entry name="extended_target_volume" value="6">
         <description summary="parametric target exceeds primary color volume">
           The compositor additionally supports target color volumes that
           extend outside of the primary color volume.
@@ -336,6 +338,11 @@
           - SMPTE ST 2084 (2014) for 10-, 12-, 14- and 16-bit systems
           - Rec. ITU-R BT.2100-2 perceptual quantization (PQ) system
           Equivalent to H.273 TransferCharacteristics code point 16.
+
+          This TF implies these default luminances
+          - primary color volume minimum: 0.005 cd/m²
+          - primary color volume maximum: 10000 cd/m²
+          - reference white: 203 cd/m²
         </description>
       </entry>
       <entry name="st428" value="12">
@@ -351,6 +358,13 @@
           - ARIB STD-B67 (2015)
           - Rec. ITU-R BT.2100-2 hybrid log-gamma (HLG) system
           Equivalent to H.273 TransferCharacteristics code point 18.
+
+          This TF implies these default luminances
+          - primary color volume minimum: 0.005 cd/m²
+          - primary color volume maximum: 1000 cd/m²
+          - reference white: 203 cd/m²
+          Note: HLG is a scene referred signal. All absolute luminance values
+          used here for HLG assume a 1000 cd/m² display.
         </description>
       </entry>
     </enum>
@@ -784,6 +798,8 @@
 
       The following properties are optional and have a well-defined default
       if not explicitly set:
+      - primary color volume luminance range
+      - reference white luminance level
       - mastering display primaries and white point (target color volume)
       - mastering luminance range
       - maximum content light level
@@ -942,6 +958,59 @@
       <arg name="w_y" type="int" summary="White y * 10000"/>
     </request>
 
+    <request name="set_luminances">
+      <description summary="primary color volume luminance range and reference white">
+        Sets the primary color volume luminance range and the reference white
+        luminance level.
+
+        The default luminances are
+        - primary color volume minimum: 0.2 cd/m²
+        - primary color volume maximum: 80 cd/m²
+        - reference white: 80 cd/m²
+
+        Setting a named transfer characteristic can imply other default
+        luminances.
+
+        The default luminances get overwritten when this request is used.
+
+        'min_lum' and 'max_lum' specify the minimum and maximum luminances of
+        the primary color volume as reproduced by the targeted display.
+
+        'reference_lum' specifies the luminance of the reference white as
+        reproduced by the targeted display, and reflects the targeted viewing
+        environment.
+
+        Compositors should make sure that all content is anchored, meaning that
+        an input signal level of 'reference_lum' on one image description and
+        another input signal level of 'reference_lum' on another image
+        description should produce the same output level, even though the
+        'reference_lum' on both image representations can be different.
+
+        If 'max_lum' is less than the 'reference_lum', or 'reference_lum' is
+        less than or equal to 'min_lum', the protocol error invalid_luminance is
+        raised.
+
+        The minimum luminance is multiplied by 10000 to get the argument
+        'min_lum' value and carries precision of 4 decimals. The maximum
+        luminance and reference white luminance values are unscaled.
+
+        If the primary color volume luminance range and the reference white
+        luminance level have already been set on this object, the protocol error
+        already_set is raised.
+
+        This request can be used if the compositor advertises
+        wp_color_manager_v1.feature.set_luminances. Otherwise this request
+        raises the protocol error unsupported_feature.
+      </description>
+
+      <arg name="min_lum" type="uint"
+           summary="minimum luminance (cd/m²) * 10000"/>
+      <arg name="max_lum" type="uint"
+           summary="maximum luminance (cd/m²)"/>
+      <arg name="reference_lum" type="uint"
+           summary="reference white luminance (cd/m²)"/>
+    </request>
+
     <request name="set_mastering_display_primaries">
       <description summary="mastering display primaries as chromaticity coordinates">
         Provides the color primaries and white point of the mastering display
@@ -1006,11 +1075,6 @@
         Sets the luminance range that was used during the content mastering
         process as the minimum and maximum absolute luminance L. This is
         compatible with the SMPTE ST 2086 definition of HDR static metadata.
-
-        This can only be set when set_tf_cicp is used to set the transfer
-        characteristic to Rec. ITU-R BT.2100-2 perceptual quantization system.
-        Otherwise, 'create' request shall raise inconsistent_set protocol
-        error.
 
         The mastering luminance range is undefined by default.
 
@@ -1266,6 +1330,24 @@
 
       <arg name="tf" type="uint" enum="wp_color_manager_v1.transfer_function"
            summary="named transfer function"/>
+    </event>
+
+    <event name="luminances">
+      <description summary="primary color volume luminance range and reference white">
+        Delivers the primary color volume luminance range and the reference
+        white luminance level.
+
+        The minimum luminance is multiplied by 10000 to get the argument
+        'min_lum' value and carries precision of 4 decimals. The maximum
+        luminance and reference white luminance values are unscaled.
+      </description>
+
+      <arg name="min_lum" type="uint"
+           summary="minimum luminance (cd/m²) * 10000"/>
+      <arg name="max_lum" type="uint"
+           summary="maximum luminance (cd/m²)"/>
+      <arg name="reference_lum" type="uint"
+           summary="reference white luminance (cd/m²)"/>
     </event>
 
     <event name="target_primaries">
