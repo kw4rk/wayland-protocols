@@ -51,6 +51,17 @@
     Recommendation ITU-T H.273
     "Coding-independent code points for video signal type identification"
     shall be referred to as simply H.273 here, and it defines the CICP values.
+
+    The color-and-hdr repository
+    (https://gitlab.freedesktop.org/pq/color-and-hdr) contains
+    background information on the protocol design and legacy color management.
+    It also contains a glossary, learning resources for digital color, tools,
+    samples and more.
+
+    The terminology used in this protocol is based on common color science and
+    color encoding terminology where possible. The glossary in the color-and-hdr
+    repository shall be the authority on the definition of terms in this
+    protocol.
   </description>
 
   <interface name="wp_color_manager_v1" version="1">
