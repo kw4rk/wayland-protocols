@@ -164,9 +164,9 @@ element attributes.
 
 ## Backward incompatible protocol changes
 
-While not preferred, a protocol may at any stage, especially during the
-testing phase, when it is located in the `staging/` directory, see
-backward incompatible changes.
+While not preferred, a protocol may receive backward incompatible changes at
+any stage (especially during the testing phase, when it is located in the
+`staging/` directory).
 
 Assuming a backward incompatible change is needed, the procedure for how to
 do so is the following:
