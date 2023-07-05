@@ -48,6 +48,7 @@ staging_protocols = {
 	'single-pixel-buffer': ['v1'],
 	'tearing-control': ['v1'],
 	'ext-transient-seat': ['v1'],
+	'wm-gestures': ['v1'],
 	'xdg-activation': ['v1'],
 	'xdg-toplevel-drag': ['v1'],
 	'xwayland-shell': ['v1'],
