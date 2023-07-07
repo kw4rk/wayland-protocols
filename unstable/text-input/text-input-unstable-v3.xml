@@ -534,6 +534,50 @@
 	other environmental factors. Repeated calls will be ignored.
       </description>
     </request>
+
+    <enum name="preedit_hint">
+      <description summary="preedit style hint">
+	Style hints for the preedit string.
+      </description>
+      <entry name="whole" value="1" summary="simple pre-edit text style, typically underlined"/>
+      <entry name="selection" value="2"
+        summary="hint for a selected piece of text, e.g. per-character navigation and composition"/>
+      <entry name="prediction" value="3" summary="predicted text, not typed by the user"/>
+      <entry name="prefix" value="4"
+        summary="prefixed text not being currently edited, e.g. prior to a 'selection' section"/>
+      <entry name="suffix" value="5"
+        summary="suffixed text not being currently edited, e.g. after a 'selection' section"/>
+      <entry name="spelling_error" value="6" summary="spelling error"/>
+      <entry name="compose_error" value="7"
+        summary="wrong composition, e.g. user input that can not be transliterated"/>
+    </enum>
+
+    <event name="preedit_hint" since="2">
+      <description summary="pre-edit">
+        Notify of contextual hints for the pre-edit string. This
+        event is always sent together with a zwp_text_input_v3.preedit_string
+        event.
+
+        The parameters begin and end are counted in bytes relative to the
+        beginning of the text buffer submitted through
+	zwp_text_input_v3.preedit_string.
+
+        Multiple events may be submitted if the preedit string has different
+        sections. Compositors must not send multiple
+        zwp_text_input_v3.preedit_underline events with overlapping extents.
+
+        Clients are free to pick any visuals to represent the available hints,
+        including none at all. For parts of the preedit string that are not
+        covered by any zwp_text_input_v3.preedit_hint event, or if no events
+        were sent, the text will be considered unhinted.
+
+        Values set with this event are double-buffered. They must be applied
+        and reset on the next zwp_text_input_v3.done event.
+      </description>
+      <arg name="begin" type="int"/>
+      <arg name="end" type="int"/>
+      <arg name="hint" type="int" enum="preedit_hint"/>
+    </event>
   </interface>
 
   <interface name="zwp_text_input_manager_v3" version="2">
