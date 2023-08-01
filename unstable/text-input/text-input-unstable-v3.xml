@@ -487,6 +487,18 @@
       <arg name="serial" type="uint" summary="serial number of the action event"/>
     </event>
 
+    <event name="language" since="2">
+      <description summary="notify of language selection">
+        Notify the application of language used by the input method.
+
+        This event will be sent on creation if known and for all subsequent changes.
+
+        The language should be specified as an IETF BCP 47 tag.
+        Setting an empty string will reset any known language back to the default unknown state.
+      </description>
+      <arg name="language" type="string" summary="new language set by IME"/>
+    </event>
+
     <request name="set_available_actions" since="2">
       <description summary="set the available actions">
         Set the actions available for this text input.
