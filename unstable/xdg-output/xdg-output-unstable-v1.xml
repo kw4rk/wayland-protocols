@@ -218,5 +218,12 @@
       <arg name="description" type="string" summary="output description"/>
     </event>
 
+    <event name="primary" since="2">
+      <description summary="primary of this output">
+        When presenting two full screen surfaces,need  identify a primary display.
+      </description>
+      <arg name="type" type="int" summary="Describe whether it is the main screen or the secondary screen"/>
+    </event>
+
   </interface>
 </protocol>
