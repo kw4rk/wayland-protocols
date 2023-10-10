@@ -66,9 +66,10 @@
     The primary selection owner should be checking for errors during
     writes, merely cancelling the ongoing transfer if any happened.
 
-    Disclaimer: This protocol extension has been moved to staging. This copy
-    is no longer used and only retained for backwards compatibility. The
-    canonical version can be found in the staging/ directory.
+    Warning! The protocol described in this file is currently in the testing
+    phase. Backward compatible changes may be added together with the
+    corresponding interface version bump. Backward incompatible changes can
+    only be done by creating a new major version of the extension.
   </description>
 
   <interface name="zwp_primary_selection_device_manager_v1" version="1">

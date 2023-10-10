@@ -24,24 +24,22 @@
     DEALINGS IN THE SOFTWARE.
   </copyright>
 
+  <description summary="Control behaviour when display idles">
+    This protocol extension permits inhibiting the idle behavior such as screen
+    blanking, locking, and screensaving. The client binds the idle manager
+    globally, then creates idle-inhibitor objects for each surface.
+
+    Warning! The protocol described in this file is currently in the testing
+    phase. Backward compatible changes may be added together with the
+    corresponding interface version bump. Backward incompatible changes can
+    only be done by creating a new major version of the extension.
+  </description>
+
   <interface name="zwp_idle_inhibit_manager_v1" version="1">
     <description summary="control behavior when display idles">
       This interface permits inhibiting the idle behavior such as screen
       blanking, locking, and screensaving.  The client binds the idle manager
       globally, then creates idle-inhibitor objects for each surface.
-
-      Warning! The protocol described in this file is experimental and
-      backward incompatible changes may be made. Backward compatible changes
-      may be added together with the corresponding interface version bump.
-      Backward incompatible changes are done by bumping the version number in
-      the protocol and interface names and resetting the interface version.
-      Once the protocol is to be declared stable, the 'z' prefix and the
-      version number in the protocol and interface names are removed and the
-      interface version number is reset.
-
-      Disclaimer: This protocol extension has been moved to staging. This copy
-      is no longer used and only retained for backwards compatibility. The
-      canonical version can be found in the staging/ directory.
     </description>
 
     <request name="destroy" type="destructor">

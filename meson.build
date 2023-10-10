@@ -58,6 +58,16 @@ staging_protocols = {
 	'xdg-toplevel-icon': ['v1'],
 	'xwayland-shell': ['v1'],
 	'alpha-modifier': ['v1'],
+	'idle-inhibit': ['v1'],
+	'input-timestamps': ['v1'],
+	'keyboard-shortcuts-inhibit': ['v1'],
+	'pointer-constraints': ['v1'],
+	'pointer-gestures': ['v1'],
+	'primary-selection': ['v1'],
+	'relative-pointer': ['v1'],
+	'text-input': ['v3'],
+	'xdg-decoration': ['v1'],
+	'xdg-foreign': ['v2'],
 }
 
 protocol_files = []
