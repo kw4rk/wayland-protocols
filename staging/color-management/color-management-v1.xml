@@ -424,11 +424,10 @@
       <description summary="protocol errors"/>
 
       <entry name="incomplete_set" value="0" summary="incomplete parameter set"/>
-      <entry name="inconsistent_set" value="1" summary="invalid combination of parameters"/>
-      <entry name="already_used" value="2" summary="create request already done"/>
-      <entry name="already_set" value="3" summary="property already set"/>
-      <entry name="bad_fd" value="4" summary="fd not seekable and readable"/>
-      <entry name="bad_size" value="5" summary="no or too much data"/>
+      <entry name="already_used" value="1" summary="create request already done"/>
+      <entry name="already_set" value="2" summary="property already set"/>
+      <entry name="bad_fd" value="3" summary="fd not seekable and readable"/>
+      <entry name="bad_size" value="4" summary="no or too much data"/>
     </enum>
 
     <request name="create">
