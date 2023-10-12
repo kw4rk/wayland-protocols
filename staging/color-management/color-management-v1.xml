@@ -495,6 +495,9 @@
 
         See the International Color Consortium specification ICC.1:2022 for more
         details about ICC profiles.
+
+        If ICC file has already been set on this object, the protocol error
+        already_set is raised.
       </description>
 
       <arg name="icc_profile" type="fd" summary="ICC profile"/>
