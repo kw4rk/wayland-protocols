@@ -671,15 +671,17 @@
         using CIE 1931 xy chromaticity coordinates. This is compatible with the
         SMPTE ST 2086 definition of HDR static metadata.
 
-        The primaries and transfer characteristics define how an encoded pixel
-        value is converted to CIE 1931 XYZ but they do not define what
-        sub-volume of the container color volume in XYZ is meaningful for the
-        content. The mastering display primaries help defining this target color
-        volume. Compositors may use the target color volume to improve gamut
-        mapping when applicable for the chosen rendering intent.
+        The mastering display primaries define the target color volume.
 
         If mastering display primaries are not explicitly set, the target
         color volume is assumed to be equal to the primary color volume.
+
+        The target color volume is defined by all tristimulus values between 0.0
+        and 1.0 (inclusive) of the color space defined by the given mastering
+        display primaries and white point. The colorimetry is identical between
+        the container color space and the mastering display color space,
+        including that no chromatic adaptation is applied even if the white
+        points differ.
 
         The target color volume can exceed the primary color volume to allow for
         a greater color volume with an existing color space definition (for
