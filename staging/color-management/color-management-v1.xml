@@ -880,34 +880,39 @@
 
     <request name="get_information">
       <description summary="get information about the image description">
-        As a reply to this request, the compositor shall send all matching
-        information events describing this image description object and finally
-        the 'done' event.
-
-        Each information event may only be sent as a response to get_information
-        request, and it may only be sent once.
-
-        Every get_information request on the same object shall always return the
-        exact same data.
+        Creates a wp_image_description_info_v1 object which delivers the
+        information that makes up the image description.
 
         Not all image description protocol objects allow get_information
         request. Whether it is allowed or not is defined by the request that
         created the object. If get_information is not allowed, the protocol
         error no_information is raised.
       </description>
-    </request>
 
-    <event name="done">
+      <arg name="information" type="new_id" interface="wp_image_description_info_v1"/>
+    </request>
+  </interface>
+
+  <interface name="wp_image_description_info_v1" version="1">
+    <description summary="Colorimetric image description information">
+      Sends all matching events describing an image description object exactly
+      once and finally sends the 'done' event.
+
+      Once a wp_image_description_info_v1 object has delivered a 'done' event
+      it is automatically destroyed.
+
+      Every wp_image_description_info_v1 created from the same
+      wp_image_description_v1 shall always return the exact same data.
+    </description>
+
+    <event name="done" type="destructor">
       <description summary="end of information">
-        Signals the end of an information event sequence. This shall be sent
-        only and exactly once for each get_information request on this object.
+        Signals the end of information events and destroys the object.
       </description>
     </event>
 
     <event name="icc_file">
       <description summary="ICC profile matching the image description">
-        This is an information event, see get_information.
-
         The icc argument provides a file descriptor to the client which may be
         memory-mapped to provide the ICC profile matching the image description.
         The fd is read-only, and if mapped then it must be mapped with
@@ -925,8 +930,6 @@
 
     <event name="primaries">
       <description summary="primaries as chromaticity coordinates">
-        This is an information event, see get_information.
-
         Delivers the primary color volume primaries and white point
         using CIE 1931 xy chromaticity coordinates.
 
@@ -946,8 +949,6 @@
 
     <event name="primaries_cicp">
       <description summary="H.273 ColourPrimaries code">
-        This is an information event, see get_information.
-
         This event provides the H.273 ColourPrimaries code matching the
         primary color volume primaries and white point of this
         image description.
@@ -958,8 +959,6 @@
 
     <event name="tf_cicp">
       <description summary="H.273 TransferCharacteristics code">
-        This is an information event, see get_information.
-
         This event provides the H.273 TransferCharacteristics code matching
         the transfer characteristics of this image description.
       </description>
@@ -969,8 +968,6 @@
 
     <event name="tf_power">
       <description summary="transfer characteristic as a power curve">
-        This is an information event, see get_information.
-
         The color component transfer characteristic of this image description
         is a pure power curve. This event provides the exponent of the power
         function. This curve represents the conversion from electrical to
@@ -985,8 +982,6 @@
 
     <event name="target_primaries">
       <description summary="target primaries as chromaticity coordinates">
-        This is an information event, see get_information.
-
         Provides the color primaries and white point of the target
         color volume using CIE 1931 xy chromaticity coordinates. This is
         compatible with the SMPTE ST 2086 definition of HDR static metadata
@@ -1013,8 +1008,6 @@
 
     <event name="target_luminance">
       <description summary="target luminance range">
-        This is an information event, see get_information.
-
         Provides the luminance range that the image description is targeting
         as the minimum and maximum absolute luminance L. This is compatible
         with the SMPTE ST 2086 definition of HDR static metadata.
@@ -1032,8 +1025,6 @@
 
     <event name="target_max_cll">
       <description summary="target maximum content light level">
-        This is an information event, see get_information.
-
         Provides the targeted max_cll of the image description. max_cll is
         defined by CTA-861-H.
 
@@ -1046,8 +1037,6 @@
 
     <event name="target_max_fall">
       <description summary="target maximum frame-average light level">
-        This is an information event, see get_information.
-
         Provides the targeted max_fall of the image description. max_fall is
         defined by CTA-861-H.
 
