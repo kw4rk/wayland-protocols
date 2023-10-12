@@ -472,6 +472,10 @@
         having the given length. The fd must seekable and readable. Violating
         these requirements raises the bad_fd protocol error.
 
+        If reading the data fails due to an error independent of the client, the
+        compositor shall send the wp_image_description_v1.failed event on the
+        created wp_image_description_v1 with the 'operating_system' cause.
+
         The maximum size of the ICC profile is 4 MB. If length is greater
         than that or zero, the protocol error bad_size is raised.
 
@@ -826,6 +830,7 @@
 
       <entry name="low_version" value="0" summary="interface version too low"/>
       <entry name="unsupported" value="1" summary="unsupported image description data"/>
+      <entry name="operating_system" value="2" summary="error independent of the client"/>
     </enum>
 
     <event name="failed">
