@@ -611,6 +611,12 @@
         wp_color_manager_v1.render_intent event, otherwise the protocol error
         render_intent is raised.
 
+        When an image description is set on a surface, the Transfer
+        Characteristics of the image description defines the valid range of
+        the nominal (real-valued) color channel values. The processing of
+        out-of-range color channel values is undefined, but compositors are
+        recommended to clamp the values to the valid range when possible.
+
         By default, a surface does not have an associated image description
         nor a rendering intent. The handling of color on such surfaces is
         compositor implementation defined. Compositors should handle such
