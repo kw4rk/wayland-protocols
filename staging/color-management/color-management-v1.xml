@@ -277,12 +277,17 @@
 
         The resulting image description object allows get_information request.
 
+        If the output no longer exists in the compositor, the resulting image
+        description object shall immediately deliver the
+        wp_image_description_v1.failed event with the no_output cause.
+
         If the interface version is inadequate for the output's image
         description, meaning that the client does not support all the
         events needed to deliver the crucial information, the resulting image
         description object shall immediately deliver the
-        wp_image_description_v1.failed event with the low_version cause,
-        otherwise the object shall immediately deliver the ready event.
+        wp_image_description_v1.failed event with the low_version cause.
+
+        Otherwise the object shall immediately deliver the ready event.
       </description>
 
       <arg name="image_description" type="new_id" interface="wp_image_description_v1"/>
@@ -831,6 +836,7 @@
       <entry name="low_version" value="0" summary="interface version too low"/>
       <entry name="unsupported" value="1" summary="unsupported image description data"/>
       <entry name="operating_system" value="2" summary="error independent of the client"/>
+      <entry name="no_output" value="3" summary="the relevant output no longer exists"/>
     </enum>
 
     <event name="failed">
