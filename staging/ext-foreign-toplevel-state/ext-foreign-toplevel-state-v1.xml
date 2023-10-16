@@ -145,8 +145,9 @@
         The toplevel has entered the output. Like wl_surface.enter, the toplevel
         may overlap with zero or more outputs.
 
-        The implementation may not send this event unless the client has bound the
-        output.
+        The "output" in this event is the global name of the output as specified in
+        the wl_registry.global event. The compositor must not send this event with
+        a global name that has been removed.
 
         If the ext_foreign_toplevel_handle_v1.finished event was received, then the
         compositor must not send this event.
@@ -154,7 +155,7 @@
         The configured state must not be applied immediately. See
         ext_foreign_toplevel_handle_v1.done for details.
       </description>
-      <arg name="output" type="object" interface="wl_output"/>
+      <arg name="output" type="uint" summary="global name of output"/>
     </event>
 
     <event name="output_leave">
@@ -163,8 +164,9 @@
         may leave the output due to movement, resizing or the output is being
         destroyed.
 
-        The implementation may not send this event unless the client has bound the
-        output.
+        The "output" in this event is the global name of the output as specified in
+        the wl_registry.global event. When the output global is removed, the compositor
+        must send this event to notify the client the output has been left.
 
         If the ext_foreign_toplevel_handle_v1.finished event was received, then the
         compositor must not send this event.
@@ -172,7 +174,7 @@
         The configured state must not be applied immediately. See
         ext_foreign_toplevel_handle_v1.done for details.
       </description>
-      <arg name="output" type="object" interface="wl_output"/>
+      <arg name="output" type="uint" summary="global name of output"/>
     </event>
 
     <event name="parent">
