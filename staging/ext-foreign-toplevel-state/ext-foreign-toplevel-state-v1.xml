@@ -182,7 +182,10 @@
         This event is emitted whenever the parent of the toplevel changes. A
         value of NULL means that there is no parent.
 
-        No event is emitted when the parent handle is destroyed by the client.
+        The compositor must only send a ext_foreign_toplevel_handle_v1 object
+        which was created using the same ext_foreign_toplevel_list object as
+        the ext_foreign_toplevel_handle_v1 object this interface extends. No
+        event is emitted when the parent handle is destroyed by the client.
 
         If the ext_foreign_toplevel_handle_v1.finished event was received, then the
         compositor must not send this event.
@@ -190,7 +193,8 @@
         The configured state must not be applied immediately. See
         ext_foreign_toplevel_handle_v1.done for details.
       </description>
-      <arg name="parent" type="object" interface="ext_foreign_toplevel_handle_v1" allow-null="true"/>
+      <arg name="parent" type="object" interface="ext_foreign_toplevel_handle_v1" allow-null="true"
+        summary="parent of the toplevel"/>
     </event>
   </interface>
 </protocol>
