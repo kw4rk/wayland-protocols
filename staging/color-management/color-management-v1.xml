@@ -331,7 +331,9 @@
 
         By default, a surface does not have an associated image description
         nor a rendering intent. The handling of color on such surfaces is
-        compositor implementation defined.
+        compositor implementation defined. Compositors should handle such
+        surfaces as sRGB but may handle them differently if they have specific
+        requirements.
       </description>
 
       <arg name="image_description" type="object" interface="wp_image_description_v1"/>
