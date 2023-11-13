@@ -242,6 +242,12 @@
       destroyed, the wp_color_management_output_v1 object becomes inert.
     </description>
 
+    <enum name="error">
+      <description summary="protocol errors"/>
+
+      <entry name="inert" value="0" summary="forbidden request on inert object"/>
+    </enum>
+
     <request name="destroy" type="destructor">
       <description summary="destroy the color management output">
         Destroy the color wp_color_management_output_v1 object. This does not
@@ -265,6 +271,8 @@
 
     <request name="get_image_description">
       <description summary="get the image description of the output">
+        If this protocol object is inert, the protocol error inert is raised.
+
         This creates a new wp_image_description_v1 object for the current image description
         of the output. There always is exactly one image description active for an
         output so the client should destroy the image description created by earlier
