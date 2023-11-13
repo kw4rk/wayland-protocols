@@ -323,6 +323,7 @@
     <enum name="error">
       <description summary="protocol errors"/>
 
+      <entry name="inert" value="0" summary="forbidden request on inert object"/>
       <entry name="render_intent" value="1" summary="unsupported rendering intent"/>
     </enum>
 
@@ -386,6 +387,8 @@
 
     <request name="get_preferred">
       <description summary="get the preferred image description">
+        If this protocol object is inert, the protocol error inert is raised.
+
         This creates a new wp_image_description_v1 object for the currently
         preferred image description for the wl_surface. The client should
         stop using and destroy the image descriptions created by earlier
