@@ -325,7 +325,7 @@
       </entry>
     </enum>
 
-    <request name="get_color_management_output">
+    <request name="get_output">
       <description summary="create a color management interface for a wl_output">
         This creates a new wp_color_management_output_v1 object for the
         given wl_output.
@@ -337,7 +337,7 @@
       <arg name="output" type="object" interface="wl_output"/>
     </request>
 
-    <request name="get_color_management_surface">
+    <request name="get_surface">
       <description summary="create a color management interface for a wl_surface">
         This creates a new color wp_color_management_surface_v1 object for the
         given wl_surface.
