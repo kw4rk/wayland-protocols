@@ -218,7 +218,7 @@
       </entry>
     </enum>
 
-    <enum name="transfer_functions">
+    <enum name="transfer_function">
       <description summary="named transfer functions">
         Named Transfer Functions.
       </description>
@@ -402,24 +402,24 @@
       <arg name="feature" type="uint" enum="feature" summary="supported feature"/>
     </event>
 
-    <event name="supported_named_tf">
+    <event name="supported_tf_named">
       <description summary="supported named transfer characteristic">
         When this object is created, it shall immediately send this event
         once for each named transfer function the compositor
         supports with the parametric image description creator.
       </description>
 
-      <arg name="tf_code" type="uint" enum="transfer_functions" summary="Named transfer function"/>
+      <arg name="tf" type="uint" enum="transfer_function" summary="Named transfer function"/>
     </event>
 
-    <event name="supported_named_primaries">
+    <event name="supported_primaries_named">
       <description summary="supported named primaries">
         When this object is created, it shall immediately send this event
         once for each named set of primaries the compositor
         supports with the parametric image description creator.
       </description>
 
-      <arg name="primaries_code" type="uint" enum="primaries" summary="Named color primaries"/>
+      <arg name="primaries" type="uint" enum="primaries" summary="Named color primaries"/>
     </event>
   </interface>
 
@@ -798,19 +798,19 @@
       <arg name="image_description" type="new_id" interface="wp_image_description_v1"/>
     </request>
 
-    <request name="set_named_tf">
-      <description summary="named transfer characteristic" >
+    <request name="set_tf_named">
+      <description summary="named transfer characteristic">
         Sets the transfer characteristic using explicitly enumerated named functions.
 
         Only names advertised with wp_color_manager_v1
-        event supported_named_tf are allowed. Other values shall raise the
+        event supported_tf_named are allowed. Other values shall raise the
         protocol error invalid_tf.
 
         If transfer characteristic has already been set on this object, the
         protocol error already_set is raised.
       </description>
 
-      <arg name="tf" type="uint" enum="transfer_functions" summary="named transfer function"/>
+      <arg name="tf" type="uint" enum="transfer_function" summary="named transfer function"/>
     </request>
 
     <request name="set_tf_power">
@@ -836,14 +836,14 @@
       <arg name="eexp" type="uint" summary="the exponent * 10000"/>
     </request>
 
-    <request name="set_named_primaries">
+    <request name="set_primaries_named">
       <description summary="named primaries">
         Sets the color primaries and white point using explicitly named sets.
         This describes the primary color volume which is the basis
         for color value encoding.
 
         Only names advertised with wp_color_manager_v1
-        event supported_named_primaries are allowed. Other values shall raise the
+        event supported_primaries_named are allowed. Other values shall raise the
         protocol error invalid_primaries.
 
         If primaries have already been set on this object, the protocol error
@@ -1164,23 +1164,13 @@
       <arg name="w_y" type="uint" summary="White y * 10000"/>
     </event>
 
-    <event name="primaries_cicp">
-      <description summary="H.273 ColourPrimaries code">
-        This event provides the H.273 ColourPrimaries code matching the
-        primary color volume primaries and white point of this
-        image description.
+    <event name="primaries_named">
+      <description summary="named primaries">
+        Delivers the primary color volume primaries and white point using a
+        explicitly enumerated named set.
       </description>
 
-      <arg name="primaries_code" type="uint" summary="H.273 ColourPrimaries code"/>
-    </event>
-
-    <event name="tf_cicp">
-      <description summary="H.273 TransferCharacteristics code">
-        This event provides the H.273 TransferCharacteristics code matching
-        the transfer characteristics of this image description.
-      </description>
-
-      <arg name="tf_code" type="uint" summary="H.273 TransferCharacteristics code"/>
+      <arg name="primaries" type="uint" enum="wp_color_manager_v1.primaries" summary="named primaries"/>
     </event>
 
     <event name="tf_power">
@@ -1195,6 +1185,15 @@
       </description>
 
       <arg name="eexp" type="uint" summary="the exponent * 10000"/>
+    </event>
+
+    <event name="tf_named">
+      <description summary="named transfer characteristic">
+        Delivers the transfer characteristic using an explicitly enumerated
+        named function.
+      </description>
+
+      <arg name="tf" type="uint" enum="wp_color_manager_v1.transfer_function" summary="named transfer function"/>
     </event>
 
     <event name="target_primaries">
