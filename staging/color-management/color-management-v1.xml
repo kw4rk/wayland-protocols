@@ -636,6 +636,7 @@
       <entry name="already_set" value="2" summary="property already set"/>
       <entry name="bad_fd" value="3" summary="fd not seekable and readable"/>
       <entry name="bad_size" value="4" summary="no or too much data"/>
+      <entry name="out_of_file" value="5" summary="offset + length exceeds file size"/>
     </enum>
 
     <request name="create">
@@ -684,6 +685,8 @@
 
         The maximum size of the ICC profile is 4 MB. If length is greater
         than that or zero, the protocol error bad_size is raised.
+	If offset + length exceeds the file size, the protocol error
+	out_of_file is raised.
 
         A compositor may read the file at any time starting from this request
         and only until whichever happens first:
