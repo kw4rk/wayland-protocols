@@ -72,7 +72,7 @@
     </request>
   </interface>
 
-  <interface name="zxdg_toplevel_decoration_v1" version="1">
+  <interface name="zxdg_toplevel_decoration_v1" version="2">
     <description summary="decoration object for a toplevel surface">
       The decoration object allows the compositor to toggle server-side window
       decorations for a toplevel surface. The client can request to switch to
@@ -106,7 +106,7 @@
         summary="no server-side window decoration"/>
       <entry name="server_side" value="2"
         summary="server-side window decoration drawn around the given window."/>
-      <entry name="server_side_overlay" value="3"
+      <entry name="server_side_overlay" value="3" since="2"
         summaary="server-side-overlay window decorations drawn over the window."/>
     </enum>
 
@@ -156,7 +156,7 @@
       <arg name="mode" type="uint" enum="mode" summary="the decoration mode"/>
     </event>
 
-    <event name="configure-overlay">
+    <event name="configure-overlay" since="2">
       <description summary="notify a decoration overlay layout change">
         The configure-overlay event configures the layout of the decoration overlay.
         The configured layout should not be applied immediately. Clients must send an
@@ -171,7 +171,7 @@
       <arg name="height" type="uint" summary="the height of the drawn decoration overlay"/>
     </event>
 
-    <enum name="overlay-location">
+    <enum name="overlay-location" since="2">
       <description summary="location of a window decoration overlay on a window">
         These values describe locations for overlaid window decorations.
       </description>
