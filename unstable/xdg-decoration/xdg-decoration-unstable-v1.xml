@@ -34,7 +34,7 @@
 
       A client can use this protocol to request being decorated by a supporting
       compositor. It can choose to have decorations drawn around it or to have
-      them overlayed on top of it.
+      them overlaid on top of it.
 
       If compositor and client do not negotiate the use of a server-side
       decoration using this protocol, clients continue to self-decorate as they
@@ -173,7 +173,7 @@
 
     <enum name="overlay-location">
       <description summary="location of a window decoration overlay on a window">
-        These values describe locations for overlayed window decorations.
+        These values describe locations for overlaid window decorations.
       </description>
       <entry name="left" value="1"
         summary="window decoration placed on the upper right corner of the window"/>
