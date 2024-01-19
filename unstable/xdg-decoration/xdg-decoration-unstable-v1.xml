@@ -156,7 +156,19 @@
       <arg name="mode" type="uint" enum="mode" summary="the decoration mode"/>
     </event>
 
-    <event name="configure-overlay" since="2">
+    <enum name="overlay_location" since="2">
+      <description summary="location of a window decoration overlay on a window">
+        These values describe locations for overlaid window decorations.
+      </description>
+      <entry name="left" value="1"
+        summary="window decoration placed on the upper right corner of the window"/>
+      <entry name="right" value="2"
+        summary="window decoration placed on the upper right corner of the window"/>
+      <entry name="center" value="3"
+        summary="window decoration placed on the center of the top edge of the screen"/>
+    </enum>
+
+    <event name="configure_overlay" since="2">
       <description summary="notify a decoration overlay layout change">
         The configure-overlay event configures the layout of the decoration overlay.
         The configured layout should not be applied immediately. Clients must send an
@@ -166,21 +178,9 @@
         A configure-overlaay event can be sent at any time if the server_side_overlay
         mode is on.
       </description>
-      <arg name="location" type="uint" enum="overlay-location" summary="where the decoration overlay will be drawn"/>
+      <arg name="location" type="uint" enum="overlay_location" summary="where the decoration overlay will be drawn"/>
       <arg name="width" type="uint" summary="the width of the drawn decoration overlay"/>
       <arg name="height" type="uint" summary="the height of the drawn decoration overlay"/>
     </event>
-
-    <enum name="overlay-location" since="2">
-      <description summary="location of a window decoration overlay on a window">
-        These values describe locations for overlaid window decorations.
-      </description>
-      <entry name="left" value="1"
-        summary="window decoration placed on the upper right corner of the window"/>
-      <entry name="right" value="2"
-        summary="window decoration placed on the upper right corner of the window"/>
-      <entry name="center" value="2"
-        summary="window decoration placed on the center of the top edge of the screen"/>
-    </enum>
   </interface>
 </protocol>
