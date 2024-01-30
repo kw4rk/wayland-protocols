@@ -498,7 +498,7 @@
         Destroy the wp_color_management_surface_v1 object.
 
         When the last wp_color_management_surface_v1 object for a wl_surface
-        is destroyed, it does the same as set_default_image_description.
+        is destroyed, it does the same as unset_image_description.
       </description>
     </request>
 
@@ -537,10 +537,11 @@
            summary="rendering intent"/>
     </request>
 
-    <request name="set_default_image_description">
-      <description summary="set the surface image description to default">
-        This request sets the surface image description to the defaults, see
-        set_image_description. This is double-buffered state, see
+    <request name="unset_image_description">
+      <description summary="remove the surface image description">
+        This request removes any image description from the surface. See
+        set_image_description for how a compositor handles a surface without
+	an image description. This is double-buffered state, see
         wl_surface.commit.
       </description>
     </request>
