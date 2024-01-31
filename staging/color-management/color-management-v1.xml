@@ -148,7 +148,7 @@
         </description>
       </entry>
       <entry name="pal_m" value="1">
-        <description summary="Color primaries for PAL-M as defined by the BT.407 standard">
+        <description summary="Color primaries for PAL-M as defined by the BT.470 standard">
           Color primaries as defined by
           - Rec. ITU-R BT.470-6 System M (historical)
           - United States National Television System Committee 1953 Recommendation for transmission standards for color television
