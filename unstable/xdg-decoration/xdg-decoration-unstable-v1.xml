@@ -107,7 +107,7 @@
       <entry name="server_side" value="2"
         summary="server-side window decoration drawn around the given window."/>
       <entry name="server_side_overlay" value="3" since="2"
-        summaary="server-side-overlay window decorations drawn over the window."/>
+        summary="server-side-overlay window decorations drawn over the window."/>
     </enum>
 
     <request name="set_mode">
