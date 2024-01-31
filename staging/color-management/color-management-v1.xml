@@ -280,7 +280,7 @@
         </description>
       </entry>
       <entry name="bt1361" value="8">
-        <description summary="BT.1361 transfer function">
+        <description summary="BT.1361 extended transfer function">
           Transfer characteristics as defined by
           - Rec. ITU-R BT.1361-0 extended colour gamut system (historical)
           Equivalent to H.273 TransferCharacteristics code point 12.
