@@ -609,29 +609,22 @@
       set. There may be several alternative requests for setting each property,
       and in that case the client must choose one of them.
 
-      Once all properties have been set, the create request can be used to
-      create the image description object. Finally, the params object should
-      be destroyed.
+      Once all properties have been set, the create request must be used to
+      create the image description object, destroying the creator in the
+      process.
     </description>
-
-    <request name="destroy" type="destructor">
-      <description summary="destroy">
-        Destroys this object. No other object is affected.
-      </description>
-    </request>
 
     <enum name="error">
       <description summary="protocol errors"/>
 
       <entry name="incomplete_set" value="0" summary="incomplete parameter set"/>
-      <entry name="already_used" value="1" summary="create request already done"/>
-      <entry name="already_set" value="2" summary="property already set"/>
-      <entry name="bad_fd" value="3" summary="fd not seekable and readable"/>
-      <entry name="bad_size" value="4" summary="no or too much data"/>
-      <entry name="out_of_file" value="5" summary="offset + length exceeds file size"/>
+      <entry name="already_set" value="1" summary="property already set"/>
+      <entry name="bad_fd" value="2" summary="fd not seekable and readable"/>
+      <entry name="bad_size" value="3" summary="no or too much data"/>
+      <entry name="out_of_file" value="4" summary="offset + length exceeds file size"/>
     </enum>
 
-    <request name="create">
+    <request name="create" type="destructor">
       <description summary="Create the image description object from ICC data">
         Create an image description object based on the ICC information
         previously set on this object. A compositor must parse the ICC data in
@@ -648,12 +641,7 @@
         information, the wp_image_description_v1.ready event will eventually
         be sent instead.
 
-        This request can be issued at most once during the lifetime of the
-        wp_image_description_creator_icc_v1 object, after which the only
-        legal request is destroy. Otherwise the protocol error already_used
-        is raised.
-
-        A client should destroy this object immediately after this request.
+        This request destroys the wp_image_description_creator_icc_v1 object.
 
         The resulting image description object does not allow get_information
         request.
@@ -677,8 +665,8 @@
 
         The maximum size of the ICC profile is 4 MB. If length is greater
         than that or zero, the protocol error bad_size is raised.
-	If offset + length exceeds the file size, the protocol error
-	out_of_file is raised.
+        If offset + length exceeds the file size, the protocol error
+        out_of_file is raised.
 
         A compositor may read the file at any time starting from this request
         and only until whichever happens first:
@@ -733,31 +721,24 @@
       set. There may be several alternative requests for setting each property,
       and in that case the client must choose one of them.
 
-      Once all properties have been set, the create request can be used to
-      create the image description object. Finally, the params object should
-      be destroyed.
+      Once all properties have been set, the create request must be used to
+      create the image description object, destroying the creator in the
+      process.
     </description>
-
-    <request name="destroy" type="destructor">
-      <description summary="destroy">
-        Destroys this object. No other object is affected.
-      </description>
-    </request>
 
     <enum name="error">
       <description summary="protocol errors"/>
 
       <entry name="incomplete_set" value="0" summary="incomplete parameter set"/>
       <entry name="inconsistent_set" value="1" summary="invalid combination of parameters"/>
-      <entry name="already_used" value="2" summary="create request already done"/>
-      <entry name="already_set" value="3" summary="property already set"/>
-      <entry name="invalid_tf" value="4" summary="invalid transfer characteristic"/>
-      <entry name="invalid_primaries" value="5" summary="invalid primaries or white point"/>
-      <entry name="invalid_luminance" value="6" summary="invalid luminance value or range"/>
-      <entry name="invalid_mastering" value="7" summary="invalid mastering information"/>
+      <entry name="already_set" value="2" summary="property already set"/>
+      <entry name="invalid_tf" value="3" summary="invalid transfer characteristic"/>
+      <entry name="invalid_primaries" value="4" summary="invalid primaries or white point"/>
+      <entry name="invalid_luminance" value="5" summary="invalid luminance value or range"/>
+      <entry name="invalid_mastering" value="6" summary="invalid mastering information"/>
     </enum>
 
-    <request name="create">
+    <request name="create" type="destructor">
       <description summary="Create the image description object using params">
         Create an image description object based on the parameters previously
         set on this object.
@@ -773,12 +754,8 @@
         parameter set, the wp_image_description_v1.ready event will eventually
         be sent instead.
 
-        This request can be issued at most once during the lifetime of the
-        wp_image_description_creator_params_v1 object, after which the only
-        legal request is destroy. Otherwise the protocol error already_used
-        is raised.
-
-        A client should destroy this object immediately after this request.
+        This request destroys the wp_image_description_creator_params_v1
+        object.
 
         The resulting image description object does not allow get_information
         request.
