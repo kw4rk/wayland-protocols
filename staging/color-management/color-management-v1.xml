@@ -428,12 +428,6 @@
       A wp_color_management_output_v1 describes the color properties of an
       output.
 
-      When wp_color_management_output_v1 object is created, it will send
-      its initial events followed by a wl_output.done event. When creating
-      wl_output and its extension objects, use a final wl_display.sync to
-      guarantee that all output events have been received across all
-      extensions.
-
       The wp_color_management_output_v1 is associated with the wl_output global
       underlying the wl_output object. Therefore the client destroying the
       wl_output object has no impact, but the compositor removing the output
@@ -452,8 +446,6 @@
         This event is sent whenever the image description of the
         output changed, followed by one wl_output.done event common to
         output events across all extensions.
-
-        This is not an initial event.
 
         If the client wants to use the updated image description, it needs
         to do get_image_description again, because image description objects
