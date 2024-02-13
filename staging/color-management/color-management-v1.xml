@@ -82,6 +82,7 @@
 
     <enum name="error">
       <entry name="unsupported_feature" value="0" summary="request not supported"/>
+      <entry name="surface_exists" value="1" summary="color management surface exists already"/>
     </enum>
 
     <enum name="render_intent">
@@ -339,6 +340,9 @@
 
     <request name="get_surface">
       <description summary="create a color management interface for a wl_surface">
+        If a wp_color_management_surface_v1 object already exists for the given
+        wl_surface, the protocol error surface_exists is raised.
+
         This creates a new color wp_color_management_surface_v1 object for the
         given wl_surface.
 
@@ -495,10 +499,8 @@
 
     <request name="destroy" type="destructor">
       <description summary="destroy the color management interface for a surface">
-        Destroy the wp_color_management_surface_v1 object.
-
-        When the last wp_color_management_surface_v1 object for a wl_surface
-        is destroyed, it does the same as unset_image_description.
+        Destroy the wp_color_management_surface_v1 object and do the same as
+        unset_image_description.
       </description>
     </request>
 
@@ -541,7 +543,7 @@
       <description summary="remove the surface image description">
         This request removes any image description from the surface. See
         set_image_description for how a compositor handles a surface without
-	an image description. This is double-buffered state, see
+        an image description. This is double-buffered state, see
         wl_surface.commit.
       </description>
     </request>
