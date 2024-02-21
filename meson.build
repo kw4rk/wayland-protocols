@@ -51,6 +51,7 @@ staging_protocols = {
 	'xdg-activation': ['v1'],
 	'xdg-toplevel-drag': ['v1'],
 	'xwayland-shell': ['v1'],
+	'ext-audio-surface': ['v1'],
 }
 
 protocol_files = []
