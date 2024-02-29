@@ -3,7 +3,7 @@
 
   <copyright>
     Copyright 2014 © Stephen "Lyude" Chandler Paul
-    Copyright 2015-2016 © Red Hat, Inc.
+    Copyright 2015-2024 © Red Hat, Inc.
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation files
@@ -106,7 +106,7 @@
     tool was used on are removed.
   </description>
 
-  <interface name="zwp_tablet_manager_v2" version="1">
+  <interface name="zwp_tablet_manager_v2" version="2">
     <description summary="controller object for graphic tablet devices">
       An object that provides access to the graphics tablets available on this
       system. All tablets are associated with a seat, to get access to the
@@ -130,7 +130,7 @@
     </request>
   </interface>
 
-  <interface name="zwp_tablet_seat_v2" version="1">
+  <interface name="zwp_tablet_seat_v2" version="2">
     <description summary="controller object for graphic tablet devices of a seat">
       An object that provides access to the graphics tablets available on this
       seat. After binding to this interface, the compositor sends a set of
@@ -181,7 +181,7 @@
     </event>
   </interface>
 
-  <interface name="zwp_tablet_tool_v2" version="1">
+  <interface name="zwp_tablet_tool_v2" version="2">
     <description summary="a physical tablet tool">
       An object that represents a physical tool that has been, or is
       currently in use with a tablet in this seat. Each wp_tablet_tool
@@ -567,7 +567,7 @@
     </enum>
   </interface>
 
-  <interface name="zwp_tablet_v2" version="1">
+  <interface name="zwp_tablet_v2" version="2">
     <description summary="graphics tablet device">
       The wp_tablet interface represents one graphics tablet device. The
       tablet interface itself does not generate events; all events are
@@ -651,7 +651,7 @@
     </event>
   </interface>
 
-  <interface name="zwp_tablet_pad_ring_v2" version="1">
+  <interface name="zwp_tablet_pad_ring_v2" version="2">
     <description summary="pad ring">
       A circular interaction area, such as the touch ring on the Wacom Intuos
       Pro series tablets.
@@ -765,7 +765,7 @@
     </event>
   </interface>
 
-  <interface name="zwp_tablet_pad_strip_v2" version="1">
+  <interface name="zwp_tablet_pad_strip_v2" version="2">
     <description summary="pad strip">
       A linear interaction area, such as the strips found in Wacom Cintiq
       models.
@@ -881,7 +881,7 @@
     </event>
   </interface>
 
-  <interface name="zwp_tablet_pad_group_v2" version="1">
+  <interface name="zwp_tablet_pad_group_v2" version="2">
     <description summary="a set of buttons, rings and strips">
       A pad group describes a distinct (sub)set of buttons, rings and strips
       present in the tablet. The criteria of this grouping is usually positional,
@@ -1016,7 +1016,7 @@
     </event>
   </interface>
 
-  <interface name="zwp_tablet_pad_v2" version="1">
+  <interface name="zwp_tablet_pad_v2" version="2">
     <description summary="a set of buttons, rings and strips">
       A pad device is a set of buttons, rings and strips
       usually physically present on the tablet device itself. Some
