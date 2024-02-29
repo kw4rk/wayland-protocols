@@ -598,17 +598,22 @@
     </event>
 
     <event name="id">
-      <description summary="tablet device USB vendor/product id">
-	The USB vendor and product IDs for the tablet device.
+      <description summary="tablet device vendor/product id">
+	The vendor and product IDs for the tablet device.
 
-	If the device has no USB vendor/product ID, this event is not sent.
+	The interpretation of the id depends on the wp_tablet.bustype.
+	Prior to version v2 of this protocol, the id was implied to be a USB
+	vendor and product ID. If no wp_tablet.bustype is sent, the ID
+	is to be interpreted as USB vendor and product ID.
+
+	If the device has no vendor/product ID, this event is not sent.
 	This can happen for virtual devices or non-USB devices, for instance.
 
 	This event is sent in the initial burst of events before the
 	wp_tablet.done event.
       </description>
-      <arg name="vid" type="uint" summary="USB vendor id"/>
-      <arg name="pid" type="uint" summary="USB product id"/>
+      <arg name="vid" type="uint" summary="vendor id"/>
+      <arg name="pid" type="uint" summary="product id"/>
     </event>
 
     <event name="path">
@@ -648,6 +653,30 @@
 	When this event is received, the client must wp_tablet.destroy
 	the object.
       </description>
+    </event>
+
+    <!-- Version 2 additions -->
+
+    <enum name="bustype" since="2">
+      <description summary="bus type ">
+	Describes the bus types this tablet is connected to.
+      </description>
+      <entry name="usb" value="3" summary="USB"/>
+      <entry name="bluetooth" value="5" summary="Bluetooth"/>
+      <entry name="virtual" value="6" summary="Virtual"/>
+      <entry name="serial" value="17" summary="Serial"/>
+      <entry name="i2c" value="24" summary="I2C"/>
+    </enum>
+
+    <event name="bustype" since="2">
+      <description summary="tablet device bus type">
+	The bustype argument is one of the BUS_ defines in the Linux kernel's
+	linux/input.h
+
+	This event is sent in the initial burst of events before the
+	wp_tablet.done event.
+      </description>
+      <arg name="bustype" type="uint" summary="bus type"/>
     </event>
   </interface>
 
