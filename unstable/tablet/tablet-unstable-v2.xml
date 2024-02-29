@@ -574,6 +574,107 @@
     <enum name="error">
       <entry name="role" value="0" summary="given wl_surface has another role"/>
     </enum>
+
+    <!-- version 2 -->
+    <event name="scroll" since="2">
+      <description summary="scroll event">
+	Scroll event notification.
+
+	This event indicates a logical scroll motion along the x and/or y axis.
+	The x and y values are relative deltas of the scroll motion in a coordinate
+	space identical to those of motion events. When applicable, a client can
+	transform its content relative to the scroll distance.
+
+	A compositor must not send a scroll event with both x and y on zero.
+
+	A scroll event may occur outside a scroll_start/scroll_stop sequence to
+	indicate it is a standalone event. This may happen if the compositor is
+	unable to detect boundary conditions (e.g. finger down or button down) and
+	can thus only provide the scroll events. It is up to the client on how to
+	process these events (e.g. whether to provide kinetic scrolling).
+
+	If a scroll_start event is sent by the compositor, all scroll events until
+	a subsequent scroll_stop are part of the same scroll gesture.
+
+	The timestamp of this event is that of the corresponding frame event.
+
+	The scroll and scroll_v120 events are mutually exclusive and must
+	not occur in the same frame.
+      </description>
+      <arg name="x" type="fixed" summary="length of vector in surface-local coordinate space"/>
+      <arg name="y" type="fixed" summary="length of vector in surface-local coordinate space"/>
+    </event>
+
+    <event name="scroll_v120" since="2">
+      <description summary="high-resolution scroll event">
+	Discrete high-resolution scroll information.
+
+	The values of this event is interpreted identical to the
+	wl_pointer.axis_value120 event as of wl_pointer version 8.
+
+	A compositor must not send a scroll_v120 event with both x and y on zero.
+
+	This event carries high-resolution wheel scroll information,
+	with each multiple of 120 representing one logical scroll step
+	(a wheel detent). For example, an scroll_v120 value of 30 is one
+	quarter of a logical scroll step in the positive direction, a value of
+	-240 are two logical scroll steps in the negative direction within the
+	same hardware event.
+	Clients that rely on discrete scrolling should accumulate the
+	values to multiples of 120 before processing the event.
+
+	The timestamp of this event is that of the corresponding frame event.
+
+	The scroll and scroll_v120 events are mutually exclusive and must
+	not occur in the same frame.
+
+	scroll_v120 events may be part of a scroll_start/scroll_stop sequence and follow
+	the same semantics as the scroll event. See the scroll event documentation for
+	details.
+      </description>
+      <arg name="x" type="int" summary="scroll distance as fraction of 120"/>
+      <arg name="y" type="int" summary="scroll distance as fraction of 120"/>
+    </event>
+
+    <event name="scroll_start" since="2">
+      <description summary="scroll sequence start event">
+	Notification about the start of a logical scroll sequence.
+
+	This event signals that a user has initiated a scroll sequence (e.g. by
+	touching a scrollable hardware surface or pressing a button).
+	Such a sequence must comprise of exactly one scroll_start event
+	followed by zero or more scroll or scroll_v120 events and then exactly one
+	scroll_stop event.
+
+	The timestamp of this event is that of the corresponding frame event.
+
+	A scroll_start event may occur in the same frame as a scroll and scroll_v120 event.
+	A scroll_start event may occur in the same frame as a scroll_stop event.
+      </description>
+      <arg name="serial" type="uint" summary="serial of the scroll_start event"/>
+    </event>
+
+    <event name="scroll_stop" since="2">
+      <description summary="scroll sequence stop event">
+	Notification about the end of a logical scroll sequence.
+
+	This event signals that a user has stopped interacting with a scroll sequence
+	(e.g. by lifting a finger or releasing a button).
+	Such a sequence must comprise of exactly one scroll_start event
+	followed by zero or more scroll or scroll_v120 events and then exactly one
+	scroll_stop event.
+
+	If cancelled is nonzero, the scroll sequence was cancelled and a client should
+	attempt to undo any state changes made by this seqeuence.
+
+	The timestamp of this event is that of the corresponding frame event.
+
+	A scroll_stop event may occur in the same frame as a scroll and scroll_v120 event.
+	A scroll_stop event may occur in the same frame as a scroll_start event.
+      </description>
+      <arg name="serial" type="uint" summary="serial of the scroll_stop event"/>
+      <arg name="cancelled" type="uint" summary="this scroll sequence was cancelled"/>
+    </event>
   </interface>
 
   <interface name="zwp_tablet_v2" version="2">
@@ -1174,5 +1275,117 @@
 	the pad itself.
       </description>
     </event>
+
+    <!-- version 2 -->
+    <event name="frame" since="2">
+      <description summary="frame event">
+	Marks the end of a series of axis and/or button updates from the
+	pad. The Wayland protocol requires axis updates to be sent
+	sequentially, however all events within a frame should be considered
+	one hardware event.
+      </description>
+      <arg name="time" type="uint" summary="The time of the event with millisecond granularity"/>
+    </event>
+
+    <event name="scroll" since="2">
+      <description summary="scroll event">
+	Scroll event notification.
+
+	This event indicates a logical scroll motion along the x and/or y axis.
+	The x and y values are relative deltas of the scroll motion in a coordinate
+	space identical to those of motion events. When applicable, a client can
+	transform its content relative to the scroll distance.
+
+	A compositor must not send a scroll event with both x and y on zero.
+
+	A scroll event may occur outside a scroll_start/scroll_stop sequence to
+	indicate it is a standalone event. This may happen if the compositor is
+	unable to detect boundary conditions (e.g. finger down or button down) and
+	can thus only provide the scroll events. It is up to the client on how to
+	process these events (e.g. whether to provide kinetic scrolling).
+
+	If a scroll_start event is sent by the compositor, all scroll events until
+	a subsequent scroll_stop are part of the same scroll gesture.
+
+	The timestamp of this event is that of the corresponding frame event.
+
+	The scroll and scroll_v120 events are mutually exclusive and must
+	not occur in the same frame.
+      </description>
+      <arg name="x" type="fixed" summary="length of vector in surface-local coordinate space"/>
+      <arg name="y" type="fixed" summary="length of vector in surface-local coordinate space"/>
+    </event>
+
+    <event name="scroll_v120" since="2">
+      <description summary="high-resolution scroll event">
+	Discrete high-resolution scroll information.
+
+	The values of this event is interpreted identical to the
+	wl_pointer.axis_value120 event as of wl_pointer version 8.
+
+	A compositor must not send a scroll_v120 event with both x and y on zero.
+
+	This event carries high-resolution wheel scroll information,
+	with each multiple of 120 representing one logical scroll step
+	(a wheel detent). For example, an scroll_v120 value of 30 is one
+	quarter of a logical scroll step in the positive direction, a value of
+	-240 are two logical scroll steps in the negative direction within the
+	same hardware event.
+	Clients that rely on discrete scrolling should accumulate the
+	values to multiples of 120 before processing the event.
+
+	The timestamp of this event is that of the corresponding frame event.
+
+	The scroll and scroll_v120 events are mutually exclusive and must
+	not occur in the same frame.
+
+	scroll_v120 events may be part of a scroll_start/scroll_stop sequence and follow
+	the same semantics as the scroll event. See the scroll event documentation for
+	details.
+      </description>
+      <arg name="x" type="int" summary="scroll distance as fraction of 120"/>
+      <arg name="y" type="int" summary="scroll distance as fraction of 120"/>
+    </event>
+
+    <event name="scroll_start" since="2">
+      <description summary="scroll sequence start event">
+	Notification about the start of a logical scroll sequence.
+
+	This event signals that a user has initiated a scroll sequence (e.g. by
+	touching a scrollable hardware surface or pressing a button).
+	Such a sequence must comprise of exactly one scroll_start event
+	followed by zero or more scroll or scroll_v120 events and then exactly one
+	scroll_stop event.
+
+	The timestamp of this event is that of the corresponding frame event.
+
+	A scroll_start event may occur in the same frame as a scroll and scroll_v120 event.
+	A scroll_start event may occur in the same frame as a scroll_stop event.
+      </description>
+      <arg name="serial" type="uint" summary="serial of the scroll_start event"/>
+    </event>
+
+    <event name="scroll_stop" since="2">
+      <description summary="scroll sequence stop event">
+	Notification about the end of a logical scroll sequence.
+
+	This event signals that a user has stopped interacting with a scroll sequence
+	(e.g. by lifting a finger or releasing a button).
+	Such a sequence must comprise of exactly one scroll_start event
+	followed by zero or more scroll or scroll_v120 events and then exactly one
+	scroll_stop event.
+
+	If cancelled is nonzero, the scroll sequence was cancelled and a client should
+	attempt to undo any state changes made by this seqeuence.
+
+	The timestamp of this event is that of the corresponding frame event.
+
+	A scroll_stop event may occur in the same frame as a scroll and scroll_v120 event.
+	A scroll_stop event may occur in the same frame as a scroll_start event.
+      </description>
+      <arg name="serial" type="uint" summary="serial of the scroll_stop event"/>
+      <arg name="cancelled" type="uint" summary="this scroll sequence was cancelled"/>
+    </event>
+
   </interface>
 </protocol>
