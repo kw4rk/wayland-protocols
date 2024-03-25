@@ -779,7 +779,7 @@
         protocol error already_set is raised.
       </description>
 
-      <arg name="tf" type="uint" enum="transfer_function" summary="named transfer function"/>
+      <arg name="tf" type="uint" enum="wp_color_manager_v1.transfer_function" summary="named transfer function"/>
     </request>
 
     <request name="set_tf_power">
@@ -819,7 +819,7 @@
         already_set is raised.
       </description>
 
-      <arg name="primaries" type="uint" enum="primaries" summary="named primaries"/>
+      <arg name="primaries" type="uint" enum="wp_color_manager_v1.primaries" summary="named primaries"/>
     </request>
 
     <request name="set_primaries">
