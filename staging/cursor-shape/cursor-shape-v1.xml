@@ -22,7 +22,7 @@
     DEALINGS IN THE SOFTWARE.
   </copyright>
 
-  <interface name="wp_cursor_shape_manager_v1" version="1">
+  <interface name="wp_cursor_shape_manager_v1" version="2">
     <description summary="cursor shape manager">
       This global offers an alternative, optional way to set cursor images. This
       new way uses enumerated cursors instead of a wl_surface like
@@ -57,7 +57,7 @@
     </request>
   </interface>
 
-  <interface name="wp_cursor_shape_device_v1" version="1">
+  <interface name="wp_cursor_shape_device_v1" version="2">
     <description summary="cursor shape for a device">
       This interface allows clients to set the cursor shape.
     </description>
