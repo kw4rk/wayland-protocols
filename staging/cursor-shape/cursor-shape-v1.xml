@@ -111,6 +111,7 @@
       <entry name="all_scroll" value="32" summary="something can be scrolled in any direction"/>
       <entry name="zoom_in" value="33" summary="something can be zoomed in"/>
       <entry name="zoom_out" value="34" summary="something can be zoomed out"/>
+      <entry name="dnd_ask" value="35" summary="drag-and-drop: selected drag action is ASK (non-css value)" since="2"/>
     </enum>
 
     <enum name="error">
