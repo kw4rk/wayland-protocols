@@ -68,6 +68,14 @@
 
         The names are taken from the CSS W3C specification:
         https://w3c.github.io/csswg-drafts/css-ui/#cursor
+        with a few additions.
+
+        Note that there are some groups of cursor shapes that are related:
+        The first group is drag-and-drop cursors which are used to indicate
+        the selected action during dnd operations. The second group is resize
+        cursors which are used to indicate resizing and moving possibilities
+        on window borders. It is recommended that the shapes in these groups
+        should use visually compatible images and metaphors.
       </description>
       <entry name="default" value="1" summary="default cursor"/>
       <entry name="context_menu" value="2" summary="a context menu is available for the object under the cursor"/>
