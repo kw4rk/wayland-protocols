@@ -38,8 +38,9 @@
     If this extension is not used, the color representation used is compositor
     implementation defined.
 
-    The code points used in this protocol are defined by Rec ITU-T H.273
-    Coding-independent code points for video signal type identification.
+    Recommendation ITU-T H.273
+    "Coding-independent code points for video signal type identification"
+    shall be referred to as simply H.273 here.
   </description>
 
   <interface name="wp_color_representation_manager_v1" version="1">
@@ -71,35 +72,38 @@
       <arg name="surface" type="object" interface="wl_surface"/>
     </request>
 
-    <event name="coefficients">
-      <description summary="supported matrix coefficients">
-        This event advertises code points that the server supports. The code
-        point defines one formula and the related constants used to derive red,
-        green and blue signals, and the video full range flag.
+    <event name="supported_coefficients_and_ranges">
+      <description summary="supported matrix coefficients and ranges">
+        This event advertises matrix coefficients the server supports in
+        combination with a color range. The values usually correspond to H.273
+        MatrixCoefficients code points that define a formula and the related
+        constants used to derive red, green and blue signals.
 
-        All the supported code points are advertised once when the client binds
+        All the supported values are advertised once when the client binds
         to this interface. A roundtrip after binding guarantees that the client
-        has received all supported code points.
+        has received all supported values.
 
-        For the definition of the code points, see the
-        wp_color_representation_v1::set_coefficients request.
+        For the definition of the supported values, see the
+        wp_color_representation_v1::coefficients and
+        wp_color_representation_v1::range enums.
       </description>
-      <arg name="code_point" type="uint" summary="supported matrix coefficients and full range flag code point"/>
+      <arg name="coefficients" type="uint" enum="wp_color_representation_v1.coefficients" summary="supported matrix coefficients"/>
+      <arg name="range" type="uint" enum="wp_color_representation_v1.range" summary="full range flag"/>
     </event>
 
-    <event name="chroma_location">
-      <description summary="supported chroma location">
-        This event advertises code points that the server supports. The code
-        point represents one chroma location.
+    <event name="supported_chroma_location">
+      <description summary="supported chroma location types">
+        This event advertises chroma location types that the server supports for
+        subsampling. The value represents one chroma location type.
 
-        All the supported code points are advertised once when the client
+        All the supported types are advertised once when the client
         binds to this interface. A roundtrip after binding guarantees that the
         client has received all supported code points.
 
-        For the definition of the code points, see the
-        wp_color_representation_v1::set_chroma_location request.
+        For the definition of the types, see the
+        wp_color_representation_v1::chroma_location enum.
       </description>
-      <arg name="code_point" type="uint" summary="supported chroma location code point"/>
+      <arg name="chroma_location" type="uint" enum="wp_color_representation_v1.chroma_location" summary="supported chroma location type"/>
     </event>
   </interface>
 
@@ -117,7 +121,7 @@
       <entry name="invalid_alpha_mode" value="1" summary="invalid alpha mode"/>
       <entry name="unsupported_coefficients" value="2" summary="unsupported coefficients"/>
       <entry name="unsupported_chroma_location" value="3" summary="unsupported chroma_location"/>
-      <entry name="incompatible_pixel_format" value="4" summary="the pixel format and a code point are incompatible"/>
+      <entry name="incompatible_pixel_format" value="4" summary="the pixel format and a set value are incompatible"/>
     </enum>
 
     <request name="destroy" type="destructor">
@@ -126,7 +130,7 @@
 
         Destroying this object unsets all the color representation metadata for
         the surface. The color representation transformations for the surface
-        are implementation defined when no code point is set. The alpha mode
+        are implementation defined when no values are set. The alpha mode
         becomes premultiplied_electrical.
 
         Unsetting the color representation is double-buffered, see
@@ -157,6 +161,168 @@
       </entry>
     </enum>
 
+    <enum name="coefficients">
+      <description summary="named coefficients">
+        Named matrix coefficients used to encode well-known sets of
+        coefficients. H.273 is the authority, when it comes to the exact values
+        of coefficients and authoritative specifications, where an equivalent
+        code point exists.
+        Descriptions do list the specifications for convenience.
+      </description>
+      <entry name="identity" value="0">
+        <description summary="The identity matrix">
+          Coefficients as defined by
+          - IEC 61966-2-1 sRGB
+          - SMPTE ST 428-1 (2019)
+
+          Equivalent to H.273 MatrixCoefficients code point 0.
+          Compatible with pixel formats of the RGB family.
+        </description>
+      </entry>
+      <entry name="bt709" value="1">
+        <description summary="BT.709 matrix coefficients">
+          Coefficients as defined by
+          - Rec. ITU-R BT.709-6
+          - Rec. ITU-R BT.1361-0 conventional colour gamut system (historical)
+          - Rec. ITU-R BT.1361-0 conventional colour gamut system and extended
+            colour gamut system (historical)
+          - IEC 61966-2-4 xvYCC709
+          - SMPTE RP 177 (1993) Annex B
+
+          Equivalent to H.273 MatrixCoefficients code point 1.
+          Compatible with pixel formats of the YCbCr family.
+        </description>
+      </entry>
+      <entry name="fcc" value="2">
+        <description summary="FCC matrix coefficients">
+          Coefficients as defined by
+          - United States Federal Communications Commission (2003) Title 47
+            Code of Federal Regulations 73.682 (a) (20)
+
+          Equivalent to H.273 MatrixCoefficients code point 4.
+          Compatible with pixel formats of the YCbCr family.
+        </description>
+      </entry>
+      <entry name="bt601" value="3">
+        <description summary="BT.601-7 matrix coefficients">
+          Coefficients as defined by
+          - Rec. ITU-R BT.470-6 System B, G (historical)
+          - Rec. ITU-R BT.601-7 625
+          - Rec. ITU-R BT.601-7 525
+          - Rec. ITU-R BT.1358-0 625 (historical)
+          - Rec. ITU-R BT.1358-1 525 or 625 (historical)
+          - Rec. ITU-R BT.1700-0 625 PAL and 625 SECAM
+          - Rec. ITU-R BT.1700-0 NTSC
+          - IEC 61966-2-1 sYCC
+          - IEC 61966-2-4 xvYCC601
+          - SMPTE ST 170 (2004)
+
+          Equivalent to H.273 MatrixCoefficients code point 5, 6.
+          Compatible with pixel formats of the YCbCr family.
+        </description>
+      </entry>
+      <entry name="smpte240" value="4">
+        <description summary="SMPTE ST 240 matrix coefficients">
+          Coefficients as defined by
+          - RSMPTE ST 240 (1999)
+
+          Equivalent to H.273 MatrixCoefficients code point 7.
+          Compatible with pixel formats of the YCbCr family.
+        </description>
+      </entry>
+      <entry name="bt2020" value="5">
+        <description summary="BT.2020 and BT.2100 YCbCr matrix coefficients">
+          Coefficients as defined by
+          - Rec. ITU-R BT.2020-2 (non-constant luminance)
+          - Rec. ITU-R BT.2100-2 Y′CbCr
+
+          Equivalent to H.273 MatrixCoefficients code point 9.
+          Compatible with pixel formats of the YCbCr family.
+        </description>
+      </entry>
+      <entry name="bt2020_cl" value="6">
+        <description summary="BT.2020 matrix coefficients for constant luminance">
+          Coefficients as defined by
+          - Rec. ITU-R BT.2020-2 (constant luminance)
+
+          Equivalent to H.273 MatrixCoefficients code point 10.
+          Compatible with pixel formats of the YCbCr family.
+        </description>
+      </entry>
+      <entry name="ictcp" value="7">
+        <description summary="BT.2100 ICtCp matrix coefficients">
+          Coefficients as defined by
+          - Rec. ITU-R BT.2100-2 ICTCP
+
+          Equivalent to H.273 MatrixCoefficients code point 14.
+          Compatible with pixel formats of the YCbCr family.
+        </description>
+      </entry>
+    </enum>
+
+    <enum name="range">
+      <description summary="Color range values">
+        Possible color range values.
+      </description>
+      <entry name="full" value="0" summary="Full color range"/>
+      <entry name="limited" value="1" summary="Limited color range"/>
+    </enum>
+
+    <enum name="chroma_location">
+      <description summary="Chrome sample location for ">
+        Chrome sample location as defineded by H.273 Chroma420SampleLocType.
+
+        Descriptions do list matching Vulkan VkChromaLocation combinations for
+        convenience.
+      </description>
+      <entry name="type_0" value="0">
+        <description summary="Horizontal offset of 0, vertical offset of 0.5">
+          Corresponding to VkChromaLocations:
+          - xChromaOffset: VK_CHROMA_LOCATION_COSITED_EVEN
+          - yChromaOffset: VK_CHROMA_LOCATION_MIDPOINT
+
+          Equivalent to H.273 Chroma420SampleLocType 0.
+        </description>
+      </entry>
+      <entry name="type_1" value="1">
+        <description summary="Horizontal offset of 0.5, vertical offset of 0.5">
+          Corresponding to VkChromaLocations:
+          - xChromaOffset: VK_CHROMA_LOCATION_MIDPOINT
+          - yChromaOffset: VK_CHROMA_LOCATION_MIDPOINT
+
+          Equivalent to H.273 Chroma420SampleLocType 1.
+        </description>
+      </entry>
+      <entry name="type_2" value="2">
+        <description summary="Horizontal offset of 0, vertical offset of 0">
+          Corresponding to VkChromaLocations:
+          - xChromaOffset: VK_CHROMA_LOCATION_COSITED_EVEN
+          - yChromaOffset: VK_CHROMA_LOCATION_COSITED_EVEN
+
+          Equivalent to H.273 Chroma420SampleLocType 2.
+        </description>
+      </entry>
+      <entry name="type_3" value="3">
+        <description summary="Horizontal offset of 0.5, vertical offset of 0">
+          Corresponding to VkChromaLocations:
+          - xChromaOffset: VK_CHROMA_LOCATION_MIDPOINT
+          - yChromaOffset: VK_CHROMA_LOCATION_COSITED_EVEN
+
+          Equivalent to H.273 Chroma420SampleLocType 3.
+        </description>
+      </entry>
+      <entry name="type_4" value="4">
+        <description summary="Horizontal offset of 0, vertical offset of 1">
+          Equivalent to H.273 Chroma420SampleLocType 4.
+        </description>
+      </entry>
+      <entry name="type_5" value="5">
+        <description summary="Horizontal offset of 0.5, vertical offset of 1">
+          Equivalent to H.273 Chroma420SampleLocType 5.
+        </description>
+      </entry>
+    </enum>
+
     <request name="set_alpha_mode">
       <description summary="set the surface alpha mode">
         Assuming an alpha channel exists, it is always linear. The alpha mode
@@ -173,58 +339,57 @@
       <arg name="alpha_mode" type="uint" enum="alpha_mode" summary="alpha mode"/>
     </request>
 
-    <request name="set_coefficients">
-      <description summary="set the matrix coefficients">
-        Set the code point which defines the formula and the related constants
-        used to derive red, green and blue signals, and the video full range
-        flag.
+    <request name="set_coefficients_and_range">
+      <description summary="set the matrix coefficients and range">
+        Set the matrix coefficients and video range which defines the formula
+        and the related constants used to derive red, green and blue signals.
+        Usually coefficients correspond to MatrixCoefficients code points in
+        Rec ITU-T H.273.
 
-        Only code points advertised by the compositor are allowed to be used as
-        argument for this request. The "unsupported_coefficients" protocol error
-        is raised otherwise.
+        Only value combinations advertised by the compositor are allowed to be
+        used as argument for this request. The "unsupported_coefficients"
+        protocol error is raised otherwise.
 
-        Bits 7 down to 0 represent a MatrixCoefficients code point as defined in
-        Rec ITU-T H.273. Bit 8 represents the VideoFullRangeFlag flag as defined
-        in Rec ITU-T H.273.
+        A call to wl_surface.commit verifies that the pixel format and value
+        combination in the committed surface contents are compatible if contents
+        exist. The "incompatible_pixel_format" protocol error is raised
+        otherwise.
 
-        A call to wl_surface.commit verifies that the pixel format and
-        MatrixCoefficients code point in the committed surface contents are
-        compatible if contents exist. The "incompatible_pixel_format" protocol
-        error is raised otherwise.
+        A pixel format is compatible with the set values if the related
+        equations and conventions as defined in H.273 can produce the color
+        channels (RGB or YCbCr) of the pixel format.
 
-        A pixel format is compatible with a MatrixCoefficients code point if the
-        equations and conventions listed for the chosen code point (and
-        VideoFullRangeFlag) in Rec ITU-T H.273 can produce the color channels
-        (RGB or YCbCr) of the pixel format.
+        For the definition of the supported values, see the
+        wp_color_representation_v1::coefficients and
+        wp_color_representation_v1::range enums.
 
-        The code point is double-buffered, see wl_surface.commit.
+        The set values are double-buffered, see wl_surface.commit.
       </description>
-      <arg name="code_point" type="uint" summary="matrix coefficients and full range flag code point"/>
+      <arg name="coefficients" type="uint" enum="coefficients" summary="matrix coefficients"/>
+      <arg name="range" type="uint" enum="range" summary="range"/>
     </request>
 
     <request name="set_chroma_location">
       <description summary="set the chroma location">
-        Set the code point which defines the position of downsampled chroma
-        samples.
+        Set the chroma location type which defines the position of downsampled
+        chroma samples, corresponding to Chroma420SampleLocType code points in
+        H.273.
 
-        Only code points advertised by the compositor are allowed to be used as
+        Only types advertised by the compositor are allowed to be used as
         argument for this request. The "unsupported_chroma_location" protocol
         error is raised otherwise.
 
-        The argument is a Chroma420SampleLocType code point as defined in Rec
-        ITU-T H.273.
-
-        A call to wl_surface.commit verifies that the pixel format and
-        Chroma420SampleLocType code point in the committed surface contents are
+        A call to wl_surface.commit verifies that the pixel format and chroma
+        location type code point in the committed surface contents are
         compatible if contents exist. The "incompatible_pixel_format" protocol
         error is raised otherwise.
 
-        A pixel format is compatible with a Chroma420SampleLocType code point if
-        the pixel format is a 4:2:0 subsampled color format.
+        For the definition of the supported values, see the
+        wp_color_representation_v1::chroma_location enum.
 
         The code point is double-buffered, see wl_surface.commit.
       </description>
-      <arg name="code_point" type="uint" summary="chroma 4:2:0 sample location code point"/>
+      <arg name="chroma_location" type="uint" enum="chroma_location" summary="chroma sample location"/>
     </request>
   </interface>
 </protocol>
