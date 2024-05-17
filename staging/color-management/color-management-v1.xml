@@ -4,7 +4,7 @@
     Copyright 2019 Sebastian Wick
     Copyright 2019 Erwin Burema
     Copyright 2020 AMD
-    Copyright 2020, 2022, 2023 Collabora, Ltd.
+    Copyright 2020-2024 Collabora, Ltd.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -848,14 +848,14 @@
         raises the protocol error invalid_primaries.
       </description>
 
-      <arg name="r_x" type="uint" summary="Red x * 10000"/>
-      <arg name="r_y" type="uint" summary="Red y * 10000"/>
-      <arg name="g_x" type="uint" summary="Green x * 10000"/>
-      <arg name="g_y" type="uint" summary="Green y * 10000"/>
-      <arg name="b_x" type="uint" summary="Blue x * 10000"/>
-      <arg name="b_y" type="uint" summary="Blue y * 10000"/>
-      <arg name="w_x" type="uint" summary="White x * 10000"/>
-      <arg name="w_y" type="uint" summary="White y * 10000"/>
+      <arg name="r_x" type="int" summary="Red x * 10000"/>
+      <arg name="r_y" type="int" summary="Red y * 10000"/>
+      <arg name="g_x" type="int" summary="Green x * 10000"/>
+      <arg name="g_y" type="int" summary="Green y * 10000"/>
+      <arg name="b_x" type="int" summary="Blue x * 10000"/>
+      <arg name="b_y" type="int" summary="Blue y * 10000"/>
+      <arg name="w_x" type="int" summary="White x * 10000"/>
+      <arg name="w_y" type="int" summary="White y * 10000"/>
     </request>
 
     <request name="set_mastering_display_primaries">
@@ -908,14 +908,14 @@
         artifacts.
       </description>
 
-      <arg name="r_x" type="uint" summary="Red x * 10000"/>
-      <arg name="r_y" type="uint" summary="Red y * 10000"/>
-      <arg name="g_x" type="uint" summary="Green x * 10000"/>
-      <arg name="g_y" type="uint" summary="Green y * 10000"/>
-      <arg name="b_x" type="uint" summary="Blue x * 10000"/>
-      <arg name="b_y" type="uint" summary="Blue y * 10000"/>
-      <arg name="w_x" type="uint" summary="White x * 10000"/>
-      <arg name="w_y" type="uint" summary="White y * 10000"/>
+      <arg name="r_x" type="int" summary="Red x * 10000"/>
+      <arg name="r_y" type="int" summary="Red y * 10000"/>
+      <arg name="g_x" type="int" summary="Green x * 10000"/>
+      <arg name="g_y" type="int" summary="Green y * 10000"/>
+      <arg name="b_x" type="int" summary="Blue x * 10000"/>
+      <arg name="b_y" type="int" summary="Blue y * 10000"/>
+      <arg name="w_x" type="int" summary="White x * 10000"/>
+      <arg name="w_y" type="int" summary="White y * 10000"/>
     </request>
 
     <request name="set_mastering_luminance">
@@ -1132,14 +1132,14 @@
         value to carry precision of 4 decimals.
       </description>
 
-      <arg name="r_x" type="uint" summary="Red x * 10000"/>
-      <arg name="r_y" type="uint" summary="Red y * 10000"/>
-      <arg name="g_x" type="uint" summary="Green x * 10000"/>
-      <arg name="g_y" type="uint" summary="Green y * 10000"/>
-      <arg name="b_x" type="uint" summary="Blue x * 10000"/>
-      <arg name="b_y" type="uint" summary="Blue y * 10000"/>
-      <arg name="w_x" type="uint" summary="White x * 10000"/>
-      <arg name="w_y" type="uint" summary="White y * 10000"/>
+      <arg name="r_x" type="int" summary="Red x * 10000"/>
+      <arg name="r_y" type="int" summary="Red y * 10000"/>
+      <arg name="g_x" type="int" summary="Green x * 10000"/>
+      <arg name="g_y" type="int" summary="Green y * 10000"/>
+      <arg name="b_x" type="int" summary="Blue x * 10000"/>
+      <arg name="b_y" type="int" summary="Blue y * 10000"/>
+      <arg name="w_x" type="int" summary="White x * 10000"/>
+      <arg name="w_y" type="int" summary="White y * 10000"/>
     </event>
 
     <event name="primaries_named">
@@ -1190,14 +1190,14 @@
         value to carry precision of 4 decimals.
       </description>
 
-      <arg name="r_x" type="uint" summary="Red x * 10000"/>
-      <arg name="r_y" type="uint" summary="Red y * 10000"/>
-      <arg name="g_x" type="uint" summary="Green x * 10000"/>
-      <arg name="g_y" type="uint" summary="Green y * 10000"/>
-      <arg name="b_x" type="uint" summary="Blue x * 10000"/>
-      <arg name="b_y" type="uint" summary="Blue y * 10000"/>
-      <arg name="w_x" type="uint" summary="White x * 10000"/>
-      <arg name="w_y" type="uint" summary="White y * 10000"/>
+      <arg name="r_x" type="int" summary="Red x * 10000"/>
+      <arg name="r_y" type="int" summary="Red y * 10000"/>
+      <arg name="g_x" type="int" summary="Green x * 10000"/>
+      <arg name="g_y" type="int" summary="Green y * 10000"/>
+      <arg name="b_x" type="int" summary="Blue x * 10000"/>
+      <arg name="b_y" type="int" summary="Blue y * 10000"/>
+      <arg name="w_x" type="int" summary="White x * 10000"/>
+      <arg name="w_y" type="int" summary="White y * 10000"/>
     </event>
 
     <event name="target_luminance">
