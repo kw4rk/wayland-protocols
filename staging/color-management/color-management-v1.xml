@@ -756,6 +756,9 @@
         complete, the protocol error incomplete_set is raised. For the
         definition of a complete set, see the description of this interface.
 
+        Also, the combination of the parameter set is verified. If the set is
+        not consistent, the protocol error inconsistent_set is raised.
+
         If the particular combination of the parameter set is not supported
         by the compositor, the resulting image description object shall
         immediately deliver the wp_image_description_v1.failed event with the
