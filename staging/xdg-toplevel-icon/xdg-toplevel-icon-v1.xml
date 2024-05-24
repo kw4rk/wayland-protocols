@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="xdg_toplevel_icon_v1">
+
+  <copyright>
+    Copyright © 2023-2024 Matthias Klumpp
+    Copyright ©      2024 David Edmundson
+    Copyright ©      2024 Red Hat, Inc.
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice (including the next
+    paragraph) shall be included in all copies or substantial portions of the
+    Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+  </copyright>
+
+  <description summary="protocol to assign icons to toplevels">
+    This protocol allows clients to set icons for their toplevel surfaces.
+
+    A toplevel icon represents the individual toplevel (unlike the application
+    or launcher icon, which represents the application as a whole), and may be
+    shown in window switchers, window overviews and taskbars that list
+    individual windows.
+
+    This document adheres to RFC 2119 when using words like "must",
+    "should", "may", etc.
+
+    Warning! The protocol described in this file is currently in the testing
+    phase. Backward compatible changes may be added together with the
+    corresponding interface version bump. Backward incompatible changes can
+    only be done by creating a new major version of the extension.
+  </description>
+
+  <interface name="xdg_toplevel_icon_manager_v1" version="1">
+    <description summary="interface to manage toplevel icons">
+      This interface allows clients to create toplevel icons and set them on
+      toplevels to be displayed to the user.
+    </description>
+
+    <enum name="error">
+      <entry name="already_set"
+             summary="the toplevel icon has already been set"
+	     value="1"/>
+    </enum>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the toplevel icon manager">
+        Destroy the toplevel icon manager. This does not affect any other
+        objects in any way.
+      </description>
+    </request>
+
+    <request name="set_icon">
+      <description summary="set an icon on a toplevel window">
+        This request assigns an icon to a toplevel.
+
+        Setting a toplevel icon must only be done once on per toplevel. If an
+        icon is has already been set for a toplevel, a 'already_set' error must
+        be raised.
+
+        This state is double-buffered and is applied on the next
+        wl_surface.commit of the toplevel.
+      </description>
+      <arg name="toplevel" type="object" 
+           nterface="xdg_toplevel"
+           summary="the toplevel to act on"/>
+      <arg name="icon" type="object"
+           interface="xdg_toplevel_icon_v1"
+           summary="the icon to set"/>
+    </request>
+
+    <request name="create_buffer_builder">
+      <description summary="create a new wl_buffer based builder object">
+        Creates a new wl_buffer based toplevel icon builder object.
+
+        The client can then use the object's interface to assign all the
+        wl_buffers for the toplevel icon and finally create a
+        xdg_toplevel_icon_v1 object.
+      </description>
+      <arg name="obj" type="new_id"
+           interface="xdg_toplevel_icon_builder_buffer_v1"
+           summary="the new builder object"/>
+    </request>
+
+    <event name="icon_size">
+      <description summary="describes a supported and preferred icon size">
+        This event indicates an icon size the compositor prefers to be
+        available if the client has scalable icons and can render to any size.
+
+        When the xdg_toplevel_icon_manager_v1 object is created, zero or more
+        'icon_size' events followed by a 'done' event are sent immediately.
+
+        If no 'icon_size' event is sent, the compositor has no size preference
+        and it is up to the client to decide a suitable icon size.
+      </description>
+      <arg name="size" type="int"
+           summary="the edge size of the square icon in surface-local coordinates, e.g. 64"/>
+    </event>
+
+    <event name="done">
+      <description summary="all information has been sent">
+        This event is sent once, when the xdg_toplevel_icon_manager_v1 was
+        created and all 'icon_size' events have been sent.
+      </description>
+    </event>
+  </interface>
+
+  <interface name="xdg_toplevel_icon_v1" version="1">
+    <description summary="a toplevel window icon">
+      This interface defines a toplevel icon.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the icon object">
+        Destroys the xdg_toplevel_icon_v1 object.
+
+        The icon remains set on every toplevel it was assigned to.
+      </description>
+    </request>
+  </interface>
+
+  <interface name="xdg_toplevel_icon_builder_buffer_v1" version="1">
+    <description summary="a wl_buffer based toplevel icon builder object">
+      This interface defines a toplevel icon.
+
+      This type of object is used for collecting all the wl_buffers assigned
+      to a xdg_toplevel_icon_v1 object.
+
+      The create request verifies that at least one buffer is assigned. The
+      add_buffer request verifies that the wl_buffer is valid.
+
+      Once all buffers have been assigned, the create request must be used to
+      create the toplevel icon object, destroying the builder in the process.
+    </description>
+
+    <enum name="error">
+      <entry name="no_buffers"
+             summary="no wl_buffers have been provided"
+	     value="1"/>
+      <entry name="invalid_buffer"
+             summary="the provided buffer does not satisfy requirements"
+	     value="2"/>
+    </enum>
+
+    <request name="create" type="destructor">
+      <description summary="Create the toplevel icon object using wl_buffers">
+        Create a toplevel icon object based on the wl_buffers previously
+        set on this object.
+
+        If no wl_buffer was assigned, a 'no_buffers' error must be raised.
+
+        This request destroys the xdg_toplevel_icon_builder_buffer_v1 object.
+      </description>
+
+      <arg name="toplevel_icon" type="new_id" interface="xdg_toplevel_icon_v1"/>
+    </request>
+
+    <request name="add_buffer">
+      <description summary="add icon data from a pixel buffer">
+        This request adds pixel data supplied as wl_buffer to the icon.
+
+        The client should add pixel data for all icon sizes and scales that it
+        can provide, or which are explicitly requested by the compositor via
+        'icon_size' events on xdg_toplevel_icon_manager_v1.
+
+        The wl_buffer supplying pixel data as 'buffer' must be backed by wl_shm
+        and must be a square (width and height being equal). If any of these
+        buffer requirements are not fulfilled, a 'invalid_buffer' error must be
+        raised.
+
+        If this icon instance already has a buffer of the same size and scale
+        from a previous 'add_buffer' request, data from the last request
+        overrides the preexisting pixel data.
+
+        If the wl_buffer is destroyed before 'create' is called, the buffer will
+        not be part of the resulting xdg_toplevel_icon_v1.
+
+        The wl_buffer is considered in use by the compositor after calling
+        add_buffer until a wl_buffer.release event is sent.
+
+        If the buffer contents are modified while the buffer is in use by the
+        compositor, the icon contents become instantly undefined.
+      </description>
+      <arg name="buffer" type="object" interface="wl_buffer"/>
+      <arg name="scale" type="int"
+           summary="the scaling factor of the icon, e.g. 1"/>
+    </request>
+  </interface>
+</protocol>
