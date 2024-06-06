@@ -835,6 +835,10 @@
         Sets the transfer characteristic using explicitly enumerated named
         functions.
 
+        When the resulting image description is attached to an image, the
+        content should be encoded and decoded according to the industry standard
+        practices for the transfer characteristic.
+
         Only names advertised with wp_color_manager_v1 event supported_tf_named
         are allowed. Other values shall raise the protocol error invalid_tf.
 
@@ -851,6 +855,9 @@
         Sets the color component transfer characteristic to a power curve with
         the given exponent. This curve represents the conversion from electrical
         to optical pixel or color values.
+
+        When the resulting image description is attached to an image, the
+        content should be encoded with the inverse of the power curve.
 
         The curve exponent shall be multiplied by 10000 to get the argument eexp
         value to carry the precision of 4 decimals.
