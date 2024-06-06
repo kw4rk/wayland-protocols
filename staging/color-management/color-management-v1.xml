@@ -498,6 +498,14 @@
         sent as a reaction to the image_description_changed event or when
         creating a wp_color_management_output_v1 object.
 
+        The image description of an output represents the color encoding the
+        output expects. There might be performance and power advantages, as well
+        as improved color reproduction, if a content update matches the image
+        description of the output it is being shown on. If a content update is
+        shown on any other output than the one it matches the image description
+        of, then the color reproduction on those outputs might be considerably
+        worse.
+
         The created wp_image_description_v1 object preserves the image
         description of the output from the time the object was created.
 
@@ -556,12 +564,16 @@
 
         It is the client's responsibility to understand the image description
         it sets on a surface, and to provide content that matches that image
-        description.
+        description. Compositors might convert images to match their own or any
+        other image descriptions.
 
         Image description whose creation gracefully failed (received
         wp_image_description_v1.failed) are forbidden in this request, and in
-        such case the protocol error image_description is raised. Only image
-        description that received wp_image_description_v1.ready are allowed.
+        such case the protocol error image_description is raised.
+
+        All image descriptions whose creation succeeded (received
+        wp_image_description_v1.ready) are allowed and must always be accepted
+        by the compositor.
 
         A rendering intent provides the client's preference on how content
         colors should be mapped to each output. The render_intent value must
@@ -617,6 +629,12 @@
     <request name="get_preferred">
       <description summary="get the preferred image description">
         If this protocol object is inert, the protocol error inert is raised.
+
+        The preferred image description represents the compositor's preferred
+        color encoding for this wl_surface at the current time. There might be
+        performance and power advantages, as well as improved color
+        reproduction, if the image description of a content update matches the
+        preferred image description.
 
         This creates a new wp_image_description_v1 object for the currently
         preferred image description for the wl_surface. The client should
