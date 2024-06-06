@@ -144,6 +144,7 @@
         Named color primaries used to encode well-known sets of primaries. H.273
         is the authority, when it comes to the exact values of primaries and
         authoritative specifications, where an equivalent code point exists.
+
         Descriptions do list the specifications for convenience.
       </description>
 
@@ -239,7 +240,12 @@
 
     <enum name="transfer_function">
       <description summary="named transfer functions">
-        Named Transfer Functions.
+        Named transfer functions used to encode well-known transfer
+        characteristics. H.273 is the authority, when it comes to the exact
+        formulas and authoritative specifications, where an equivalent code
+        point exists.
+
+        Descriptions do list the specifications for convenience.
       </description>
 
       <entry name="bt709" value="0">
