@@ -809,13 +809,15 @@
              summary="invalid combination of parameters"/>
       <entry name="already_set" value="2"
              summary="property already set"/>
-      <entry name="invalid_tf" value="3"
+      <entry name="unsupported_feature" value="3"
+             summary="request not supported"/>
+      <entry name="invalid_tf" value="4"
              summary="invalid transfer characteristic"/>
-      <entry name="invalid_primaries" value="4"
+      <entry name="invalid_primaries" value="5"
              summary="invalid primaries or white point"/>
-      <entry name="invalid_luminance" value="5"
+      <entry name="invalid_luminance" value="6"
              summary="invalid luminance value or range"/>
-      <entry name="invalid_mastering" value="6"
+      <entry name="invalid_mastering" value="7"
              summary="invalid mastering information"/>
     </enum>
 
@@ -889,7 +891,7 @@
 
         This request can be used when the compositor advertises
         wp_color_manager_v1.feature.set_tf_power. Otherwise this request raises
-        the protocol error invalid_tf.
+        the protocol error unsupported_feature.
       </description>
 
       <arg name="eexp" type="uint" summary="the exponent * 10000"/>
@@ -927,7 +929,7 @@
 
         This request can be used if the compositor advertises
         wp_color_manager_v1.feature.set_primaries. Otherwise this request raises
-        the protocol error invalid_primaries.
+        the protocol error unsupported_feature.
       </description>
 
       <arg name="r_x" type="int" summary="Red x * 10000"/>
@@ -976,7 +978,7 @@
 
         This request can be used if the compositor advertises
         wp_color_manager_v1.feature.set_mastering_display_primaries. Otherwise
-        this request raises the protocol error invalid_mastering. The
+        this request raises the protocol error unsupported_feature. The
         advertisement implies support only for target color volumes fully
         contained within the primary color volume.
 
