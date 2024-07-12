@@ -5,6 +5,7 @@
     Copyright 2019 Erwin Burema
     Copyright 2020 AMD
     Copyright 2020-2024 Collabora, Ltd.
+    Copyright 2024 Xaver Hugl
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -396,6 +397,20 @@
       <arg name="surface" type="object" interface="wl_surface"/>
     </request>
 
+    <request name="get_feedback_surface">
+      <description summary="create a color management feedback interface">
+        This creates a new color wp_color_management_feedback_surface_v1 object
+        for the given wl_surface.
+
+        See the wp_color_management_feedback_surface_v1 interface for more
+        details.
+      </description>
+
+      <arg name="id" type="new_id"
+           interface="wp_color_management_feedback_surface_v1"/>
+      <arg name="surface" type="object" interface="wl_surface"/>
+    </request>
+
     <request name="new_icc_creator">
       <description summary="make a new ICC-based image description creator object">
         Makes a new ICC-based image description creator object with all
@@ -561,12 +576,9 @@
 
     <enum name="error">
       <description summary="protocol errors"/>
-
-      <entry name="inert" value="0"
-             summary="forbidden request on inert object"/>
-      <entry name="render_intent" value="1"
+      <entry name="render_intent" value="0"
              summary="unsupported rendering intent"/>
-      <entry name="image_description" value="2"
+      <entry name="image_description" value="1"
              summary="invalid image description"/>
     </enum>
 
@@ -617,15 +629,35 @@
         wl_surface.commit.
       </description>
     </request>
+  </interface>
+
+  <interface name="wp_color_management_feedback_surface_v1" version="1">
+    <description summary="color management extension to a surface">
+        A wp_color_management_feedback_surface_v1 allows the client to get the
+        preferred color description of a surface.
+
+        If the wl_surface associated with this object is destroyed, the
+        wp_color_management_feedback_surface_v1 object becomes inert.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the color management interface for a surface">
+        Destroy the wp_color_management_feedback_surface_v1 object.
+      </description>
+    </request>
+
+    <enum name="error">
+      <description summary="protocol errors"/>
+      <entry name="inert" value="0"
+             summary="forbidden request on inert object"/>
+    </enum>
 
     <event name="preferred_changed">
-      <description summary="compositor's preferred image description for the surface">
+      <description summary="the preferred image description changed">
         The preferred image description is the one which likely has the most
         performance and/or quality benefits for the compositor if used by the
         client for its wl_surface contents. This event is sent whenever the
         compositor changes the wl_surface's preferred image description.
-
-        This is not an initial event.
 
         This event is merely a notification. When the client wants to know
         what the preferred image description is, it shall use the get_preferred
@@ -655,8 +687,8 @@
         stop using and destroy the image descriptions created by earlier
         invocations of this request for the associated wl_surface.
         This request is usually sent as a reaction to the preferred_changed
-        event or when creating a wp_color_management_surface_v1 object if
-        the client is capable of adapting to image descriptions.
+        event or when creating a wp_color_management_feedback_surface_v1 object
+        if the client is capable of adapting to image descriptions.
 
         The created wp_image_description_v1 object preserves the preferred image
         description of the wl_surface from the time the object was created.
