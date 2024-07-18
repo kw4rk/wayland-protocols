@@ -514,6 +514,26 @@
       </description>
       <arg name="available_actions" type="array" summary="available actions"/>
     </request>
+
+    <request name="show_input_panel" since="2">
+      <description summary="show input panel">
+	Requests an input panel to be shown (e.g. a on-screen keyboard).
+
+	This request only hints the desired interaction pattern from the
+	client side, and its effect may be ignored by compositors given
+	other environmental factors. Repeated calls will be ignored.
+      </description>
+    </request>
+
+    <request name="hide_input_panel" since="2">
+      <description summary="hide input panel">
+	Requests an input panel to be hidden.
+
+	This request only hints the desired interaction pattern from the
+	client side, and its effect may be ignored by compositors given
+	other environmental factors. Repeated calls will be ignored.
+      </description>
+    </request>
   </interface>
 
   <interface name="zwp_text_input_manager_v3" version="2">
