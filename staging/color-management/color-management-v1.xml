@@ -659,9 +659,10 @@
         client for its wl_surface contents. This event is sent whenever the
         compositor changes the wl_surface's preferred image description.
 
-        This event is merely a notification. When the client wants to know
-        what the preferred image description is, it shall use the get_preferred
-        request.
+        This event sends the identity of the new preferred state as the argument,
+        so clients who are aware of the image description already can reuse it.
+        Otherwise, if the client client wants to know what the preferred image
+        description is, it shall use the get_preferred request.
 
         The preferred image description is not automatically used for anything.
         It is only a hint, and clients may set any valid image description with
@@ -670,6 +671,8 @@
         image description. Therefore clients that can, should render according
         to the preferred image description
       </description>
+
+      <arg name="identity" type="uint" summary="image description id number"/>
     </event>
 
     <request name="get_preferred">
