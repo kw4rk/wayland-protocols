@@ -1062,10 +1062,11 @@
         using CIE 1931 xy chromaticity coordinates. This is compatible with the
         SMPTE ST 2086 definition of HDR static metadata.
 
-        The mastering display primaries define the target color volume.
+        The mastering display primaries and mastering display luminances define
+        the target color volume.
 
         If mastering display primaries are not explicitly set, the target color
-        volume is assumed to be equal to the primary color volume.
+        volume is assumed to have the same primaries as the primary color volume.
 
         The target color volume is defined by all tristimulus values between 0.0
         and 1.0 (inclusive) of the color space defined by the given mastering
@@ -1121,13 +1122,32 @@
         process as the minimum and maximum absolute luminance L. This is
         compatible with the SMPTE ST 2086 definition of HDR static metadata.
 
-        The mastering luminance range is undefined by default.
+        The mastering display primaries and mastering display luminances define
+        the target color volume.
+
+        If mastering luminances are not explicitly set, the target color volume
+        is assumed to have the same min and max luminances as the primary color
+        volume.
 
         If max L is less than or equal to min L, the protocol error
         invalid_luminance is raised.
 
         Min L value is multiplied by 10000 to get the argument min_lum value
         and carry precision of 4 decimals. Max L value is unscaled for max_lum.
+
+        This request can be used if the compositor advertises
+        wp_color_manager_v1.feature.set_mastering_display_primaries. Otherwise
+        this request raises the protocol error unsupported_feature. The
+        advertisement implies support only for target color volumes fully
+        contained within the primary color volume.
+
+        If a compositor additionally supports target color volume exceeding the
+        primary color volume, it must advertise
+        wp_color_manager_v1.feature.extended_target_volume. If a client uses
+        target color volume exceeding the primary color volume and the
+        compositor does not support it, the result is implementation defined.
+        Compositors are recommended to detect this case and fail the image
+        description gracefully, but it may as well result in color artifacts.
       </description>
 
       <arg name="min_lum" type="uint" summary="min L (cd/m²) * 10000"/>
