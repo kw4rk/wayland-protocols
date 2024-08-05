@@ -616,6 +616,10 @@
         compositor implementation defined. Compositors should handle such
         surfaces as sRGB but may handle them differently if they have specific
         requirements.
+
+        Setting the image description has copy semantics; after this request,
+        the image description can be immediately destroyed without affecting
+        the pending state of the surface.
       </description>
 
       <arg name="image_description"
