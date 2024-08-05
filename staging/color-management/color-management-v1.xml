@@ -580,10 +580,14 @@
              summary="unsupported rendering intent"/>
       <entry name="image_description" value="1"
              summary="invalid image description"/>
+      <entry name="inert" value="2"
+             summary="forbidden request on inert object"/>
     </enum>
 
     <request name="set_image_description">
       <description summary="set the surface image description">
+        If this protocol object is inert, the protocol error inert is raised.
+
         Set the image description of the underlying surface. The image
         description and rendering intent are double-buffered state, see
         wl_surface.commit.
@@ -623,6 +627,8 @@
 
     <request name="unset_image_description">
       <description summary="remove the surface image description">
+        If this protocol object is inert, the protocol error inert is raised.
+
         This request removes any image description from the surface. See
         set_image_description for how a compositor handles a surface without
         an image description. This is double-buffered state, see
