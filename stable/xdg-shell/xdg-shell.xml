@@ -547,6 +547,10 @@
 	The width and height of the effective window geometry must be
 	greater than zero. Setting an invalid size will raise an
 	invalid_size error.
+
+	Compositors are permitted, but not required, to clip the window
+	to the effective window geometry. Clients must not rely on such
+	clipping happening or not happening.
       </description>
       <arg name="x" type="int"/>
       <arg name="y" type="int"/>

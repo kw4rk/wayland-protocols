@@ -23,7 +23,7 @@
     DEALINGS IN THE SOFTWARE.
   </copyright>
 
-  <interface name="zxdg_decoration_manager_v1" version="1">
+  <interface name="zxdg_decoration_manager_v1" version="2">
     <description summary="window decoration manager">
       This interface allows a compositor to announce support for server-side
       decorations.
@@ -33,7 +33,9 @@
       resize and change a window's state.
 
       A client can use this protocol to request being decorated by a supporting
-      compositor.
+      compositor. Starting in version 2, a client can also use this protocol to
+      discover if the compositor is unconditionally drawing server-side
+      decorations.
 
       If compositor and client do not negotiate the use of a server-side
       decoration using this protocol, clients continue to self-decorate as they
@@ -61,10 +63,15 @@
         Create a new decoration object associated with the given toplevel.
 
         Creating an xdg_toplevel_decoration from an xdg_toplevel which has a
-        buffer attached or committed is a client error, and any attempts by a
-        client to attach or manipulate a buffer prior to the first
-        xdg_toplevel_decoration.configure event must also be treated as
-        errors.
+        buffer attached or committed results in a buffer_already_attached error.
+        Attempts by a client to attach or manipulate a buffer prior to the first
+        xdg_toplevel_decoration.configure event results in a unconfigured_buffer
+        error.
+
+        Starting with version 2, this request is guaranteed to have no
+        side-effects other than creating the toplevel decoration object.
+        In particular, the compositor must not change the decoration state
+        as a result of this request.
       </description>
       <arg name="id" type="new_id" interface="zxdg_toplevel_decoration_v1"/>
       <arg name="toplevel" type="object" interface="xdg_toplevel"/>
@@ -88,6 +95,10 @@
         summary="xdg_toplevel already has a decoration object"/>
       <entry name="orphaned" value="2"
         summary="xdg_toplevel destroyed before the decoration object"/>
+      <entry name="invalid_mode" value="3"
+        summary="invalid mode in set_mode" since="2"/>
+      <entry name="buffer_already_attached" value="4"
+        summary="Buffer already attached or committed" since="2"/>
     </enum>
 
     <request name="destroy" type="destructor">
@@ -105,12 +116,45 @@
         summary="no server-side window decoration"/>
       <entry name="server_side" value="2"
         summary="server-side window decoration"/>
+      <entry name="server_side_mandatory" value="3"
+        summary="server-side window decorations always drawn" since="2">
+        <description>
+          Server-side decorations are always drawn, and calls to set_mode
+          will not change the decoration mode.
+
+          Servers should only choose this mode if duplicate decorations (due
+          to clients also drawing window decorations) is preferable to server-side
+          window decorations not being drawn. There are a few reasons this may be
+          the case:
+
+          - 3D compositors place window controls on the bottom (to make them easier
+            to reach) and use an exposure system to make misclicks less likely.
+            Furthermore, shadows interfere with the user's depth perception, which
+            is bad for user experience.
+
+          - Secure systems such as Qubes OS may use window borders as indicators
+            of trust. In these systems, not drawing these borders is a security
+            vulnerability and therefore cannot be allowed.
+
+          - Tiling compositors always draw a border between tiles to indicate the
+            boundary between windows.
+
+          - The user or system administrator may have explicitly requested that
+            this mode be used via non-default configuration.
+        </description>
+      </entry>
     </enum>
 
     <request name="set_mode">
       <description summary="set the decoration mode">
-        Set the toplevel surface decoration mode. This informs the compositor
-        that the client prefers the provided decoration mode.
+        Set the toplevel surface decoration mode. If not sent in response to a
+        configure event with mode set to "server_side_mandatory", this informs
+        the compositor that the client prefers the provided decoration mode.
+        If sent after a configure event with mode set to "server_side_mandatory",
+        this informs the compositor that the client knows that server-side window
+        decorations are being drawn and has adjusted its drawing accordingly.
+        In this case, the provided decoration mode indicates whether the client
+        is still drawing window controls or not.
 
         After requesting a decoration mode, the compositor will respond by
         emitting an xdg_surface.configure event. The client should then update
@@ -127,6 +171,9 @@
         Such clients are responsible for preventing configure loops and must
         make sure not to send multiple successive set_mode requests with the
         same decoration mode.
+
+        In version 2 or higher, using the server_side_mandatory value in this
+        request results in an invalid_mode error.
       </description>
       <arg name="mode" type="uint" enum="mode" summary="the decoration mode"/>
     </request>
@@ -149,6 +196,12 @@
 
         A configure event can be sent at any time. The specified mode must be
         obeyed by the client.
+
+        Starting in version 2, the compositor must send a configure event
+        immediately when a decoration object is created. This event
+        must reflect the state that existed prior to the decoration object
+        being created. This allows clients to be informed of whether server-side
+        decorations are being drawn without any unwanted side-effects.
       </description>
       <arg name="mode" type="uint" enum="mode" summary="the decoration mode"/>
     </event>
