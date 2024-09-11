@@ -1031,9 +1031,12 @@
         description should produce the same output level, even though the
         'reference_lum' on both image representations can be different.
 
-        If 'max_lum' is less than the 'reference_lum', or 'reference_lum' is
-        less than or equal to 'min_lum', the protocol error invalid_luminance is
-        raised.
+        'reference_lum' may be higher than 'max_lum'. In that case reaching
+        the reference white output level in image content requires the
+        'extended_target_volume' feature support.
+
+        If 'max_lum' or 'reference_lum' are less than or equal to 'min_lum',
+        the protocol error invalid_luminance is raised.
 
         The minimum luminance is multiplied by 10000 to get the argument
         'min_lum' value and carries precision of 4 decimals. The maximum
