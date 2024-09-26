@@ -982,8 +982,8 @@
         coordinates. This describes the primary color volume which is the basis
         for color value encoding.
 
-        Each coordinate value is multiplied by 10000 to get the argument value
-        to carry precision of 4 decimals.
+        Each coordinate value is multiplied by 1 million to get the argument
+        value to carry precision of 6 decimals.
 
         If primaries have already been set on this object, the protocol error
         already_set is raised.
@@ -993,14 +993,14 @@
         the protocol error unsupported_feature.
       </description>
 
-      <arg name="r_x" type="int" summary="Red x * 10000"/>
-      <arg name="r_y" type="int" summary="Red y * 10000"/>
-      <arg name="g_x" type="int" summary="Green x * 10000"/>
-      <arg name="g_y" type="int" summary="Green y * 10000"/>
-      <arg name="b_x" type="int" summary="Blue x * 10000"/>
-      <arg name="b_y" type="int" summary="Blue y * 10000"/>
-      <arg name="w_x" type="int" summary="White x * 10000"/>
-      <arg name="w_y" type="int" summary="White y * 10000"/>
+      <arg name="r_x" type="int" summary="Red x * 1M"/>
+      <arg name="r_y" type="int" summary="Red y * 1M"/>
+      <arg name="g_x" type="int" summary="Green x * 1M"/>
+      <arg name="g_y" type="int" summary="Green y * 1M"/>
+      <arg name="b_x" type="int" summary="Blue x * 1M"/>
+      <arg name="b_y" type="int" summary="Blue y * 1M"/>
+      <arg name="w_x" type="int" summary="White x * 1M"/>
+      <arg name="w_y" type="int" summary="White y * 1M"/>
     </request>
 
     <request name="set_luminances">
@@ -1088,8 +1088,8 @@
         has to be chosen (e.g. floating point to exceed the primary color
         volume, or abusing limited quantization range as with xvYCC).
 
-        Each coordinate value is multiplied by 10000 to get the argument value
-        to carry precision of 4 decimals.
+        Each coordinate value is multiplied by 1 million to get the argument
+        value to carry precision of 6 decimals.
 
         If mastering display primaries have already been set on this object, the
         protocol error already_set is raised.
@@ -1109,14 +1109,14 @@
         description gracefully, but it may as well result in color artifacts.
       </description>
 
-      <arg name="r_x" type="int" summary="Red x * 10000"/>
-      <arg name="r_y" type="int" summary="Red y * 10000"/>
-      <arg name="g_x" type="int" summary="Green x * 10000"/>
-      <arg name="g_y" type="int" summary="Green y * 10000"/>
-      <arg name="b_x" type="int" summary="Blue x * 10000"/>
-      <arg name="b_y" type="int" summary="Blue y * 10000"/>
-      <arg name="w_x" type="int" summary="White x * 10000"/>
-      <arg name="w_y" type="int" summary="White y * 10000"/>
+      <arg name="r_x" type="int" summary="Red x * 1M"/>
+      <arg name="r_y" type="int" summary="Red y * 1M"/>
+      <arg name="g_x" type="int" summary="Green x * 1M"/>
+      <arg name="g_y" type="int" summary="Green y * 1M"/>
+      <arg name="b_x" type="int" summary="Blue x * 1M"/>
+      <arg name="b_y" type="int" summary="Blue y * 1M"/>
+      <arg name="w_x" type="int" summary="White x * 1M"/>
+      <arg name="w_y" type="int" summary="White y * 1M"/>
     </request>
 
     <request name="set_mastering_luminance">
@@ -1352,18 +1352,18 @@
         Delivers the primary color volume primaries and white point using CIE
         1931 xy chromaticity coordinates.
 
-        Each coordinate value is multiplied by 10000 to get the argument value
-        to carry precision of 4 decimals.
+        Each coordinate value is multiplied by 1 million to get the argument
+        value to carry precision of 6 decimals.
       </description>
 
-      <arg name="r_x" type="int" summary="Red x * 10000"/>
-      <arg name="r_y" type="int" summary="Red y * 10000"/>
-      <arg name="g_x" type="int" summary="Green x * 10000"/>
-      <arg name="g_y" type="int" summary="Green y * 10000"/>
-      <arg name="b_x" type="int" summary="Blue x * 10000"/>
-      <arg name="b_y" type="int" summary="Blue y * 10000"/>
-      <arg name="w_x" type="int" summary="White x * 10000"/>
-      <arg name="w_y" type="int" summary="White y * 10000"/>
+      <arg name="r_x" type="int" summary="Red x * 1M"/>
+      <arg name="r_y" type="int" summary="Red y * 1M"/>
+      <arg name="g_x" type="int" summary="Green x * 1M"/>
+      <arg name="g_y" type="int" summary="Green y * 1M"/>
+      <arg name="b_x" type="int" summary="Blue x * 1M"/>
+      <arg name="b_y" type="int" summary="Blue y * 1M"/>
+      <arg name="w_x" type="int" summary="White x * 1M"/>
+      <arg name="w_y" type="int" summary="White y * 1M"/>
     </event>
 
     <event name="primaries_named">
@@ -1429,18 +1429,18 @@
         volume is equal to the primary color volume, then this event is not
         sent.
 
-        Each coordinate value is multiplied by 10000 to get the argument value
-        to carry precision of 4 decimals.
+        Each coordinate value is multiplied by 1 million to get the argument
+        value to carry precision of 6 decimals.
       </description>
 
-      <arg name="r_x" type="int" summary="Red x * 10000"/>
-      <arg name="r_y" type="int" summary="Red y * 10000"/>
-      <arg name="g_x" type="int" summary="Green x * 10000"/>
-      <arg name="g_y" type="int" summary="Green y * 10000"/>
-      <arg name="b_x" type="int" summary="Blue x * 10000"/>
-      <arg name="b_y" type="int" summary="Blue y * 10000"/>
-      <arg name="w_x" type="int" summary="White x * 10000"/>
-      <arg name="w_y" type="int" summary="White y * 10000"/>
+      <arg name="r_x" type="int" summary="Red x * 1M"/>
+      <arg name="r_y" type="int" summary="Red y * 1M"/>
+      <arg name="g_x" type="int" summary="Green x * 1M"/>
+      <arg name="g_y" type="int" summary="Green y * 1M"/>
+      <arg name="b_x" type="int" summary="Blue x * 1M"/>
+      <arg name="b_y" type="int" summary="Blue y * 1M"/>
+      <arg name="w_x" type="int" summary="White x * 1M"/>
+      <arg name="w_y" type="int" summary="White y * 1M"/>
     </event>
 
     <event name="target_luminance">
