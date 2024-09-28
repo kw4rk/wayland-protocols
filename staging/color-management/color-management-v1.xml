@@ -148,10 +148,12 @@
         is the authority, when it comes to the exact values of primaries and
         authoritative specifications, where an equivalent code point exists.
 
+        A value of 0 is invalid and will never be present in the list of enums.
+
         Descriptions do list the specifications for convenience.
       </description>
 
-      <entry name="srgb" value="0">
+      <entry name="srgb" value="1">
         <description summary="Color primaries for the sRGB color space as defined by the BT.709 standard">
           Color primaries as defined by
           - Rec. ITU-R BT.709-6
@@ -164,7 +166,7 @@
           Equivalent to H.273 ColourPrimaries code point 1.
         </description>
       </entry>
-      <entry name="pal_m" value="1">
+      <entry name="pal_m" value="2">
         <description summary="Color primaries for PAL-M as defined by the BT.470 standard">
           Color primaries as defined by
           - Rec. ITU-R BT.470-6 System M (historical)
@@ -175,7 +177,7 @@
           Equivalent to H.273 ColourPrimaries code point 4.
         </description>
       </entry>
-      <entry name="pal" value="2">
+      <entry name="pal" value="3">
         <description summary="Color primaries for PAL as defined by the BT.601 standard">
           Color primaries as defined by
           - Rec. ITU-R BT.470-6 System B, G (historical)
@@ -185,7 +187,7 @@
           Equivalent to H.273 ColourPrimaries code point 5.
         </description>
       </entry>
-      <entry name="ntsc" value="3">
+      <entry name="ntsc" value="4">
         <description summary="Color primaries for NTSC as defined by the BT.601 standard">
           Color primaries as defined by
           - Rec. ITU-R BT.601-7 525
@@ -196,13 +198,13 @@
           Equivalent to H.273 ColourPrimaries code point 6 and 7.
         </description>
       </entry>
-      <entry name="generic_film" value="4">
+      <entry name="generic_film" value="5">
         <description summary="Generic film with colour filters using Illuminant C">
           Color primaries as defined by H.273 for generic film.
           Equivalent to H.273 ColourPrimaries code point 8.
         </description>
       </entry>
-      <entry name="bt2020" value="5">
+      <entry name="bt2020" value="6">
         <description summary="Color primaries as defined by the BT.2020 and BT.2100 standard">
           Color primaries as defined by
           - Rec. ITU-R BT.2020-2
@@ -210,7 +212,7 @@
           Equivalent to H.273 ColourPrimaries code point 9.
         </description>
       </entry>
-      <entry name="cie1931_xyz" value="6">
+      <entry name="cie1931_xyz" value="7">
         <description summary="Color primaries of the full CIE 1931 XYZ color space">
           Color primaries as defined as the maximum of the CIE 1931 XYZ color
           space by
@@ -219,21 +221,21 @@
           Equivalent to H.273 ColourPrimaries code point 10.
         </description>
       </entry>
-      <entry name="dci_p3" value="7">
+      <entry name="dci_p3" value="8">
         <description summary="Color primaries of the DCI P3 color space as defined by the SMPTE RP 431 standard">
           Color primaries as defined by Digital Cinema System and published in
           SMPTE RP 431-2 (2011). Equivalent to H.273 ColourPrimaries code point
           11.
         </description>
       </entry>
-      <entry name="display_p3" value="8">
+      <entry name="display_p3" value="9">
         <description summary="Color primaries of Display P3 variant of the DCI-P3 color space as defined by the SMPTE EG 432 standard">
           Color primaries as defined by Digital Cinema System and published in
           SMPTE EG 432-1 (2010).
           Equivalent to H.273 ColourPrimaries code point 12.
         </description>
       </entry>
-      <entry name="adobe_rgb" value="9">
+      <entry name="adobe_rgb" value="10">
         <description summary="Color primaries of the Adobe RGB color space as defined by the ISO 12640 standard">
           Color primaries as defined by Adobe as "Adobe RGB" and later published
           by ISO 12640-4 (2011).
@@ -248,10 +250,12 @@
         formulas and authoritative specifications, where an equivalent code
         point exists.
 
+        A value of 0 is invalid and will never be present in the list of enums.
+
         Descriptions do list the specifications for convenience.
       </description>
 
-      <entry name="bt709" value="0">
+      <entry name="bt709" value="1">
         <description summary="BT.709 transfer function">
           Transfer characteristics as defined by
           - Rec. ITU-R BT.709-6
@@ -259,7 +263,7 @@
           Equivalent to H.273 TransferCharacteristics code point 1, 6, 14, 15.
         </description>
       </entry>
-      <entry name="gamma22" value="1">
+      <entry name="gamma22" value="2">
         <description summary="Assumed display gamma 2.2 transfer function">
           Transfer characteristics as defined by
           - Rec. ITU-R BT.470-6 System M (historical)
@@ -271,53 +275,53 @@
           Equivalent to H.273 TransferCharacteristics code point 4.
         </description>
       </entry>
-      <entry name="gamma28" value="2">
+      <entry name="gamma28" value="3">
         <description summary="Assumed display gamma 2.8 transfer function">
           Transfer characteristics as defined by
           - Rec. ITU-R BT.470-6 System B, G (historical)
           Equivalent to H.273 TransferCharacteristics code point 5.
         </description>
       </entry>
-      <entry name="st240" value="3">
+      <entry name="st240" value="4">
         <description summary="SMPTE ST 240 transfer function">
           Transfer characteristics as defined by
           - SMPTE ST 240 (1999)
           Equivalent to H.273 TransferCharacteristics code point 7.
         </description>
       </entry>
-      <entry name="linear" value="4">
+      <entry name="linear" value="5">
         <description summary="linear transfer function">
           Linear transfer characteristics.
           Equivalent to H.273 TransferCharacteristics code point 8.
         </description>
       </entry>
-      <entry name="log_100" value="5">
+      <entry name="log_100" value="6">
         <description summary="logarithmic 100:1 transfer function">
           Logarithmic transfer characteristic (100:1 range).
           Equivalent to H.273 TransferCharacteristics code point 9.
         </description>
       </entry>
-      <entry name="log_316" value="6">
+      <entry name="log_316" value="7">
         <description summary="logarithmic (100*Sqrt(10) : 1) transfer function">
           Logarithmic transfer characteristic (100 * Sqrt(10) : 1 range).
           Equivalent to H.273 TransferCharacteristics code point 10.
         </description>
       </entry>
-      <entry name="xvycc" value="7">
+      <entry name="xvycc" value="8">
         <description summary="IEC 61966-2-4 transfer function">
           Transfer characteristics as defined by
           - IEC 61966-2-4
           Equivalent to H.273 TransferCharacteristics code point 11.
         </description>
       </entry>
-      <entry name="bt1361" value="8">
+      <entry name="bt1361" value="9">
         <description summary="BT.1361 extended transfer function">
           Transfer characteristics as defined by
           - Rec. ITU-R BT.1361-0 extended colour gamut system (historical)
           Equivalent to H.273 TransferCharacteristics code point 12.
         </description>
       </entry>
-      <entry name="srgb" value="9">
+      <entry name="srgb" value="10">
         <description summary="sRGB piece-wise transfer function">
           Transfer characteristics as defined by
           - IEC 61966-2-1 sRGB
@@ -325,7 +329,7 @@
           MatrixCoefficients set to 0.
         </description>
       </entry>
-      <entry name="ext_srgb" value="10">
+      <entry name="ext_srgb" value="11">
         <description summary="Extended sRGB piece-wise transfer function">
           Transfer characteristics as defined by
           - IEC 61966-2-1 sYCC
@@ -333,7 +337,7 @@
           MatrixCoefficients set to anything but 0.
         </description>
       </entry>
-      <entry name="st2084_pq" value="11">
+      <entry name="st2084_pq" value="12">
         <description summary="perceptual quantizer transfer function">
           Transfer characteristics as defined by
           - SMPTE ST 2084 (2014) for 10-, 12-, 14- and 16-bit systems
@@ -346,14 +350,14 @@
           - reference white: 203 cd/m²
         </description>
       </entry>
-      <entry name="st428" value="12">
+      <entry name="st428" value="13">
         <description summary="SMPTE ST 428 transfer function">
           Transfer characteristics as defined by
           - SMPTE ST 428-1 (2019)
           Equivalent to H.273 TransferCharacteristics code point 17.
         </description>
       </entry>
-      <entry name="hlg" value="13">
+      <entry name="hlg" value="14">
         <description summary="hybrid log-gamma transfer function">
           Transfer characteristics as defined by
           - ARIB STD-B67 (2015)
