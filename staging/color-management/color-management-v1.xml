@@ -935,8 +935,10 @@
     <request name="set_tf_power">
       <description summary="transfer characteristic as a power curve">
         Sets the color component transfer characteristic to a power curve with
-        the given exponent. This curve represents the conversion from electrical
-        to optical pixel or color values.
+        the given exponent. Negative values are handled by mirroring the
+        positive half of the curve through the origin. The valid domain and
+        range of the curve are all finite real numbers. This curve represents
+        the conversion from electrical to optical color channel values.
 
         When the resulting image description is attached to an image, the
         content should be encoded with the inverse of the power curve.
