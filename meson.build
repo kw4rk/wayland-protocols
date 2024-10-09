@@ -58,6 +58,7 @@ staging_protocols = {
 	'xdg-toplevel-icon': ['v1'],
 	'xwayland-shell': ['v1'],
 	'alpha-modifier': ['v1'],
+	'pointer-warp': ['v1'],
 }
 
 protocol_files = []
