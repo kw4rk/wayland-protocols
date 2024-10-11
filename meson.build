@@ -41,6 +41,7 @@ unstable_protocols = {
 }
 
 staging_protocols = {
+	'color-representation': ['v1'],
 	'content-type': ['v1'],
 	'cursor-shape': ['v1'],
 	'drm-lease': ['v1'],
