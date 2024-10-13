@@ -650,7 +650,7 @@
   <interface name="wp_color_management_feedback_surface_v1" version="1">
     <description summary="color management extension to a surface">
         A wp_color_management_feedback_surface_v1 allows the client to get the
-        preferred color description of a surface.
+        preferred image description of a surface.
 
         If the wl_surface associated with this object is destroyed, the
         wp_color_management_feedback_surface_v1 object becomes inert.
