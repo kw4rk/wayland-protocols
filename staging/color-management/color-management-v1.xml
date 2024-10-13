@@ -853,6 +853,9 @@
       - reference white luminance level
       - mastering display primaries and white point (target color volume)
       - mastering luminance range
+
+      The following proprties are optional and will be ignored
+      if not explicitly set:
       - maximum content light level
       - maximum frame-average light level
 
