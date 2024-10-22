@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="ext_ei_region_mapper_v1">
+  <copyright>
+    Copyright © 2024 Julian Orth
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+  </copyright>
+
+  <interface name="ext_ei_region_mapper_v1" version="1">
+    <description summary="map EI regions to compositor space">
+      This global can be used by clients to associate EI mapping ids from
+      ei_device.region_mapping_id events with compositor regions.
+
+      Warning! The protocol described in this file is currently in the testing
+      phase. Backward compatible changes may be added together with the
+      corresponding interface version bump. Backward incompatible changes can
+      only be done by creating a new major version of the extension.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy this object">
+        Destroy this object.
+      </description>
+    </request>
+
+    <event name="output_region">
+      <description summary="create a wl_output association">
+        This event associates a wl_output with a region mapping id.
+
+        When this global is initially bound, the compositor emits this event for
+        each output global. The client can use wl_display.sync to ensure that it
+        has received all events.
+
+        Afterwards, the compositor emits this event when the mapping for an
+        output changes or a new output global appears.
+      </description>
+      <arg name="global_name" type="uint"
+           summary="the global name of the wl_output"/>
+      <arg name="mapping_id" type="string"
+           summary="the EI mapping id"/>
+    </event>
+  </interface>
+</protocol>
