@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="ext_ei_session_v1">
+  <copyright>
+    Copyright © 2024 Julian Orth
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+  </copyright>
+
+  <interface name="ext_ei_session_manager_v1" version="1">
+    <description summary="manager object for creating EI sessions">
+      This global allows privileged clients to create EI sessions associated
+      with compositor objects.
+
+      Warning! The protocol described in this file is currently in the testing
+      phase. Backward compatible changes may be added together with the
+      corresponding interface version bump. Backward incompatible changes can
+      only be done by creating a new major version of the extension.
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy this object">
+        Destroy this object.
+      </description>
+    </request>
+
+    <request name="create_output_session">
+      <description summary="create an EI session for an output">
+        This request creates an EI session using a wl_output as its target.
+      </description>
+      <arg name="id" type="new_id" interface="ext_ei_session_v1"
+           summary="the id of the EI session"/>
+      <arg name="output" type="object" interface="wl_output"
+           summary="the output to target"/>
+    </request>
+
+    <request name="create_toplevel_session">
+      <description summary="create an EI session for a toplevel">
+        This request creates an EI session using a toplevel as its target.
+      </description>
+      <arg name="id" type="new_id" interface="ext_ei_session_v1"
+           summary="the id of the EI session"/>
+      <arg name="toplevel" type="object" interface="ext_foreign_toplevel_handle_v1"
+           summary="the toplevel to target"/>
+    </request>
+  </interface>
+
+  <interface name="ext_ei_session_v1" version="1">
+    <description summary="an EI session">
+      This object represents an EI session created for a compositor target
+      (output or toplevel).
+    </description>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy this object">
+        Destroy this object.
+
+        The compositor will close the EI connection when it receives this event.
+      </description>
+    </request>
+
+    <event name="file_descriptor">
+      <description summary="the EI session has been established">
+        This event is emitted if the EI session was successfully created. The
+        file descriptor refers to an EI connection in its initial state. The
+        client should set up the connection as usual.
+
+        This event is emitted at most once and is immediately followed by a size
+        event.
+
+        The connection will contain exactly one EI region per device. This
+        region will refer to the target (output or toplevel) that was used to
+        create this session. The client must scale this region to get
+        coordinates in compositor space. The scaling can be derived from the
+        size event.
+      </description>
+      <arg name="fd" type="fd"
+           summary="the EI file descriptor"/>
+    </event>
+
+    <event name="size">
+      <description summary="the size of the target in compositor space">
+        This event informs the client of the size of the target (output or
+        toplevel) in compositor space. It is emitted when the size of the target
+        changes.
+
+        Since EI regions are immutable, the client must scale coordinates in EI
+        space to map them to compositor space and vice versa. For example, to
+        map an x coordinate in EI space to compositor space, the client should
+        divide by the width of the EI region and then multiple by the width from
+        this event.
+
+        The width and the height are greater than or equal to 0.
+      </description>
+      <arg name="width" type="int"
+           summary="the width of the target"/>
+      <arg name="height" type="int"
+           summary="the height of the target"/>
+    </event>
+
+    <event name="stopped">
+      <description summary="the EI session has been stopped">
+        After this event, this object becomes inert and the client should
+        destroy it. If the compositor sent a file descriptor for this session,
+        the compositor will close the connection before sending this event.
+      </description>
+    </event>
+  </interface>
+</protocol>
