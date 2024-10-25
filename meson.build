@@ -57,6 +57,7 @@ staging_protocols = {
 	'linux-drm-syncobj': ['v1'],
 	'security-context': ['v1'],
 	'single-pixel-buffer': ['v1'],
+	'surface-invalidation': ['v1'],
 	'tearing-control': ['v1'],
 	'xdg-activation': ['v1'],
 	'xdg-dialog': ['v1'],
