@@ -181,7 +181,7 @@
     </request>
   </interface>
 
-  <interface name="zwp_locked_pointer_v1" version="1">
+  <interface name="zwp_locked_pointer_v1" version="2">
     <description summary="receive relative pointer motion events">
       The wp_locked_pointer interface represents a locked pointer state.
 
@@ -199,7 +199,7 @@
       If the compositor decides to unlock the pointer the unlocked event is
       sent. See wp_locked_pointer.unlock for details.
 
-      When unlocking, the compositor may warp the cursor position to the set
+      When unlocking, the compositor will warp the cursor position to the set
       cursor position hint. If it does, it will not result in any relative
       motion events emitted via wp_relative_pointer.
 
@@ -221,7 +221,7 @@
 	surface.
 
 	If the client is drawing its own cursor, it should update the position
-	hint to the position of its own cursor. A compositor may use this
+	hint to the position of its own cursor. A compositor will use this
 	information to warp the pointer upon unlock in order to avoid pointer
 	jumps.
 
