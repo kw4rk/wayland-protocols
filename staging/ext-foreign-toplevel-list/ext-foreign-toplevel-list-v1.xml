@@ -215,5 +215,25 @@
       </description>
       <arg name="identifier" type="string"/>
     </event>
+
+    <event name="skip_switcher">
+      <description summary="the toplevel not appear in the switcher">
+        The skip_switcher of the toplevel has changed.
+
+        The configured state must not be applied immediately. See
+        ext_foreign_toplevel_handle_v1.done for details.
+      </description>
+      <arg name="skip" type="uint" summary="Boolean value that means whether to skip the window switcher."/>
+    </event>
+
+    <event name="skip_panel">
+      <description summary="make the toplevel not appear in the panel">
+        The skip_panel of the toplevel has changed.
+
+        The configured state must not be applied immediately. See
+        ext_foreign_toplevel_handle_v1.done for details.
+      </description>
+      <arg name="skip" type="uint" summary="Boolean value that means whether to skip the panel"/>
+    </event>
   </interface>
 </protocol>
