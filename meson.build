@@ -47,6 +47,7 @@ staging_protocols = {
 	'drm-lease': ['v1'],
 	'ext-data-control': ['v1'],
 	'ext-foreign-toplevel-list': ['v1'],
+	'ext-foreign-toplevel-state': ['v1'],
 	'ext-idle-notify': ['v1'],
 	'ext-image-capture-source': ['v1'],
 	'ext-image-copy-capture': ['v1'],
