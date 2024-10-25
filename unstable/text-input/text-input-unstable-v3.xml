@@ -47,7 +47,7 @@
     interface version number is reset.
   </description>
 
-  <interface name="zwp_text_input_v3" version="1">
+  <interface name="zwp_text_input_v3" version="2">
     <description summary="text input">
       The zwp_text_input_v3 interface represents text input and input methods
       associated with a seat. It provides enter/leave events to follow the
@@ -211,6 +211,7 @@
       <entry name="sensitive_data" value="0x80" summary="typed text should not be stored"/>
       <entry name="latin" value="0x100" summary="just Latin characters should be entered"/>
       <entry name="multiline" value="0x200" summary="the text input is multiline"/>
+      <entry name="preedit_shown" value="0x400" summary="the text input will display preedit text in place" since="2"/>
     </enum>
 
     <enum name="content_purpose">
@@ -435,7 +436,7 @@
     </event>
   </interface>
 
-  <interface name="zwp_text_input_manager_v3" version="1">
+  <interface name="zwp_text_input_manager_v3" version="2">
     <description summary="text input manager">
       A factory for text-input objects. This object is a global singleton.
     </description>
