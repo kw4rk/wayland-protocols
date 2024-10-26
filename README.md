@@ -158,20 +158,23 @@ maintainers are encouraged to audit their descriptions, update them as needed
 to follow RFC 2119 guidelines, and mark them as conformant in the way described
 in the previous paragraph.
 
-## Backward compatible protocol changes
+## New minor version
 
 A protocol may receive backward compatible additions and changes. This
 is to be done in the general Wayland way, using `version` and `since` XML
 element attributes.
 
-## Backward incompatible protocol changes
+A protocol major version must never receive backward incompatible changes.
 
-While not preferred, a protocol may at any stage, especially during the
-testing phase, when it is located in the `staging/` directory, see
-backward incompatible changes.
+## New major version
 
-Assuming a backward incompatible change is needed, the procedure for how to
-do so is the following:
+While not preferred, a new major version of a protocol can be established at
+any stage (especially during the testing phase, when it is located in the
+`staging/` directory). A new major version can be used to make changes that
+would otherwise be backward incompatible.
+
+Assuming a new major version is needed, the procedure for how to do so is the
+following:
 
 - Make a copy of the XML file with the major version increased by 1.
 - Increase the major version number in the protocol XML by 1.
