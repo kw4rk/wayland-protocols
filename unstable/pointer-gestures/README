@@ -1,4 +1,6 @@
 Pointer gestures protocol
 
+Note: This protocol has been migrated to staging/.
+
 Maintainers:
 Carlos Garnacho <carlosg@gnome.org> (@carlosg)
