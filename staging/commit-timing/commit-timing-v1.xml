@@ -101,6 +101,18 @@
         If a timestamp already exists on the surface, a timestamp_exists
         error is generated.
 
+        When a surface begins operating in synchronized mode, any
+        unapplied content updates with "set_timestamp" requests are
+        immediately considered unapplicable. This is to allow clients to
+        asynchronously pause the application of content updates.
+
+        On the first parent commit in synchronized mode, or when the surface
+        begins operating in desynchronized mode, any unapplied content
+        updates created before the transition to synchronized mode will
+        have "set_timestamp" requests removed, and no longer be forced
+        into an unapplicable state. This allows a way to fast-forward
+        through unapplied content updates.
+
         Requesting set_timestamp after the commit_timer object's surface is
         destroyed will generate a "surface_destroyed" error.
       </description>
