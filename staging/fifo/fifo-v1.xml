@@ -93,6 +93,20 @@
         the fifo object. The condition is cleared immediately after the
         following latching deadline for non-tearing presentation.
 
+        When a surface begins operating in synchronized mode, the
+        "fifo_barrier" condition is set immediately, and will only be
+        cleared when the surface becomes desynchronized or a commit
+        takes place on the parent surface. This is to allow clients to
+        asynchronously pause the application of content updates. On the
+        first parent commit in synchronized mode, or when the surface begins
+        operating in desynchronized mode, barrier clearing resumes normal
+        behaviour.
+
+        On a transition to synchronized mode any existing content updates
+        containing "set_barrier" requests will have those requests
+        removed. This allows a way to fast-forward through unapplied
+        content updates.
+
         The compositor may clear the condition early if it must do so to
         ensure client forward progress assumptions.
 
@@ -116,8 +130,7 @@
         tear might become active after a latching deadline if no content
         update became active at the deadline.
 
-        The constraint must be ignored if the surface is a subsurface in
-        synchronized mode. If the surface is not being updated by the
+        If the surface is not being updated by the
         compositor (off-screen, occluded) the compositor may ignore the
         constraint. Clients must use an additional mechanism such as
         frame callbacks or timestamps to ensure throttling occurs under
