@@ -52,6 +52,7 @@ staging_protocols = {
 	'ext-image-copy-capture': ['v1'],
 	'ext-session-lock': ['v1'],
 	'ext-transient-seat': ['v1'],
+	'ext-zones': ['v1'],
 	'fifo': ['v1'],
 	'fractional-scale': ['v1'],
 	'linux-drm-syncobj': ['v1'],
