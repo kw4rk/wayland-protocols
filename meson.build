@@ -54,6 +54,7 @@ staging_protocols = {
 	'ext-transient-seat': ['v1'],
 	'fifo': ['v1'],
 	'fractional-scale': ['v1'],
+	'gamepad': ['v1'],
 	'linux-drm-syncobj': ['v1'],
 	'security-context': ['v1'],
 	'single-pixel-buffer': ['v1'],
